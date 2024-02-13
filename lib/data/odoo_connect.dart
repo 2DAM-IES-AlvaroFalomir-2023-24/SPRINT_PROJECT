@@ -17,8 +17,6 @@ class OdooConnect{
   
   static void initialize() async{
     await client.authenticate(SPRINT_DATABASE, SPRINT_USER, SPRINT_PASSWORD);
-    var logger = Logger();
-    logger.i("$SPRINT_DATABASE - $SPRINT_USER - $SPRINT_PASSWORD - $SPRINT_CONNECTION");
   }
 
   /*static Future<User> getUserByEmail() async{
