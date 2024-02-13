@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sprint/data/odoo_connect.dart';
 
 void main() {
   runApp(const MyApp());
@@ -56,6 +57,12 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    OdooConnect.initialize();
+  }
 
   void _incrementCounter() {
     setState(() {
