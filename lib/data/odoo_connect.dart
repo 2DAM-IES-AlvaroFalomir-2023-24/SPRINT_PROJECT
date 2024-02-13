@@ -1,9 +1,7 @@
-import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:sprint/odoo-rpc/odoo_client.dart';
 
 import '../model/user.dart';
-import '../odoo-rpc/odoo_exceptions.dart';
 import 'dart:convert' as convert;
 
 class OdooConnect{
