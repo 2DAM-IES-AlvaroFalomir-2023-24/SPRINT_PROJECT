@@ -16,4 +16,4 @@ En caso de ser un desarrollador que quiere trabajar en el proyecto deberá confi
 > **Nota:**
 > Para saber cuales son los datos se debe tener acceso al discord, donde estará la información de la conexión
 
-teste
+teste2 asd
