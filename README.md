@@ -1,6 +1,5 @@
 # SPRINT_PROJECT
 Proyecto clase 2DAM segundo trimestre 23/24
-Test
 # USO PARA DESARROLLADORES
 En caso de ser un desarrollador que quiere trabajar en el proyecto deberá configurar el entorno (preferiblemente Android Studio) para que la ejecución contenga las variables de entorno que permitan el acceso a la base de datos de odoo que estamos usando, para ello hay que seguir los siguientes pasos:
 - Desplegar el botón de configuraciones de ejecución (a la izquierda del botón de ejecución) </br></br>
