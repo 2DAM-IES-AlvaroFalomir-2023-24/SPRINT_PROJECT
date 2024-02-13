@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: ["apk --debug", "appbundle --debug", "ios --no-codesign", macos, web, macos-latest, windows-latest, ubuntu-latest]
+        target: ["apk --debug", "appbundle --debug", "ios --no-codesign", macos, web, ubuntu]
     steps:
       - name: Set up JDK 11
         uses: actions/setup-java@387ac29b308b003ca37ba93a6cab5eb57c8f5f93 # v4.0.0
