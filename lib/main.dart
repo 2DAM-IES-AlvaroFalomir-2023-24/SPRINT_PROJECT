@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:sprint/data/odoo_connect.dart';
 import 'package:sprint/screens/login_screen.dart';
 
-void main() {
+Future main() async{
+  await dotenv.load(fileName: "assets/.env");
+  OdooConnect.initialize();
   runApp(const MyApp());
 }
 
@@ -16,7 +19,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
-      home: SafeArea(
+      home: const SafeArea(
         child: LoginScreen(),
       )
     );
