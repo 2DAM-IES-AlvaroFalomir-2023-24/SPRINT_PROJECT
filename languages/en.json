@@ -1,7 +1,25 @@
 {
   "login": "Log in",
   "register": "Register",
-  "manageAccount": "Manage account",
-  "forgotPassword": "Forgot your password?",
-  "logout": "Log out"
+  "manageAccount": "Manage Account",
+  "forgotPassword": "Forgot Password",
+  "logout": "Log out",
+  "signInGoogle": "Sign in with Google",
+  "signInLinkedIn": "Sign in with LinkedIn",
+  "registerGoogle": "Register with Google",
+  "registerLinkedIn": "Register with LinkedIn",
+  "email": "Email",
+  "password": "Password",
+  "confirmPassword": "Confirm Password",
+  "name": "Name",
+  "switchUser": "Switch User",
+  "deleteUser": "Delete User",
+  "home": "Home",
+  "unknownDetails": "Missing information in your user.",
+  "editUser": "Edit User",
+  "save": "Save",
+  "cancel": "Cancel",
+  "registerWithoutPassword": "Register without password",
+  "loginWithoutPassword": "Log in without password",
+  "goBack": "Go Back"
 }
