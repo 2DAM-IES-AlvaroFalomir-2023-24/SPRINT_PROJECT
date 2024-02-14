@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sprint/data/odoo_connect.dart';
+import 'package:sprint/screens/home_screen.dart';
 import 'package:sprint/screens/register_screen.dart';
+import 'package:sprint/screens/user_screen.dart';
 
 class LoginScreen extends StatefulWidget{
   const LoginScreen({super.key});
@@ -23,7 +25,7 @@ class LoginScreenState extends State<LoginScreen>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('login'),
+        title: const Text('Login'),
         centerTitle: true,
       ),
       body: Center(
@@ -69,7 +71,7 @@ class LoginScreenState extends State<LoginScreen>{
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
                 child: ElevatedButton(
                   onPressed: () {
-                    // Aquí va la lógica de inicio de sesión
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const HomeScreen()));
                   },
                   child: const Text('Home'),
                 ),
@@ -78,7 +80,7 @@ class LoginScreenState extends State<LoginScreen>{
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
                 child: ElevatedButton(
                   onPressed: () {
-                    // Aquí va la lógica de inicio de sesión
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const UserScreen()));
                   },
                   child: const Text('User Profile'),
                 ),
