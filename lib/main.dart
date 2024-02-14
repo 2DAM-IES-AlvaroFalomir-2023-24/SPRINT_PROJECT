@@ -4,7 +4,7 @@ import 'package:sprint/data/odoo_connect.dart';
 import 'package:sprint/screens/login_screen.dart';
 
 Future main() async{
-  await dotenv.load(fileName: "assets/.env");
+  await dotenv.load(fileName: "./assets/.env");
   OdooConnect.initialize();
   runApp(const MyApp());
 }
