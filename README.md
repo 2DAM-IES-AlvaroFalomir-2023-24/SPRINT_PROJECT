@@ -9,5 +9,3 @@ en la carpeta "assets del proyecto"</br></br>
 
 > **Nota:** </br>
 > El archivo ".env" se encuentra en el Discord de desarrolladores
-
-cosas

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 class UserScreen extends StatelessWidget {
@@ -11,6 +13,9 @@ class UserScreen extends StatelessWidget {
 
   final String userEmailLabel = "Email (Login)";
   final String userEmailValue = "EMAIL_USUARIO";
+
+  final String userPhoneLabel = "Teléfono";
+  final String userPhoneValue = "TELEFONO_USUARIO";
 
   final String userLanguageLabel = "Idioma";
 
@@ -31,9 +36,9 @@ class UserScreen extends StatelessWidget {
             // TODO ¿Añadir un segundo botón para cancelar?
           },
         ),
-        body:Container(
-          // TODO centrar verticalmente de forma correcta. La barra inferior del sistema descentra visualmente los elementos
-        //height: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.bottom,
+        body: Container(
+            // TODO centrar verticalmente de forma correcta. La barra inferior del sistema descentra visualmente los elementos
+            //height: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.bottom,
             child: Center(
           child: Padding(
               padding: EdgeInsets.all(40),
@@ -43,6 +48,7 @@ class UserScreen extends StatelessWidget {
                   CircleAvatar(
                     // TODO Cargar el avatar del usuario al pulsar. Si no tiene uno, mostrar el icono
                     child: Icon(Icons.photo_camera_outlined, size: 80),
+                    //Image.memory(base64Decode(source)),
                     radius: 100,
                   ),
                   Column(
@@ -56,6 +62,9 @@ class UserScreen extends StatelessWidget {
                       // EMAIL DE USUARIO
                       textFieldWithLabel(
                           label: userEmailLabel, value: userEmailValue),
+                      // EMAIL DE USUARIO
+                      textFieldWithLabel(
+                          label: userPhoneLabel, value: userPhoneValue),
                       // IDIOMA DE USUARIO
                       // TODO Custom Spinner
                       textFieldWithLabel(
@@ -96,22 +105,22 @@ class textFieldWithLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 5),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(label),
-        Container(
-            width: 220,
-            height: 45,
-            child: TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: value,
-                filled: true,
-              ),
-            ))
-      ],
-    ));
+        padding: EdgeInsets.symmetric(vertical: 5),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(label),
+            Container(
+                width: 220,
+                height: 45,
+                child: TextField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: value,
+                    filled: true,
+                  ),
+                ))
+          ],
+        ));
   }
 }
