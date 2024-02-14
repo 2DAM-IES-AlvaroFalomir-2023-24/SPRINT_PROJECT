@@ -20,7 +20,7 @@ class _RegisterScreenState extends State<RegisterScreen>{
   void initState() {
     super.initState();
     //Configuramos un oyente para el objeto que maneja el registro de usuario
-    _auth.authStateChanges().listen((user) {
+    _auth.authStateChanges().listen ((user){
       setState(() {
         //Si el usuario es diferente de null, lo asignamos a la variable _user
         _user = user;
@@ -35,7 +35,11 @@ class _RegisterScreenState extends State<RegisterScreen>{
         title: const Text('Registro de usuario'),
       ),
       //Si el usuario es diferente de null, mostramos la información del usuario, en el caso contrario mostramos el botón de registro de google
-      body:  _user != null ? _userInfo() : _googleSignInButton()
+      body:  //_user != null ? _userInfo() : _googleSignInButton()
+      const Center(
+        child: Text('Registro de usuario'),
+
+      ),
     );
   }
 
