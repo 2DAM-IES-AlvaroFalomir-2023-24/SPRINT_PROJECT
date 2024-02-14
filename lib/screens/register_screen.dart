@@ -30,6 +30,20 @@ class _RegisterScreenState extends State<RegisterScreen>{
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Registro de usuario'),
+      ),
+      //Si el usuario es diferente de null, mostramos la información del usuario, en el caso contrario mostramos el botón de registro de google
+      body:  _user != null ? _userInfo() : _googleSignInButton()
+    );
+  }
+
+  Widget _googleSignInButton() {
+    return Center();
+  }
+
+  Widget _userInfo(){
+    return SizedBox();
   }
 }
