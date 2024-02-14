@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-class UserScreen extends StatelessWidget {
+class UserScreen extends StatefulWidget {
   const UserScreen({super.key});
 
   final String userNameLabel = "Nombre";
-  final String userNameValue = "NOMBRE_USUARIO";
+  final String userNameValue = "Nombre";
 
   final String userPasswordLabel = "Contraseña";
-  final String userPasswordValue = "CONTRASEÑA_USUARIO";
+  final String userPasswordValue = "Contraseña oculta";
 
   final String userEmailLabel = "Email (Login)";
-  final String userEmailValue = "EMAIL_USUARIO";
+  final String userEmailValue = "Email";
 
   final String userLanguageLabel = "Idioma";
 
@@ -19,99 +19,105 @@ class UserScreen extends StatelessWidget {
   final String userDeleteUserLabel = "Borrar Usuario";
 
   @override
+  State<StatefulWidget> createState() => UserScreenState();
+
+}
+
+class UserScreenState extends State<UserScreen>{
+
+  bool editable = false;
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // TODO ajustar el comportamiento por defecto al pulsar en un elemento editable
+      // TODO ajustar el comportamiento por defecto al pulsar en un elemento editable
         appBar: AppBar(),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.edit),
           onPressed: () {
+            setState(() {
+              editable = !editable;
+            });
             // TODO Editar el usuario.
             // TODO Utilizar el propio botón como botón para guardar los cambios
             // TODO ¿Añadir un segundo botón para cancelar?
           },
         ),
-        body:Container(
+        body: SingleChildScrollView(
           // TODO centrar verticalmente de forma correcta. La barra inferior del sistema descentra visualmente los elementos
-        //height: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.bottom,
+          //height: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.bottom,
             child: Center(
-          child: Padding(
-              padding: EdgeInsets.all(40),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CircleAvatar(
-                    // TODO Cargar el avatar del usuario al pulsar. Si no tiene uno, mostrar el icono
-                    child: Icon(Icons.photo_camera_outlined, size: 80),
-                    radius: 100,
-                  ),
-                  Column(
+              child: Padding(
+                  padding: EdgeInsets.all(40),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      // NOMBRE DE USUARIO
-                      textFieldWithLabel(
-                          label: userNameLabel, value: userNameValue),
-                      // PASSWORD DE USUARIO
-                      textFieldWithLabel(
-                          label: userPasswordLabel, value: userPasswordValue),
-                      // EMAIL DE USUARIO
-                      textFieldWithLabel(
-                          label: userEmailLabel, value: userEmailValue),
-                      // IDIOMA DE USUARIO
-                      // TODO Custom Spinner
-                      textFieldWithLabel(
-                          label: "Idioma", value: "IDIOMA_USUARIO"),
+                      const CircleAvatar(
+                        // TODO Cargar el avatar del usuario al pulsar. Si no tiene uno, mostrar el icono
+                        child: Icon(Icons.photo_camera_outlined, size: 80),
+                        radius: 100,
+                      ),
+                      Column(
+                        children: [
+                          // NOMBRE DE USUARIO
+                          TextFormField(
+                            initialValue: widget.userNameLabel,
+                            decoration: InputDecoration(
+                                labelText: widget.userNameValue
+                            ),
+                            enabled: editable,
+                          ),
+                          // PASSWORD DE USUARIO
+                          TextFormField(
+                            initialValue: widget.userPasswordValue,
+                            decoration: InputDecoration(
+                                labelText: widget.userPasswordLabel
+                            ),
+                            obscureText: true,
+                            enabled: editable,
+                          ),
+                          // EMAIL DE USUARIO
+                          TextFormField(
+                            initialValue: widget.userEmailValue,
+                            decoration: InputDecoration(
+                                labelText: widget.userEmailLabel
+                            ),
+                            enabled: editable,
+                          ),
+                          // IDIOMA DE USUARIO
+                          // TODO Custom Spinner
+
+                          TextFormField(
+                            initialValue: "Idioma",
+                            decoration: const InputDecoration(
+                                labelText: "Idioma"
+                            ),
+                            enabled: editable,
+                          ),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          ElevatedButton(
+                              child: Text(widget.userLogoutLabel),
+                              onPressed: () {
+                                // TODO Llamar a la función de Cerrar sesión (Alexandra)
+                              }),
+                          ElevatedButton(
+                              child: Text(widget.userChangeUserLabel),
+                              onPressed: () {
+                                // TODO Llamar a la función de Cambiar Usuario (Laura)
+                              }),
+                          ElevatedButton(
+                            // TODO Falta cambiar el fondo del botón a rojo. Mirar como hacerlo global con el tema
+                              child: Text(widget.userDeleteUserLabel),
+                              onPressed: () {
+                                // TODO Llamar a la función de Borrar Usuario (Rubén)
+                              }),
+                        ],
+                      ),
                     ],
-                  ),
-                  Column(
-                    children: [
-                      ElevatedButton(
-                          child: Text(userLogoutLabel),
-                          onPressed: () {
-                            // TODO Llamar a la función de Cerrar sesión (Alexandra)
-                          }),
-                      ElevatedButton(
-                          child: Text(userChangeUserLabel),
-                          onPressed: () {
-                            // TODO Llamar a la función de Cambiar Usuario (Laura)
-                          }),
-                      ElevatedButton(
-                          // TODO Falta cambiar el fondo del botón a rojo. Mirar como hacerlo global con el tema
-                          child: Text(userDeleteUserLabel),
-                          onPressed: () {
-                            // TODO Llamar a la función de Borrar Usuario (Rubén)
-                          }),
-                    ],
-                  ),
-                ],
-              )),
-        )));
-  }
-}
-
-class textFieldWithLabel extends StatelessWidget {
-  textFieldWithLabel({super.key, required this.label, required this.value});
-
-  String label, value;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 5),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(label),
-        Container(
-            width: 220,
-            height: 45,
-            child: TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: value,
-                filled: true,
-              ),
-            ))
-      ],
-    ));
+                  )),
+            )));
   }
 }
