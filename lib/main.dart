@@ -8,7 +8,7 @@ Future main() async{
   OdooConnect.initialize();
   runApp(const MyApp());
 
-  //Comentario
+  //Comentario asfaf
 }
 
 class MyApp extends StatelessWidget {
