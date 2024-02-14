@@ -54,7 +54,7 @@ class OdooConnect{
           //Filtrado por login
           "domain": [["login", "=", email]],
           //Selección de campos en la query
-          "fields":["id", "login", "password", "active", "name", "email", "lang"]
+          "fields":["id", "login", "password", "active", "name", "email", "lang", "image_1920"]
         }
       });
       //Obtención de resultados en formato JSON

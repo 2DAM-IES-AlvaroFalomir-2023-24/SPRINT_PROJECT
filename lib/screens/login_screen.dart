@@ -10,15 +10,19 @@ class LoginScreen extends StatefulWidget{
 
 class LoginScreenState extends State<LoginScreen>{
 
+  //late User a = User("a", "a", true, "a", Language.enUS);
   @override
   void initState() {
     super.initState();
     OdooConnect.initialize();
+    //OdooConnect.getUserByEmail("damproyectoflutter@gmail.com").then((value) => a = value!);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      //body: Image.memory(base64Decode(a.avatar)),
+    );
   }
 
 }
