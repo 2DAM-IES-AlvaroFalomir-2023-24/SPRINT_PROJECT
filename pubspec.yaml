@@ -34,6 +34,7 @@ dependencies:
   logger: ^2.0.2+1
   flutter:
     sdk: flutter
+  flutter_bloc: ^8.0.0
   #JF
   firebase_core: ^2.25.4
   google_sign_in: ^6.2.1
