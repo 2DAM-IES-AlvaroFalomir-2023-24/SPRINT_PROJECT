@@ -10,16 +10,9 @@ class UserScreen extends StatefulWidget {
   const UserScreen({super.key});
 
   final String userNameLabel = "Nombre";
-  final String userNameValue = "Nombre";
-
   final String userPasswordLabel = "Contraseña";
-  final String userPasswordValue = "Contraseña oculta";
-
   final String userEmailLabel = "Email (Login)";
-  final String userEmailValue = "Email";
-
   final String userLanguageLabel = "Idioma";
-
   final String userLogoutLabel = "Cerrar sesión";
   final String userChangeUserLabel = "Cambiar Usuario";
   final String userDeleteUserLabel = "Borrar Usuario";
@@ -49,7 +42,7 @@ class UserScreenState extends State<UserScreen> {
                     TextFormField(
                       initialValue: user.name,
                       decoration:
-                          InputDecoration(labelText: widget.userNameValue),
+                          InputDecoration(labelText: widget.userNameLabel),
                       enabled: editable,
                     ),
                     // PASSWORD DE USUARIO
@@ -69,10 +62,10 @@ class UserScreenState extends State<UserScreen> {
                     ),
                     // IDIOMA DE USUARIO
                     // TODO Custom Spinner
-
                     TextFormField(
-                      initialValue: "Idioma",
-                      decoration: const InputDecoration(labelText: "Idioma"),
+                      initialValue: user.lang.toString(),
+                      decoration:
+                      InputDecoration(labelText: widget.userLanguageLabel),
                       enabled: editable,
                     ),
                   ],
