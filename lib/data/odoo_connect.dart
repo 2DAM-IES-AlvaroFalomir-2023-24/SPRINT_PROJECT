@@ -1,3 +1,4 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:logger/logger.dart';
 import 'package:sprint/odoo-rpc/odoo_client.dart';
 
@@ -6,12 +7,12 @@ import 'dart:convert' as convert;
 
 class OdooConnect{
 
-  static const SPRINT_CONNECTION = String.fromEnvironment("SPRINT_CONNECTION");
-  static const SPRINT_USER = String.fromEnvironment("SPRINT_USER");
-  static const SPRINT_PASSWORD = String.fromEnvironment("SPRINT_PASSWORD");
-  static const SPRINT_DATABASE = String.fromEnvironment("SPRINT_DATABASE");
+  static String SPRINT_CONNECTION = dotenv.env['SPRINT_CONNECTION'] ?? "";
+  static String SPRINT_USER = dotenv.env['SPRINT_USER'] ?? "";
+  static String SPRINT_PASSWORD = dotenv.env['SPRINT_PASSWORD'] ?? "";
+  static String SPRINT_DATABASE = dotenv.env['SPRINT_DATABASE'] ?? "";
 
-  static const odooServerURL = SPRINT_CONNECTION;
+  static String odooServerURL = SPRINT_CONNECTION;
   static final client = OdooClient(odooServerURL);
 
   static final logger = Logger();
@@ -25,7 +26,6 @@ class OdooConnect{
     try {
       List res = await client.callKw({
         'model': 'res.users', 'method': 'search_read', 'args': [],
-        //Selección de campos a mostrar
         'kwargs': {
           //Selección de campos en la query
           "fields":["id", "login", "password", "active", "name", "email", "lang"]
@@ -50,12 +50,11 @@ class OdooConnect{
       }
       List res = await client.callKw({
         'model': 'res.users', 'method': 'search_read', 'args': [],
-        //Selección de campos a mostrar
         'kwargs': {
           //Filtrado por login
           "domain": [["login", "=", email]],
           //Selección de campos en la query
-          "fields":["id", "login", "password", "active", "name", "email", "lang"]
+          "fields":["id", "login", "password", "active", "name", "email", "lang", "image_1920"]
         }
       });
       //Obtención de resultados en formato JSON
