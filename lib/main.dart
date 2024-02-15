@@ -4,7 +4,8 @@ import 'package:sprint/data/odoo_connect.dart';
 import 'package:sprint/bloc_user/user_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sprint/screens/login_screen.dart';
-import 'package:sprint/screens/user_screen.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:sprint/app_localizations.dart';
 
 Future main() async {
   await dotenv.load(fileName: "./assets/.env");
@@ -26,9 +27,25 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
             title: 'Sprint Project',
             debugShowCheckedModeBanner: false,
+            supportedLocales: const [
+              Locale('en', 'US'),
+              Locale('es', 'ES'),
+            ],
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+            ],
+            localeResolutionCallback: (locale, supportedLocales) {
+              for (var supportedLocale in supportedLocales) {
+                if (supportedLocale.languageCode == locale?.languageCode &&
+                    supportedLocale.countryCode == locale?.countryCode) {
+                  return supportedLocale;
+                }
+              }
+              return supportedLocales.first;
+            },
             theme: ThemeData(
-                useMaterial3: true,
-                colorSchemeSeed: const Color(0xFF714B67)),
+                useMaterial3: true, colorSchemeSeed: const Color(0xFF714B67)),
             darkTheme: ThemeData(
                 useMaterial3: true,
                 brightness: Brightness.dark,

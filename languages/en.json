@@ -8,7 +8,7 @@
   "signInLinkedIn": "Sign in with LinkedIn",
   "registerGoogle": "Register with Google",
   "registerLinkedIn": "Register with LinkedIn",
-  "email": "Email",
+  "username": "Username",
   "password": "Password",
   "confirmPassword": "Confirm Password",
   "name": "Name",
@@ -21,5 +21,10 @@
   "cancel": "Cancel",
   "registerWithoutPassword": "Register without password",
   "loginWithoutPassword": "Log in without password",
-  "goBack": "Go Back"
+  "goBack": "Go Back",
+  "updateProfile": "Update Profile",
+  "passwordHintText": "Password must be at least 6 characters long.",
+  "usernameHintText": "Introduce your username",
+  "language": "Language",
+  "email": "Email"
 }

@@ -14,12 +14,17 @@
   "name": "Nombre",
   "switchUser": "Cambiar de usuario",
   "deleteUser": "Eliminar usuario",
-  "home": "Inicio",
   "unknownDetails": "Faltan datos por rellenar en tu usuario.",
   "editUser": "Editar usuario",
   "save": "Guardar",
   "cancel": "Cancelar",
   "registerWithoutPassword": "Registrarse sin contraseña",
   "loginWithoutPassword": "Iniciar sesión sin contraseña",
-  "goBack": "Volver atrás"
+  "goBack": "Volver atrás",
+  "home": "Inicio",
+  "updateProfile": "Actualizar perfil",
+  "passwordHintText": "La contraseña debe tener al menos 6 caracteres.",
+  "usernameHintText": "Introduce tu nombre de usuario",
+  "language": "Idioma",
+  "username": "Nombre de usuario"
 }

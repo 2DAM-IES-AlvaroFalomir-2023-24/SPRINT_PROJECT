@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sprint/app_localizations.dart';
 
 import '../bloc_user/user_bloc.dart';
 import '../bloc_user/user_state.dart';
@@ -49,14 +50,14 @@ class UserScreenState extends State<UserScreen> {
                     TextFormField(
                       initialValue: user.name,
                       decoration:
-                          InputDecoration(labelText: widget.userNameValue),
+                          InputDecoration(labelText: AppLocalizations.of(context)!.translate('name'),),
                       enabled: editable,
                     ),
                     // PASSWORD DE USUARIO
                     TextFormField(
                       initialValue: user.password,
                       decoration:
-                          InputDecoration(labelText: widget.userPasswordLabel),
+                          InputDecoration(labelText: AppLocalizations.of(context)!.translate('password'),),
                       obscureText: true,
                       enabled: editable,
                     ),
@@ -64,7 +65,7 @@ class UserScreenState extends State<UserScreen> {
                     TextFormField(
                       initialValue: user.email,
                       decoration:
-                          InputDecoration(labelText: widget.userEmailLabel),
+                          InputDecoration(labelText: AppLocalizations.of(context)!.translate('email'),),
                       enabled: editable,
                     ),
                     // IDIOMA DE USUARIO
@@ -72,7 +73,7 @@ class UserScreenState extends State<UserScreen> {
 
                     TextFormField(
                       initialValue: "Idioma",
-                      decoration: const InputDecoration(labelText: "Idioma"),
+                      decoration: InputDecoration(labelText: AppLocalizations.of(context)!.translate('language')),
                       enabled: editable,
                     ),
                   ],
@@ -80,18 +81,18 @@ class UserScreenState extends State<UserScreen> {
                 Column(
                   children: [
                     ElevatedButton(
-                        child: Text(widget.userLogoutLabel),
+                        child: Text(AppLocalizations.of(context)!.translate('logout'),),
                         onPressed: () {
                           // TODO Llamar a la función de Cerrar sesión (Alexandra)
                         }),
                     ElevatedButton(
-                        child: Text(widget.userChangeUserLabel),
+                        child: Text(AppLocalizations.of(context)!.translate('updateProfile'),),
                         onPressed: () {
                           // TODO Llamar a la función de Cambiar Usuario (Laura)
                         }),
                     ElevatedButton(
                         // TODO Falta cambiar el fondo del botón a rojo. Mirar como hacerlo global con el tema
-                        child: Text(widget.userDeleteUserLabel),
+                        child: Text(AppLocalizations.of(context)!.translate('deleteUser'),),
                         onPressed: () {
                           // TODO Llamar a la función de Borrar Usuario (Rubén)
                         }),
