@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:sprint/screens/verify_auth_screen.dart';
 import 'package:sprint/data/odoo_connect.dart';
-import 'package:sprint/bloc_user/user_bloc.dart';
+import 'package:sprint/bloc/bloc_user/user_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sprint/screens/login_screen.dart';
-import 'package:sprint/screens/user_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 Future main() async {
   await dotenv.load(fileName: "./assets/.env");
   OdooConnect.initialize();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -27,14 +31,17 @@ class MyApp extends StatelessWidget {
             title: 'Sprint Project',
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
-                useMaterial3: true,
-                colorSchemeSeed: const Color(0xFF714B67)),
+                useMaterial3: true, colorSchemeSeed: const Color(0xFF714B67)),
             darkTheme: ThemeData(
                 useMaterial3: true,
                 brightness: Brightness.dark,
                 colorSchemeSeed: const Color(0xFF714B67)),
             home: const SafeArea(
-              child: LoginScreen(),
+                //Comentar la clase VerifyAuthBloc del archivo verify_auth.dart
+                // para hacer las pruebas en local
+                // y escribe la clase de tu pantalla
+                child: VerifyAuthBloc()
+            
             )));
   }
 }

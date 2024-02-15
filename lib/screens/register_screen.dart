@@ -19,8 +19,8 @@ class RegisterScreen extends StatelessWidget{
               TextFormField(
                 decoration: const InputDecoration(
                   icon: Icon(Icons.person),
-                  hintText: 'Introduce tu nombre de usuario',
-                  labelText: 'Nombre de usuario',
+                  hintText: 'Introduce tu email',
+                  labelText: 'Correo electrónico',
                 ),
               ),
               TextFormField(
