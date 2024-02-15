@@ -4,6 +4,9 @@ import 'package:sprint/screens/home_screen.dart';
 import 'package:sprint/screens/register_screen.dart';
 import 'package:sprint/screens/user_screen.dart';
 
+import '../model/language.dart';
+import '../model/user.dart';
+
 class LoginScreen extends StatefulWidget{
   const LoginScreen({super.key});
 
@@ -13,12 +16,12 @@ class LoginScreen extends StatefulWidget{
 
 class LoginScreenState extends State<LoginScreen>{
 
-  //late User a = User("a", "a", true, "a", Language.enUS);
+  // late User a = User("a", "a", true, "a", Language.enUS);
   @override
   void initState() {
     super.initState();
     OdooConnect.initialize();
-    //OdooConnect.getUserByEmail("damproyectoflutter@gmail.com").then((value) => a = value!);
+    // OdooConnect.getUserByEmail("damproyectoflutter@gmail.com").then((value) => a = value!);
   }
 
   @override
