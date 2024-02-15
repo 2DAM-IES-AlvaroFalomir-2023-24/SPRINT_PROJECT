@@ -18,7 +18,7 @@ class User{
       json['name'].toString(),
       Language.setLanguageByString(json['lang'].toString()),
       json['id'] as int,
-      json['avatar'].toString(),
+      json['image_1920'].toString(),
     );
   }
 
@@ -30,7 +30,7 @@ class User{
       'name': name,
       'email': email,
       'lang': lang.name,
-      'avatar': avatar
+      'image_1920': avatar
     };
   }
 
