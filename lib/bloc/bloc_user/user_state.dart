@@ -14,7 +14,6 @@ class UserStates {}
 class InitialState extends UserStates {}
 
 class UpdateState extends UserStates {
-  final int counter;
   final User user;
-  UpdateState(this.counter, this.user);
+  UpdateState(this.user);
 }

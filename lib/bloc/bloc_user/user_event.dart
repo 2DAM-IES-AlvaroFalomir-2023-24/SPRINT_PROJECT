@@ -10,10 +10,3 @@ class UserInformationChangedEvent extends UserEvents {
   User user;
   UserInformationChangedEvent(this.user);
 }
-
-class NumberIncreaseEvent extends UserEvents {
-  int incremento;
-  NumberIncreaseEvent(this.incremento);
-}
-
-class NumberDecreaseEvent extends UserEvents {}
