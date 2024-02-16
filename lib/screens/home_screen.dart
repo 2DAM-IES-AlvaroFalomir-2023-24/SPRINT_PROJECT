@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sprint/bloc_user/user_bloc.dart';
-import 'package:sprint/bloc_user/user_state.dart';
+import 'package:sprint/bloc/bloc_user/user_bloc.dart';
+import 'package:sprint/bloc/bloc_user/user_state.dart';
 import 'package:sprint/model/user.dart';
 import 'package:sprint/screens/user_screen.dart';
 
