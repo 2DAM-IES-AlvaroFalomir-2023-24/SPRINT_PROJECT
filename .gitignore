@@ -25,3 +25,6 @@ assets/.env
 
 .flutter-plugins
 .flutter-plugins-dependencies
+macos/Flutter/GeneratedPluginRegistrant.swift
+macos/Runner/GoogleService-Info.plist
+windows/flutter/generated_plugins.cmake

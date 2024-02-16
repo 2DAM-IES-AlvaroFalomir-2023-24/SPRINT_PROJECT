@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 
-import 'src/sign_in_button.dart';
+import 'package:sprint/src/sign_in_button.dart';
 
 const List<String> scopes = <String>[
   'email',
