@@ -1,90 +1,81 @@
 import 'package:flutter/material.dart';
+import 'package:sprint/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:sprint/screens/home_screen.dart';
 
 import '../bloc/google_sign_in.dart';
 
-class RegisterScreen extends StatelessWidget{
+class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'Register',
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.bold
-              ),
-            ),
-            const SizedBox(height: 20),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: Colors.white,
-                onPrimary: Colors.black,
-                minimumSize: const Size(10, 60),
-              ),
-              child: const Icon(Icons.g_mobiledata,
-                color: Colors.red,
-                size: 50,
-              ),
-              onPressed: (){
-                final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context)!.translate('register')),
+        centerTitle: true,
+      ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: ElevatedButton(
+                  onPressed: () {
+                    final provider = Provider.of<GoogleSignInProvider>(context,
+                        listen: false);
 
-                provider.googleLogin();
+                    provider.googleLogin();
 
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const HomeScreen()));
-              }
-            ),
-            const SizedBox(height: 20),
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Email',
-                border: OutlineInputBorder()
-              ),
-            ),
-            const SizedBox(height: 20),
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Password',
-                border: OutlineInputBorder()
-              ),
-            ),
-            const SizedBox(height: 20),
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Confirm Password',
-                border: OutlineInputBorder()
-              ),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: (){},
-              child: const Text('Register'),
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                const Text('Already have an account?'),
-                TextButton(
-                  onPressed: (){
-                    Navigator.pop(context);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const HomeScreen()));
                   },
-                  child: const Text('Login')
-                )
-              ],
-            )
-          ],
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50.0),
+                    ),
+                  ),
+                  child: const Text('Google'),
+                ),
+              ),
+              TextFormField(
+                decoration: InputDecoration(
+                  icon: const Icon(Icons.person),
+                  hintText: AppLocalizations.of(context)!
+                      .translate('usernameHintText'),
+                  labelText:
+                      AppLocalizations.of(context)!.translate('username'),
+                ),
+              ),
+              TextFormField(
+                obscureText: true,
+                decoration: InputDecoration(
+                  icon: const Icon(Icons.lock),
+                  hintText: AppLocalizations.of(context)!
+                      .translate('passwordHintText'),
+                  labelText:
+                      AppLocalizations.of(context)!.translate('password'),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: ElevatedButton(
+                  onPressed: () {
+                    // Aquí va la lógica de inicio de sesión
+                  },
+                  child:
+                      Text(AppLocalizations.of(context)!.translate('register')),
+                ),
+              ),
+            ],
+          ),
         ),
-      )
+      ),
     );
   }
-  
 }
