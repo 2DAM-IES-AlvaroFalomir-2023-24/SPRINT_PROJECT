@@ -1,4 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sprint/bloc/bloc_user/user_bloc.dart';
@@ -10,8 +10,6 @@ import '../model/language.dart';
 import 'login_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:sprint/screens/register_screen.dart';
-
-import '../bloc/google_sign_in.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
