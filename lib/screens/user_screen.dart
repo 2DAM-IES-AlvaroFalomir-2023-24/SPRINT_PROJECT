@@ -2,10 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sprint/bloc/bloc_user/user_bloc.dart';
+import 'package:sprint/bloc/bloc_user/user_event.dart';
+import 'package:sprint/bloc/bloc_user/user_state.dart';
 
-import '../bloc_user/user_bloc.dart';
-import '../bloc_user/user_event.dart';
-import '../bloc_user/user_state.dart';
+
 import '../model/language.dart';
 import '../model/user.dart';
 

@@ -1,5 +1,5 @@
-import 'package:sprint/bloc_user/user_event.dart';
-import 'package:sprint/bloc_user/user_state.dart';
+import 'package:sprint/bloc/bloc_user/user_event.dart';
+import 'package:sprint/bloc/bloc_user/user_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sprint/model/language.dart';
 import 'package:sprint/model/user.dart';

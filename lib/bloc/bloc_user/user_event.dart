@@ -2,7 +2,7 @@
 //
 // La lógica para estos eventos se define en la clase UserBloc
 
-import '../model/user.dart';
+import '../../model/user.dart';
 
 class UserEvents {}
 

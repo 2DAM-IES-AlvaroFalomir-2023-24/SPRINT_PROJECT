@@ -6,8 +6,8 @@
 // En este caso tenemos un contador con un estado incial de 0.
 // El UpdateState representa el estado actualizado, donde el contador se ha incrementado
 
-import '../model/language.dart';
-import '../model/user.dart';
+import '../../model/language.dart';
+import '../../model/user.dart';
 
 class UserStates {}
 
