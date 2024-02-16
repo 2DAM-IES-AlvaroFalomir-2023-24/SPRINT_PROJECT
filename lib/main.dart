@@ -5,6 +5,8 @@ import 'package:sprint/bloc_user/user_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sprint/screens/login_screen.dart';
 import 'package:sprint/screens/user_screen.dart';
+import 'package:sprint/screens/home_screen.dart';
+import 'package:sprint/screens/temporal_location_screen.dart';
 
 Future main() async {
   await dotenv.load(fileName: "./assets/.env");
