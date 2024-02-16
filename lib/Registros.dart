@@ -45,7 +45,7 @@ class _SignInDemoState extends State<SignInDemo> {
               if (user != null && mounted) {
                 setState(() {
                   //Trabajar con user
-                  print("User: ${user}");
+                  user.then((value) => print(value));
                 });
               }
             } on FirebaseAuthException catch (e) {

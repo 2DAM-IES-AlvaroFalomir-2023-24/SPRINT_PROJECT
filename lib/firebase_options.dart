@@ -31,12 +31,12 @@ class DefaultFirebaseOptions {
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
-              'you can reconfigure this by running the FlutterFire CLI again.',
+          'you can reconfigure this by running the FlutterFire CLI again.',
         );
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
-              'you can reconfigure this by running the FlutterFire CLI again.',
+          'you can reconfigure this by running the FlutterFire CLI again.',
         );
       default:
         throw UnsupportedError(
@@ -45,43 +45,44 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAl7aJ3ZwiYxe7QFQiUi1dsx1DlcaBUKg0',
-    appId: '1:292158676694:web:707c591d3460a2808ab377',
-    messagingSenderId: '292158676694',
-    projectId: 'sprint-project-ab169',
-    authDomain: 'sprint-project-ab169.firebaseapp.com',
-    storageBucket: 'sprint-project-ab169.appspot.com',
-    measurementId: 'G-6NMRV3GHCL',
+  static FirebaseOptions web = FirebaseOptions(
+    //apiKey: 'AIzaSyAl7aJ3ZwiYxe7QFQiUi1dsx1DlcaBUKg0',
+    apiKey: dotenv.env['WEB_API_KEY'].toString(),
+    appId: dotenv.env['WEB_APP_ID'].toString(),
+    messagingSenderId: dotenv.env['FIREBASE_MESSAGING_SENDER_ID'].toString(),
+    projectId: dotenv.env['FIREBASE_PROJECT_ID'].toString(),
+    authDomain: dotenv.env['WEB_AUTH_DOMAIN'].toString(),
+    storageBucket: dotenv.env['FIREBASE_STORAGE_BUCKET'].toString(),
+    measurementId: dotenv.env['WEB_MEASUREMENT_ID'].toString(),
   );
 
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCHkFwDkwgwk5lXav31UwXjV2G4X0StxG0',
-    appId: '1:292158676694:android:9ac8abb4798755ff8ab377',
-    messagingSenderId: '292158676694',
-    projectId: 'sprint-project-ab169',
-    storageBucket: 'sprint-project-ab169.appspot.com',
+  static FirebaseOptions android = FirebaseOptions(
+    apiKey: dotenv.env['ANDROID_API_KEY'].toString(),
+    appId: dotenv.env['ANDROID_APP_ID'].toString(),
+    messagingSenderId: dotenv.env['FIREBASE_MESSAGING_SENDER_ID'].toString(),
+    projectId: dotenv.env['FIREBASE_PROJECT_ID'].toString(),
+    storageBucket: dotenv.env['FIREBASE_STORAGE_BUCKET'].toString(),
   );
 
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCz6VhiiZNwJg8S9FlWZZj2uZj8Fj4Swyo',
-    appId: '1:292158676694:ios:50652d810391e2cf8ab377',
-    messagingSenderId: '292158676694',
-    projectId: 'sprint-project-ab169',
-    storageBucket: 'sprint-project-ab169.appspot.com',
-    androidClientId: '292158676694-iftep6ql676rtq6snskb2s9udlkt6t5m.apps.googleusercontent.com',
-    iosClientId: '292158676694-d12ula7o0u07l804oi7cs7gvvrq76o1h.apps.googleusercontent.com',
-    iosBundleId: 'com.example.sprint',
+  static FirebaseOptions ios = FirebaseOptions(
+    apiKey: dotenv.env['IOS_API_KEY'].toString(),
+    appId: dotenv.env['IOS_APP_ID'].toString(),
+    messagingSenderId: dotenv.env['FIREBASE_MESSAGING_SENDER_ID'].toString(),
+    projectId:  dotenv.env['FIREBASE_PROJECT_ID'].toString(),
+    storageBucket: dotenv.env['FIREBASE_STORAGE_BUCKET'].toString(),
+    androidClientId: dotenv.env['ANDROID_CLIENT_ID'].toString(),
+    iosClientId: dotenv.env['IOS_CLIENT_ID'].toString(),
+    iosBundleId: dotenv.env['IOS_BUNDLE_ID'].toString(),
   );
 
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyCz6VhiiZNwJg8S9FlWZZj2uZj8Fj4Swyo',
-    appId: '1:292158676694:ios:9f86014e2eaa8e838ab377',
-    messagingSenderId: '292158676694',
-    projectId: 'sprint-project-ab169',
-    storageBucket: 'sprint-project-ab169.appspot.com',
-    androidClientId: '292158676694-iftep6ql676rtq6snskb2s9udlkt6t5m.apps.googleusercontent.com',
-    iosClientId: '292158676694-gr1u5mnevdbl3jlfp1dhhfsarnpv1v8c.apps.googleusercontent.com',
-    iosBundleId: 'com.example.sprint.RunnerTests',
+  static FirebaseOptions macos = FirebaseOptions(
+    apiKey: dotenv.env['MACOS_API_KEY'].toString(),
+    appId: dotenv.env['MACOS_APP_ID'].toString(),
+    messagingSenderId: dotenv.env['FIREBASE_MESSAGING_SENDER_ID'].toString(),
+    projectId: dotenv.env['FIREBASE_PROJECT_ID'].toString(),
+    storageBucket: dotenv.env['FIREBASE_STORAGE_BUCKET'].toString(),
+    androidClientId: dotenv.env['ANDROID_CLIENT_ID'].toString(),
+    iosClientId: dotenv.env['MACOS_CLIENT_ID'].toString(),
+    iosBundleId: dotenv.env['MACOS_BUNDLE_ID'].toString(),
   );
 }
