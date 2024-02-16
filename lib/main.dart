@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
                 brightness: Brightness.dark,
                 colorSchemeSeed: const Color(0xFF714B67)),
             home: const SafeArea(
-              child: UserScreen(),
+              child: LoginScreen(),
             )));
   }
 }
