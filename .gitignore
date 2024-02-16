@@ -25,6 +25,7 @@ assets/.env
 *.cmake
 *.cc
 *.swift
+*.env
 
 .flutter-plugins
 .flutter-plugins-dependencies
