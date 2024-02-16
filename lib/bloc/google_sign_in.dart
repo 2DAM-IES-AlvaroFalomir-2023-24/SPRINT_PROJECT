@@ -30,5 +30,20 @@ class GoogleSignInProvider extends ChangeNotifier{
     await FirebaseAuth.instance.signInWithCredential(credential);
     //Notificamos a los oyentes que el usuario ha cambiado
     notifyListeners();
+
+    print(_user);
+
+    if(comprobarInicioSesion()){
+
+    }
+  }
+
+  bool comprobarInicioSesion(){
+    return false;
+  }
+
+  Future logout() async {
+    await googleSignIn.disconnect();
+    FirebaseAuth.instance.signOut();
   }
 }
