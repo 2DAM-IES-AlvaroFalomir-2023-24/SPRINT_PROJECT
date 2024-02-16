@@ -26,5 +26,7 @@
   "passwordHintText": "La contraseña debe tener al menos 6 caracteres.",
   "usernameHintText": "Introduce tu nombre de usuario",
   "language": "Idioma",
-  "username": "Nombre de usuario"
+  "username": "Nombre de usuario",
+  "userProfile": "Perfil de usuario",
+  "switchLanguage": "Cambiar idioma"
 }

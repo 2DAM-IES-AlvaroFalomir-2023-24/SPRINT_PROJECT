@@ -26,5 +26,7 @@
   "passwordHintText": "Password must be at least 6 characters long.",
   "usernameHintText": "Introduce your username",
   "language": "Language",
-  "email": "Email"
+  "email": "Email",
+  "userProfile": "User Profile",
+  "switchLanguage": "Switch Language"
 }
