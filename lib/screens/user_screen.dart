@@ -6,6 +6,8 @@ import 'package:sprint/app_localizations.dart';
 import 'package:sprint/bloc/bloc_user/user_bloc.dart';
 import 'package:sprint/bloc/bloc_user/user_event.dart';
 import 'package:sprint/bloc/bloc_user/user_state.dart';
+import 'package:sprint/model/user.dart';
+import 'package:sprint/model/language.dart';
 
 
 class UserScreen extends StatefulWidget {
