@@ -28,9 +28,12 @@ class RegisterScreen extends StatelessWidget{
               style: ElevatedButton.styleFrom(
                 primary: Colors.white,
                 onPrimary: Colors.black,
-                minimumSize: const Size(double.infinity, 50),
+                minimumSize: const Size(10, 60),
               ),
-              child: const Text('Registrate con Google'),
+              child: const Icon(Icons.g_mobiledata,
+                color: Colors.red,
+                size: 50,
+              ),
               onPressed: (){
                 final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
 

@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sprint/screens/register_screen.dart';
+
+import '../bloc/google_sign_in.dart';
 
 class HomeScreen extends StatelessWidget{
   const HomeScreen({super.key});
@@ -20,8 +23,20 @@ class HomeScreen extends StatelessWidget{
               child: Text('Something went wrong'),
             );
           }else if(snapshot.hasData){
-            return const Center(
-              child: Text('Home Screen'),
+            return ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.white,
+                  onPrimary: Colors.black,
+                  minimumSize: const Size(double.infinity, 50),
+                ),
+                child: const Text('Registrate con Google'),
+                onPressed: (){
+                  final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
+
+                  provider.logout();
+
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterScreen()));
+                }
             );
           }else{
             return const RegisterScreen();
