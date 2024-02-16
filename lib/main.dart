@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:sprint/screens/verify_auth_screen.dart';
@@ -37,11 +38,11 @@ class MyApp extends StatelessWidget {
             supportedLocales: const [
               Locale('en', 'US'),
               Locale('es', 'ES'),
-              Locale('en', 'GB')
             ],
             localizationsDelegates: const [
               AppLocalizations.delegate,
               GlobalMaterialLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
             ],
             localeResolutionCallback: (locale, supportedLocales) {
               for (var supportedLocale in supportedLocales) {
