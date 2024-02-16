@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:sprint/bloc/register_bloc.dart';
 
 class RegisterScreen extends StatelessWidget {
-  const RegisterScreen({super.key});
+  RegisterScreen({super.key});
+  final emeailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final passwordConfirmController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +36,9 @@ class RegisterScreen extends StatelessWidget {
                 ),
               ),
               TextFormField(
+                controller: emeailController,
+                cursorColor: Theme.of(context).primaryColor,
+                textInputAction: TextInputAction.next,
                 decoration: const InputDecoration(
                   icon: Icon(Icons.person),
                   hintText: 'Introduce tu nombre de usuario',
@@ -39,6 +46,9 @@ class RegisterScreen extends StatelessWidget {
                 ),
               ),
               TextFormField(
+                controller: passwordController,
+                cursorColor: Theme.of(context).primaryColor,
+                textInputAction: TextInputAction.next,
                 obscureText: true,
                 decoration: const InputDecoration(
                   icon: Icon(Icons.lock),
@@ -50,7 +60,7 @@ class RegisterScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
                 child: ElevatedButton(
                   onPressed: () {
-                    // Aquí va la lógica de inicio de sesión
+                    signUpWithEmailAndPassword(email: emeailController.text.trim(), password: passwordController.text.trim());
                   },
                   child: const Text('Registro'),
                 ),
