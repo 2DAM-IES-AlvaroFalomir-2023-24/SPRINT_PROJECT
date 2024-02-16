@@ -1,5 +1,5 @@
-import 'package:sprint/bloc_user/user_event.dart';
-import 'package:sprint/bloc_user/user_state.dart';
+import 'package:sprint/bloc/bloc_user/user_event.dart';
+import 'package:sprint/bloc/bloc_user/user_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sprint/model/language.dart';
 import 'package:sprint/model/user.dart';
@@ -20,27 +20,13 @@ class UserBloc extends Bloc<UserEvents, UserStates> {
 
   UserBloc() : super(InitialState()) {
     on<UserInformationChangedEvent>(onUserInformationChanged);
-
-    on<NumberIncreaseEvent>(onNumberIncrease);
-    on<NumberDecreaseEvent>(onNumberDecrease);
   }
 
   void onUserInformationChanged(
     UserInformationChangedEvent event, Emitter<UserStates> emit) async {
     // Pillamos el user que se ha creado con el constructor en el evento.
     user = event.user;
-    emit(UpdateState(counter, user));
+    emit(UpdateState(user));
   }
 
-  void onNumberIncrease(
-      NumberIncreaseEvent event, Emitter<UserStates> emit) async {
-    counter = counter + event.incremento;
-    emit(UpdateState(counter, user));
-  }
-
-  void onNumberDecrease(
-      NumberDecreaseEvent event, Emitter<UserStates> emit) async {
-    counter = counter - 1;
-    emit(UpdateState(counter, user));
-  }
 }
