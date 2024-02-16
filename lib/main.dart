@@ -9,7 +9,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:sprint/app_localizations.dart';
 
 import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
+import 'package:sprint/firebase_options.dart';
 
 Future main() async {
   await dotenv.load(fileName: "./assets/.env");
@@ -37,11 +37,11 @@ class MyApp extends StatelessWidget {
             supportedLocales: const [
               Locale('en', 'US'),
               Locale('es', 'ES'),
-              Locale('en', 'GB')
             ],
             localizationsDelegates: const [
               AppLocalizations.delegate,
               GlobalMaterialLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
             ],
             localeResolutionCallback: (locale, supportedLocales) {
               for (var supportedLocale in supportedLocales) {
