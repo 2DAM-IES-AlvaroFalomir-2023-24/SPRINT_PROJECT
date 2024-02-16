@@ -23,20 +23,23 @@ class HomeScreen extends StatelessWidget{
               child: Text('Something went wrong'),
             );
           }else if(snapshot.hasData){
-            return ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.white,
-                  onPrimary: Colors.black,
-                  minimumSize: const Size(double.infinity, 50),
-                ),
-                child: const Text('Registrate con Google'),
-                onPressed: (){
-                  final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
+            return Container(
+              padding: const EdgeInsets.all(100),
+              child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.white,
+                    onPrimary: Colors.black,
+                    minimumSize: const Size(double.infinity, 50),
+                  ),
+                  child: const Text('Cerrar Sesion'),
+                  onPressed: (){
+                    final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
 
-                  provider.logout();
+                    provider.logout();
 
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterScreen()));
-                }
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterScreen()));
+                  }
+              ),
             );
           }else{
             return const RegisterScreen();

@@ -62,6 +62,8 @@ class OdooConnect{
         var temp = convert.jsonEncode(res[0]);
         found = User.fromJson(convert.jsonDecode(temp));
       }
+      print("--------------FOUND USER----------------");
+      print(found);
     }catch(a){logger.e(a);}
     return found;
   }

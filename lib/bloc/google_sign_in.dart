@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:logger/logger.dart';
 import 'package:sprint/data/odoo_connect.dart';
 import 'package:sprint/model/user.dart';
 import 'package:crypto/crypto.dart';
@@ -11,6 +12,8 @@ import '../model/language.dart';
 class GoogleSignInProvider extends ChangeNotifier{
 
   final googleSignIn = GoogleSignIn();
+  Logger logger = Logger();
+
 
   //esta variable nos permitirá manejar la información y estado del usuario
   GoogleSignInAccount? _user;
@@ -40,12 +43,16 @@ class GoogleSignInProvider extends ChangeNotifier{
     print(_user?.email);
 
     //Comprobamos si el usuario ya existe en la base de datos para saber si lo tenemos que registrar o iniciar sesión
-    if(comprobarInicioSesion(_user?.email)){
+    if(await comprobarInicioSesion(_user!.email)){
       print("El usuario ya existe");
     }else{
       //llamamos al metodo que nos va a permitir crear un usuario en la base de datos
       //pasandole el usuario que nos devuelve el metodo que parsea la informacion del usuario de google
-      OdooConnect.createUser(crearUsuario(crearUsuario(_user)));
+      //await OdooConnect.createUser(await crearUsuario(crearUsuario(_user)));
+
+      //logger.i(_user!.displayName);
+      logger.i(await OdooConnect.getUsers());
+      //crearUsuario(crearUsuario(_user));
     }
   }
 
@@ -60,8 +67,15 @@ class GoogleSignInProvider extends ChangeNotifier{
     var bytes = utf8.encode(usuario.id.toString());
     var idEncriptado = sha256.convert(bytes);
 
+    logger.i(usuario.displayName);
+    logger.i(usuario.email);
+    logger.i(usuario.displayName);
+
+
     //Creamos el usuario con la información que nos devuelve el usuario de google
     User user = User(usuario.email, idEncriptado.toString(), false, usuario.displayName, Language.esES);
+
+    print(user.toJson());
 
     return user;
   }
@@ -71,13 +85,17 @@ class GoogleSignInProvider extends ChangeNotifier{
    * para saber si lo tenemos que registrar o iniciar sesión
    * @param emailUser es el email del usuario
    */
-  bool comprobarInicioSesion(emailUser){
+  Future<bool> comprobarInicioSesion(String emailUser) async {
+
     bool inicioSesion = true;
-    var user;
-    user = OdooConnect.getUserByEmail(emailUser);
+
+    User? user = await OdooConnect.getUserByEmail(emailUser);
+
+    logger.i(user);
 
     //Si el usuario es nulo significa que no existe en la base de datos
     if(user == null){
+      logger.i("El usuario no existe");
       inicioSesion = false;
     }
 
