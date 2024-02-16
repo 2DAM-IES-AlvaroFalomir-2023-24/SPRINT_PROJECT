@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:sprint/screens/verify_auth_screen.dart';
@@ -10,7 +9,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:sprint/app_localizations.dart';
 
 import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
+import 'package:sprint/firebase_options.dart';
 
 Future main() async {
   await dotenv.load(fileName: "./assets/.env");
