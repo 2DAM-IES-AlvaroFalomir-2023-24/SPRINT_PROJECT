@@ -5,6 +5,11 @@ plugins {
     //id 'com.google.gms.google-services'
     id("com.google.gms.google-services")
 }
+android {
+    defaultConfig {
+        minSdkVersion 21
+    }
+}
 
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
@@ -71,6 +76,5 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:32.7.2')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.android.support:multidex:1.0.3'
-
 
 }
