@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class RegisterScreen extends StatelessWidget{
+class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});
 
   @override
@@ -16,6 +16,21 @@ class RegisterScreen extends StatelessWidget{
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: ElevatedButton(
+                  onPressed: () {
+                    // Aquí va la lógica de inicio de sesión
+                  },
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50.0),
+                      
+                    ),
+                  ),
+                  child: const Text('Google'),
+                ),
+              ),
               TextFormField(
                 decoration: const InputDecoration(
                   icon: Icon(Icons.person),
@@ -40,12 +55,10 @@ class RegisterScreen extends StatelessWidget{
                   child: const Text('Registro'),
                 ),
               ),
-              
             ],
           ),
         ),
       ),
     );
   }
-  
 }
