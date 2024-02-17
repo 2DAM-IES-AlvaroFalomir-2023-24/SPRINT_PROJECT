@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:sprint/app_localizations.dart';
+import '../Controller/user_controller.dart';
 
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});
@@ -7,7 +10,7 @@ class RegisterScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Register'),
+        title: Text(AppLocalizations.of(context)!.translate('register')),
         centerTitle: true,
       ),
       body: Center(
@@ -28,22 +31,34 @@ class RegisterScreen extends StatelessWidget {
                       
                     ),
                   ),
-                  child: const Text('Google'),
+                  child: TextButton(
+                    onPressed: () async {
+                      try {
+                        final user = UserController().signInWithGoogle();
+                        if (user != null) {
+                            //Trabajar con user
+                            user.then((value) => print(value));
+                        }
+                      } on FirebaseAuthException catch (e) {
+                        print("Error: ${e}");
+                      }
+                    }, child: Text("SIGN IN WITH GOOGLE"),
+                  ),
                 ),
               ),
               TextFormField(
-                decoration: const InputDecoration(
-                  icon: Icon(Icons.person),
-                  hintText: 'Introduce tu nombre de usuario',
-                  labelText: 'Nombre de usuario',
+                decoration:  InputDecoration(
+                  icon: const Icon(Icons.person),
+                  hintText: AppLocalizations.of(context)!.translate('usernameHintText'),
+                  labelText: AppLocalizations.of(context)!.translate('username'),
                 ),
               ),
               TextFormField(
                 obscureText: true,
-                decoration: const InputDecoration(
-                  icon: Icon(Icons.lock),
-                  hintText: 'Introduce tu contraseña',
-                  labelText: 'Contraseña',
+                decoration: InputDecoration(
+                  icon: const Icon(Icons.lock),
+                  hintText: AppLocalizations.of(context)!.translate('passwordHintText'),
+                  labelText: AppLocalizations.of(context)!.translate('password'),
                 ),
               ),
               Padding(
@@ -52,7 +67,7 @@ class RegisterScreen extends StatelessWidget {
                   onPressed: () {
                     // Aquí va la lógica de inicio de sesión
                   },
-                  child: const Text('Registro'),
+                  child: Text(AppLocalizations.of(context)!.translate('register')),
                 ),
               ),
             ],

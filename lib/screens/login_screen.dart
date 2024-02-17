@@ -4,8 +4,9 @@ import 'package:sprint/screens/home_screen.dart';
 import 'package:sprint/screens/register_screen.dart';
 import 'package:sprint/screens/user_screen.dart';
 
-import '../model/language.dart';
-import '../model/user.dart';
+import 'package:sprint/app_localizations.dart';
+import 'package:sprint/model/language.dart';
+import 'package:sprint/model/user.dart';
 
 class LoginScreen extends StatefulWidget{
   const LoginScreen({super.key});
@@ -26,9 +27,10 @@ class LoginScreenState extends State<LoginScreen>{
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login'),
+        title: Text(AppLocalizations.of(context)!.translate('login')),
         centerTitle: true,
       ),
       body: Center(
@@ -38,18 +40,18 @@ class LoginScreenState extends State<LoginScreen>{
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               TextFormField(
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   icon: Icon(Icons.person),
-                  hintText: 'Introduce tu nombre de usuario',
-                  labelText: 'Nombre de usuario',
-                ),
+                  hintText: AppLocalizations.of(context)!.translate('usernameHintText'),
+                  labelText: AppLocalizations.of(context)!.translate('username')
+                  )
               ),
               TextFormField(
                 obscureText: true,
-                decoration: const InputDecoration(
-                  icon: Icon(Icons.lock),
-                  hintText: 'Introduce tu contraseña',
-                  labelText: 'Contraseña',
+                decoration: InputDecoration(
+                  icon: const Icon(Icons.lock),
+                  hintText: AppLocalizations.of(context)!.translate('passwordHintText'),
+                  labelText: AppLocalizations.of(context)!.translate('password')
                 ),
               ),
               Padding(
@@ -58,7 +60,7 @@ class LoginScreenState extends State<LoginScreen>{
                   onPressed: () {
                     // Aquí va la lógica de inicio de sesión
                   },
-                  child: const Text('Iniciar sesión'),
+                  child: Text(AppLocalizations.of(context)!.translate('login')),
                 ),
               ),
               Padding(
@@ -67,7 +69,7 @@ class LoginScreenState extends State<LoginScreen>{
                   onPressed: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterScreen()));
                   },
-                  child: const Text('Registrarse'),
+                  child: Text(AppLocalizations.of(context)!.translate('register')),
                 ),
               ),
               Padding(
@@ -76,7 +78,7 @@ class LoginScreenState extends State<LoginScreen>{
                   onPressed: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => const HomeScreen()));
                   },
-                  child: const Text('Home'),
+                  child: Text(AppLocalizations.of(context)!.translate('home')),
                 ),
               ),
               Padding(
@@ -85,7 +87,7 @@ class LoginScreenState extends State<LoginScreen>{
                   onPressed: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => const UserScreen()));
                   },
-                  child: const Text('User Profile'),
+                  child: Text(AppLocalizations.of(context)!.translate('updateProfile')),
                 ),
               ),
             ],
