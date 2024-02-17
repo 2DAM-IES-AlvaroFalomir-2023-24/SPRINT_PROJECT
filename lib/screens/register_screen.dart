@@ -2,10 +2,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:sprint/app_localizations.dart';
+import 'package:sprint/widget/show_dialog_exeception.dart';
 import '../Controller/user_controller.dart';
 import 'package:sprint/bloc/register_bloc.dart';
 import 'package:sprint/screens/home_screen.dart';
 
+/// This is the [RegisterScreen] class.
+/// It is a [StatelessWidget] that represents the screen for user registration.
+/// The screen contains a form with input fields for email, password, and password confirmation.
+/// It also includes buttons for signing in with Google and registering a new account.
 class RegisterScreen extends StatelessWidget {
   RegisterScreen({super.key});
   final emeailController = TextEditingController();
@@ -78,50 +83,24 @@ class RegisterScreen extends StatelessWidget {
                       AppLocalizations.of(context)!.translate('password'),
                 ),
               ),
+              TextFormField(
+                controller: passwordConfirmController,
+                cursorColor: Theme.of(context).primaryColor,
+                textInputAction: TextInputAction.next,
+                obscureText: true,
+                decoration: InputDecoration(
+                  icon: const Icon(Icons.lock),
+                  hintText: AppLocalizations.of(context)!
+                      .translate('passwordHintText'),
+                  labelText:
+                      AppLocalizations.of(context)!.translate('password'),
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
                 child: ElevatedButton(
                   onPressed: () {
-                    showDialog(
-                        context: context,
-                        barrierDismissible: false,
-                        builder: (context) =>
-                            const Center(child: CircularProgressIndicator()));
-                    signUpWithEmailAndPassword(
-                            email: emeailController.text.trim(),
-                            password: passwordController.text.trim())
-                        .then((value) => {
-                              if (value)
-                                {
-                                  Navigator.pushReplacementNamed(
-                                      context, 'home')
-                                }
-                              else
-                                {
-                                  Future.delayed(
-                                      const Duration(seconds: 3),
-                                      () => {
-                                            Navigator.pop(context),
-                                            showDialog(
-                                              context: context,
-                                              builder: (context) => AlertDialog(
-                                                title: const Text('Error'),
-                                                content: const Text(
-                                                    'Se ha producido un error inesperado.'),
-                                                actions: <Widget>[
-                                                  TextButton(
-                                                    onPressed: () =>
-                                                        Navigator.pop(context),
-                                                    child:
-                                                        const Text('Aceptar'),
-                                                  ),
-                                                ],
-                                              ),
-                                            )
-                                          }),
-                                  logger.e('Error al registrar usuario')
-                                }
-                            });
+                    signUp(context);
                   },
                   child:
                       Text(AppLocalizations.of(context)!.translate('register')),
@@ -132,5 +111,29 @@ class RegisterScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void signUp(BuildContext context) {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) =>
+            const Center(child: CircularProgressIndicator()));
+    signUpWithEmailAndPassword(
+            email: emeailController.text.trim(),
+            password: passwordController.text.trim(),
+            passwordConfirm:
+                passwordConfirmController.text.trim())
+        .catchError((e) {
+      MyDialogExeception(mensage: e.toString())
+          .showDialogWithDelay(context);
+    }).then((value) => {
+              if (value)
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            const HomeScreen()))
+            });
   }
 }
