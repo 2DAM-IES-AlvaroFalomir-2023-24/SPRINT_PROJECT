@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:sprint/screens/home_screen.dart';
 import 'package:sprint/screens/login_screen.dart';
 
-class VerifyAuthBloc extends StatelessWidget {
-  const VerifyAuthBloc({Key? key}) : super(key: key);
+class VerifyAuthWidget extends StatelessWidget {
+  const VerifyAuthWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

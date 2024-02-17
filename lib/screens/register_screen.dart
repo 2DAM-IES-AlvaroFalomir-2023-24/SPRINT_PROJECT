@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sprint/bloc/register_bloc.dart';
+import 'package:sprint/screens/home_screen.dart';
 
 class RegisterScreen extends StatelessWidget {
   RegisterScreen({super.key});
@@ -29,7 +30,6 @@ class RegisterScreen extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(50.0),
-                      
                     ),
                   ),
                   child: const Text('Google'),
@@ -60,7 +60,15 @@ class RegisterScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
                 child: ElevatedButton(
                   onPressed: () {
-                    signUpWithEmailAndPassword(email: emeailController.text.trim(), password: passwordController.text.trim());
+                    showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (context) =>
+                            const Center(child:  CircularProgressIndicator()));
+                    signUpWithEmailAndPassword(
+                        email: emeailController.text.trim(),
+                        password: passwordController.text.trim())
+                        .whenComplete(() => Navigator.of(context).pop(const HomeScreen()));
                   },
                   child: const Text('Registro'),
                 ),

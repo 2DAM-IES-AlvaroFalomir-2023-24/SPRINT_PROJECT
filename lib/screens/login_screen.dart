@@ -65,7 +65,7 @@ class LoginScreenState extends State<LoginScreen>{
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterScreen()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterScreen()));
                   },
                   child: const Text('Registrarse'),
                 ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:sprint/screens/verify_auth_screen.dart';
+import 'package:sprint/widget/verify_auth_widget.dart';
 import 'package:sprint/data/odoo_connect.dart';
 import 'package:sprint/bloc/bloc_user/user_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
                 //Comentar la clase VerifyAuthBloc del archivo verify_auth.dart
                 // para hacer las pruebas en local
                 // y escribe la clase de tu pantalla
-                child: VerifyAuthBloc()
+                child: VerifyAuthWidget()
             
             )));
   }
