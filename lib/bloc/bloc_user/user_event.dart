@@ -2,11 +2,11 @@
 //
 // La lógica para estos eventos se define en la clase UserBloc
 
-import '../../model/user.dart';
+import '../../model/odoo-user.dart';
 
 class UserEvents {}
 
 class UserInformationChangedEvent extends UserEvents {
-  User user;
+  OdooUser user;
   UserInformationChangedEvent(this.user);
 }
