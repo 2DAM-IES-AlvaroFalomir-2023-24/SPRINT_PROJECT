@@ -148,6 +148,7 @@ class UserScreenState extends State<UserScreen> {
                           child: Text(AppLocalizations.of(context)!.translate("switchUser")),
                           onPressed: () {
                             // TODO Llamar a la función de Cambiar Usuario (Laura)
+
                           }),
                       ElevatedButton(
                           // TODO Falta cambiar el fondo del botón a rojo. Mirar como hacerlo global con el tema
