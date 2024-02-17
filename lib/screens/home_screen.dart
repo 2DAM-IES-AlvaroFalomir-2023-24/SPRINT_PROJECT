@@ -21,24 +21,21 @@ class HomeScreen extends StatelessWidget {
       if (state is UpdateState) {
         user = state.user;
       } else {
-        user = User("Default", "password", false, "Default", Language.enUS);
+        user = const User("Default", "password", false, "Default", Language.enUS);
       }
 
       return Scaffold(
         appBar: AppBar(
-          title: Text('Home'),
+          automaticallyImplyLeading: false,
+          title: const Text('Home'),
           centerTitle: true,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () => Navigator.pop(context),
-          ),
           actions: <Widget>[
             PopupMenuButton<String>(
               onSelected: (String result) {
                 if (result == 'Editar usuario') {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => UserScreen()),
+                    MaterialPageRoute(builder: (context) => const UserScreen()),
                   );
                 } else if (result == 'Cambiar de usuario') {
                   Navigator.push(
@@ -84,7 +81,7 @@ class HomeScreen extends StatelessWidget {
             children: <Widget>[
               Text(
                 '¡Bienvenid@ ${user.name}!',
-                style: TextStyle(fontSize: 24),
+                style: const TextStyle(fontSize: 24),
                 // Ajusta el tamaño de la fuente según tus necesidades
                 textAlign: TextAlign.center,
               ),

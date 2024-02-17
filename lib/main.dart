@@ -2,16 +2,15 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:sprint/bloc/google_sign_in.dart';
+import 'package:sprint/routes/screens_routes.dart';
 import 'package:sprint/widget/verify_auth_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:sprint/data/odoo_connect.dart';
 import 'package:sprint/bloc/bloc_user/user_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sprint/screens/login_screen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:sprint/app_localizations.dart';
 
-import 'package:firebase_core/firebase_core.dart';
 import 'package:sprint/firebase_options.dart';
 
 Future main() async {
@@ -23,11 +22,19 @@ Future main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+
+  final Map<String, WidgetBuilder> rutasApp = {};
+  for (final ruta in rutas) {
+    rutasApp[ruta.nombre] = (context) => ruta.widget;
+  }
+
+  runApp(MyApp(rutasApp: rutasApp));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({super.key, required this.rutasApp});
+
+  final Map<String, WidgetBuilder> rutasApp;
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +43,7 @@ class MyApp extends StatelessWidget {
         child: ChangeNotifierProvider(
           create: (context) => GoogleSignInProvider(),
           child: MaterialApp(
+              routes: rutasApp,
               title: 'Sprint Project',
               debugShowCheckedModeBanner: false,
               supportedLocales: const [

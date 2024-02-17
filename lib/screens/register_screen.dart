@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:sprint/app_localizations.dart';
 import '../Controller/user_controller.dart';
 import 'package:sprint/bloc/register_bloc.dart';
@@ -10,6 +11,7 @@ class RegisterScreen extends StatelessWidget {
   final emeailController = TextEditingController();
   final passwordController = TextEditingController();
   final passwordConfirmController = TextEditingController();
+  final Logger logger = Logger();
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +35,6 @@ class RegisterScreen extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(50.0),
-                    
                     ),
                   ),
                   child: TextButton(
@@ -41,13 +42,14 @@ class RegisterScreen extends StatelessWidget {
                       try {
                         final user = UserController().signInWithGoogle();
                         if (user != null) {
-                            //Trabajar con user
-                            user.then((value) => print(value));
+                          //Trabajar con user
+                          user.then((value) => logger.i("User: $value"));
                         }
                       } on FirebaseAuthException catch (e) {
-                        print("Error: ${e}");
+                        logger.e('FirebaseAuthException: ${e.message}');
                       }
-                    }, child: Text("SIGN IN WITH GOOGLE"),
+                    },
+                    child: const Text("SIGN IN WITH GOOGLE"),
                   ),
                 ),
               ),
@@ -55,10 +57,12 @@ class RegisterScreen extends StatelessWidget {
                 controller: emeailController,
                 cursorColor: Theme.of(context).primaryColor,
                 textInputAction: TextInputAction.next,
-                decoration:  InputDecoration(
+                decoration: InputDecoration(
                   icon: const Icon(Icons.person),
-                  hintText: AppLocalizations.of(context)!.translate('usernameHintText'),
-                  labelText: AppLocalizations.of(context)!.translate('username'),
+                  hintText: AppLocalizations.of(context)!
+                      .translate('usernameHintText'),
+                  labelText:
+                      AppLocalizations.of(context)!.translate('username'),
                 ),
               ),
               TextFormField(
@@ -68,8 +72,10 @@ class RegisterScreen extends StatelessWidget {
                 obscureText: true,
                 decoration: InputDecoration(
                   icon: const Icon(Icons.lock),
-                  hintText: AppLocalizations.of(context)!.translate('passwordHintText'),
-                  labelText: AppLocalizations.of(context)!.translate('password'),
+                  hintText: AppLocalizations.of(context)!
+                      .translate('passwordHintText'),
+                  labelText:
+                      AppLocalizations.of(context)!.translate('password'),
                 ),
               ),
               Padding(
@@ -80,13 +86,45 @@ class RegisterScreen extends StatelessWidget {
                         context: context,
                         barrierDismissible: false,
                         builder: (context) =>
-                            const Center(child:  CircularProgressIndicator()));
+                            const Center(child: CircularProgressIndicator()));
                     signUpWithEmailAndPassword(
-                        email: emeailController.text.trim(),
-                        password: passwordController.text.trim())
-                        .whenComplete(() => Navigator.of(context).pop(const HomeScreen()));
+                            email: emeailController.text.trim(),
+                            password: passwordController.text.trim())
+                        .then((value) => {
+                              if (value)
+                                {
+                                  Navigator.pushReplacementNamed(
+                                      context, 'home')
+                                }
+                              else
+                                {
+                                  Future.delayed(
+                                      const Duration(seconds: 3),
+                                      () => {
+                                            Navigator.pop(context),
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) => AlertDialog(
+                                                title: const Text('Error'),
+                                                content: const Text(
+                                                    'Se ha producido un error inesperado.'),
+                                                actions: <Widget>[
+                                                  TextButton(
+                                                    onPressed: () =>
+                                                        Navigator.pop(context),
+                                                    child:
+                                                        const Text('Aceptar'),
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                          }),
+                                  logger.e('Error al registrar usuario')
+                                }
+                            });
                   },
-                  child: Text(AppLocalizations.of(context)!.translate('register')),
+                  child:
+                      Text(AppLocalizations.of(context)!.translate('register')),
                 ),
               ),
             ],
