@@ -28,5 +28,6 @@
   "language": "Language",
   "email": "Email",
   "userProfile": "User Profile",
-  "switchLanguage": "Switch Language"
+  "switchLanguage": "Switch Language",
+  "phoneInput": "Set phone"
 }

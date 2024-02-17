@@ -1,9 +1,11 @@
+import 'package:another_flushbar/flushbar.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sprint/bloc/bloc_user/user_bloc.dart';
 import 'package:sprint/bloc/bloc_user/user_state.dart';
-import 'package:sprint/model/user.dart';
+import 'package:sprint/model/odoo-user.dart';
 import 'package:sprint/screens/user_screen.dart';
 
 import '../model/language.dart';
@@ -11,17 +13,42 @@ import 'login_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:sprint/screens/register_screen.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
+  State<StatefulWidget> createState() => HomeScreenState();
+
+}
+
+class HomeScreenState extends State<HomeScreen>{
+
+  late OdooUser user;
+
+  late Flushbar message = Flushbar(
+      title: "Missing data",
+      message: "There's missing data in your account, tap here and fill it up to complete your account.",
+      isDismissible: false,
+      flushbarPosition: FlushbarPosition.BOTTOM,
+      onTap: (flush){
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const UserScreen()));
+      }
+  );
+
+  @override
   Widget build(BuildContext context) {
+    Future.delayed(const Duration(milliseconds: 500), (){
+      if(user.isMissingData()){
+        message.show(context);
+      }else{
+        message.dismiss();
+      }
+    });
     return BlocBuilder<UserBloc, UserStates>(builder: (context, state) {
-      User user;
       if (state is UpdateState) {
         user = state.user;
       } else {
-        user = User("Default", "password", false, "Default", Language.enUS);
+        user = OdooUser("Default", "password", false, "Default", Language.enUS);
       }
 
       return Scaffold(
@@ -111,4 +138,5 @@ class HomeScreen extends StatelessWidget {
       );
     });
   }
+
 }

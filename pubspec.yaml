@@ -50,6 +50,9 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   geolocator: ^11.0.0
+  another_flushbar: ^1.12.30
+  image_picker: ^1.0.7
+  path_provider: ^2.1.2
 
 dev_dependencies:
   flutter_test:

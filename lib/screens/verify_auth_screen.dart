@@ -16,7 +16,7 @@ class VerifyAuthBloc extends StatelessWidget {
           } else if (snapshot.hasError) {
             return const Center(child: Text('Error de autenticación'));
           } else if (snapshot.hasData) {
-            return const HomeScreen();
+            return HomeScreen();
           } else {
             return const LoginScreen();
           }
