@@ -2,6 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:sprint/bloc/google_sign_in.dart';
+import 'package:sprint/model/language.dart';
+import 'package:sprint/model/odoo-user.dart';
 import 'package:sprint/screens/verify_auth_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:sprint/data/odoo_connect.dart';
@@ -16,7 +18,6 @@ import 'package:sprint/firebase_options.dart';
 
 Future main() async {
   await dotenv.load(fileName: "././assets/.env");
-  OdooConnect.initialize();
   // Asegura que la vinculación de widgets esté inicializada.
   WidgetsFlutterBinding.ensureInitialized();
 
