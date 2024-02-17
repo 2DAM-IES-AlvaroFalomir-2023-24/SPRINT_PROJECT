@@ -68,7 +68,7 @@ class DefaultFirebaseOptions {
     apiKey: dotenv.env['IOS_API_KEY'].toString(),
     appId: dotenv.env['IOS_APP_ID'].toString(),
     messagingSenderId: dotenv.env['FIREBASE_MESSAGING_SENDER_ID'].toString(),
-    projectId:  dotenv.env['FIREBASE_PROJECT_ID'].toString(),
+    projectId: dotenv.env['FIREBASE_PROJECT_ID'].toString(),
     storageBucket: dotenv.env['FIREBASE_STORAGE_BUCKET'].toString(),
     androidClientId: dotenv.env['ANDROID_CLIENT_ID'].toString(),
     iosClientId: dotenv.env['IOS_CLIENT_ID'].toString(),

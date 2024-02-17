@@ -22,6 +22,10 @@ class User{
     );
   }
 
+  String getEmail(){
+    return email;
+  }
+
   Map toJson(){
     return {
       'login': email,
