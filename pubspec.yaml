@@ -44,7 +44,6 @@ dependencies:
   cupertino_icons: ^1.0.2
   get: ^4.6.6
   flutter_dotenv: ^5.1.0
-  flutter_localization: ^0.2.0
   flutter_localizations:
     sdk: flutter
   geolocator: ^11.0.0

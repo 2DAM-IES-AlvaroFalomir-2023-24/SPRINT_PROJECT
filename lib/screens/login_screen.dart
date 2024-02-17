@@ -5,8 +5,8 @@ import 'package:sprint/screens/register_screen.dart';
 import 'package:sprint/screens/user_screen.dart';
 
 import 'package:sprint/app_localizations.dart';
-import '../model/language.dart';
-import '../model/user.dart';
+import 'package:sprint/model/language.dart';
+import 'package:sprint/model/user.dart';
 
 class LoginScreen extends StatefulWidget{
   const LoginScreen({super.key});
