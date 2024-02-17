@@ -6,7 +6,7 @@ import 'package:sprint/screens/user_screen.dart';
 
 import 'package:sprint/app_localizations.dart';
 import 'package:sprint/model/language.dart';
-import 'package:sprint/model/user.dart';
+import 'package:sprint/model/odoo-user.dart';
 
 class LoginScreen extends StatefulWidget{
   const LoginScreen({super.key});
@@ -16,14 +16,6 @@ class LoginScreen extends StatefulWidget{
 }
 
 class LoginScreenState extends State<LoginScreen>{
-
-  // late User a = User("a", "a", true, "a", Language.enUS);
-  @override
-  void initState() {
-    super.initState();
-    OdooConnect.initialize();
-    // OdooConnect.getUserByEmail("damproyectoflutter@gmail.com").then((value) => a = value!);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +68,7 @@ class LoginScreenState extends State<LoginScreen>{
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const HomeScreen()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
                   },
                   child: Text(AppLocalizations.of(context)!.translate('home')),
                 ),

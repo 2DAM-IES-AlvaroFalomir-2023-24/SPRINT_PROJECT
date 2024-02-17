@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:logger/logger.dart';
 import 'package:sprint/data/odoo_connect.dart';
-import 'package:sprint/model/user.dart';
+import 'package:sprint/model/odoo-user.dart';
 import 'package:crypto/crypto.dart';
 import 'dart:convert';
 
@@ -61,7 +61,7 @@ class GoogleSignInProvider extends ChangeNotifier{
    * a un objeto usuario para poder manejarlo
    * @param usuario es el usuario de google
    */
-  User crearUsuario(usuario){
+  OdooUser crearUsuario(usuario){
 
     //Encriptamos el id del usuario
     var bytes = utf8.encode(usuario.id.toString());
@@ -73,7 +73,7 @@ class GoogleSignInProvider extends ChangeNotifier{
 
 
     //Creamos el usuario con la información que nos devuelve el usuario de google
-    User user = User(usuario.email, idEncriptado.toString(), false, usuario.displayName, Language.esES);
+    OdooUser user = OdooUser(usuario.email, idEncriptado.toString(), false, usuario.displayName, Language.esES);
 
     print(user.toJson());
 
@@ -89,7 +89,7 @@ class GoogleSignInProvider extends ChangeNotifier{
 
     bool inicioSesion = true;
 
-    User? user = await OdooConnect.getUserByEmail(emailUser);
+    OdooUser? user = await OdooConnect.getUserByEmail(emailUser);
 
     logger.i(user);
 
