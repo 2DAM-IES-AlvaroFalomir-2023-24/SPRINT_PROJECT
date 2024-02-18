@@ -50,9 +50,6 @@ class UserScreenState extends State<UserScreen> {
     // Al arrancar la escena guardamos una copia del usuario para poder
     // volver atrás en el modo edición
     OdooUser previousUser = user;
-    // La descodificacion de la imagen en base64 tarda unos milisegundos y provoca un parpadeo
-    // en el avatar si lo actualizamos en cada edición. Guardamos una copia del avatar para
-    // comprobar si ha cambiado.
 
     // Controladores para los TextFormField.
     TextEditingController _nameTextFormField =
@@ -259,7 +256,7 @@ class UserScreenState extends State<UserScreen> {
   Widget build(BuildContext context) {
     return BlocBuilder<UserBloc, UserStates>(builder: (context, state) {
       if (state is InitialState) {
-        OdooUser user = OdooUser("USER_EMAIL", "USER_PASS", false, "USER_NAME",Language.esES, null, widget.userDefaultAvatarCoded);
+        OdooUser user = OdooUser("USER_EMAIL", "USER_PASS", false, "USER_NAME",Language.esES, null, "");
         return _UserScreen(context, user);
       }
       if (state is UpdateState) {
