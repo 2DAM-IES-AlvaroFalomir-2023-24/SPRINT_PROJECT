@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
     return BlocProvider<UserBloc>(
         create: (context) => UserBloc(),
         child: ChangeNotifierProvider(
-          create: (context) => GoogleSignInProvider(),
+          create: (context) => SingAndLoginClass(),
           child: MaterialApp(
               routes: rutasApp,
               title: 'Sprint Project',

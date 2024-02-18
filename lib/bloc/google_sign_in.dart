@@ -1,54 +1,82 @@
 import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:logger/logger.dart';
 import 'package:sprint/data/odoo_connect.dart';
-import 'package:sprint/model/odoo-user.dart';
+import 'package:sprint/model/odoo-user.dart' as User;
 import 'package:crypto/crypto.dart';
 import 'dart:convert';
 
 import '../model/language.dart';
 
-class GoogleSignInProvider extends ChangeNotifier{
-
+class SingAndLoginClass extends ChangeNotifier {
   final googleSignIn = GoogleSignIn();
   Logger logger = Logger();
-
 
   //esta variable nos permitirá manejar la información y estado del usuario
   GoogleSignInAccount? _user;
   GoogleSignInAccount get user => _user!;
 
-  Future googleLogin() async {
+  Future<bool> signInWithFacebook() async {
+    try {
+      final LoginResult loginResult = await FacebookAuth.instance.login();
 
-    //Vamos a esperar a que el usuario seleccione su cuenta de google
-    final googleUser = await googleSignIn.signIn();
-    //comprobamos que el usuario que seleccionó no sea nulo para poder asignarlo a la variable _user
-    if(googleUser == null) return;
-    _user = googleUser;
+      // Create a credential from the access token
+      final OAuthCredential facebookAuthCredential =
+          FacebookAuthProvider.credential(loginResult.accessToken!.token);
 
-    final googleAuth = await googleUser.authentication;
+      // Once signed in, return the UserCredential
+      auth.User userCredential = (await FirebaseAuth.instance
+              .signInWithCredential(facebookAuthCredential))
+          .user!;
+      tryLoginOnOdoo(userCredential);
 
-    //Creamos las credenciales para poder autenticarnos con firebase
-    final credential = auth.GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken
-    );
+      return true;
+    } catch (e) {
+      logger.e(e);
+      return false;
+    }
+  }
 
-    //Autenticamos al usuario con firebase pasando le las credenciales del usuario
-    await auth.FirebaseAuth.instance.signInWithCredential(credential);
-    //Notificamos a los oyentes que el usuario ha cambiado
-    notifyListeners();
+  Future<bool> googleLogin() async {
+    try {
+      //Vamos a esperar a que el usuario seleccione su cuenta de google
+      final googleUser = await googleSignIn.signIn();
+      //comprobamos que el usuario que seleccionó no sea nulo para poder asignarlo a la variable _user
+      if (googleUser == null) return false;
+      _user = googleUser;
 
-    print(_user?.email);
+      final googleAuth = await googleUser.authentication;
 
-    //Comprobamos si el usuario ya existe en la base de datos para saber si lo tenemos que registrar o iniciar sesión
-    if(await comprobarInicioSesion(_user!.email)){
+      //Creamos las credenciales para poder autenticarnos con firebase
+      final credential = auth.GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
+
+      //Autenticamos al usuario con firebase pasando le las credenciales del usuario
+      await auth.FirebaseAuth.instance.signInWithCredential(credential);
+      //Notificamos a los oyentes que el usuario ha cambiado
+      notifyListeners();
+
+      print(_user?.email);
+
+      //Comprobamos si el usuario ya existe en la base de datos para saber si lo tenemos que registrar o iniciar sesión
+      await tryLoginOnOdoo(_user as auth.User);
+      return true;
+    } catch (ex) {
+      logger.i(ex);
+      return false;
+    }
+  }
+
+  Future<void> tryLoginOnOdoo(auth.User user) async {
+    if (await comprobarInicioSesion(_user!.email)) {
       print("El usuario ya existe");
-    }else{
+    } else {
       //llamamos al metodo que nos va a permitir crear un usuario en la base de datos
       //pasandole el usuario que nos devuelve el metodo que parsea la informacion del usuario de google
-      //await OdooConnect.createUser(await crearUsuario(crearUsuario(_user)));
+      await OdooConnect.createUser(await crearUsuario(crearUsuario(_user)));
 
       //logger.i(_user!.displayName);
       logger.i(await OdooConnect.getUsers());
@@ -61,8 +89,7 @@ class GoogleSignInProvider extends ChangeNotifier{
    * a un objeto usuario para poder manejarlo
    * @param usuario es el usuario de google
    */
-  OdooUser crearUsuario(usuario){
-
+  User.OdooUser crearUsuario(usuario) {
     //Encriptamos el id del usuario
     var bytes = utf8.encode(usuario.id.toString());
     var idEncriptado = sha256.convert(bytes);
@@ -71,9 +98,9 @@ class GoogleSignInProvider extends ChangeNotifier{
     logger.i(usuario.email);
     logger.i(usuario.displayName);
 
-
     //Creamos el usuario con la información que nos devuelve el usuario de google
-    OdooUser user = OdooUser(usuario.email, idEncriptado.toString(), false, usuario.displayName, Language.esES);
+    User.OdooUser user = User.OdooUser(usuario.email, idEncriptado.toString(),
+        false, usuario.displayName, Language.esES);
 
     print(user.toJson());
 
@@ -86,15 +113,14 @@ class GoogleSignInProvider extends ChangeNotifier{
    * @param emailUser es el email del usuario
    */
   Future<bool> comprobarInicioSesion(String emailUser) async {
-
     bool inicioSesion = true;
 
-    OdooUser? user = await OdooConnect.getUserByEmail(emailUser);
+    User.OdooUser? user = await OdooConnect.getUserByEmail(emailUser);
 
     logger.i(user);
 
     //Si el usuario es nulo significa que no existe en la base de datos
-    if(user == null){
+    if (user == null) {
       logger.i("El usuario no existe");
       inicioSesion = false;
     }
