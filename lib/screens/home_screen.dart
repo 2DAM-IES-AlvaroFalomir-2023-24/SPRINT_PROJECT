@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sprint/bloc/bloc_user/user_bloc.dart';
 import 'package:sprint/bloc/bloc_user/user_state.dart';
+import 'package:sprint/bloc/google_sign_in.dart';
 import 'package:sprint/model/user.dart';
 import 'package:sprint/screens/user_screen.dart';
 
@@ -82,6 +83,13 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              ElevatedButton(
+                  onPressed: () async {
+                    var provider = SingAndLoginClass();
+
+                    provider.logout();
+                  },
+                  child: Text('Cerrar Sesión')),
               Text(
                 '¡Bienvenid@ ${user.name}!',
                 style: TextStyle(fontSize: 24),

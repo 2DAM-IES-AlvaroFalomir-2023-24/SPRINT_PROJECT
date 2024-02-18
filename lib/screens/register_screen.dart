@@ -24,16 +24,40 @@ class RegisterScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
                 child: ElevatedButton(
-                  onPressed: () {
-                    final provider = Provider.of<GoogleSignInProvider>(context,
-                        listen: false);
+                  onPressed: () async {
+                    final provider =
+                        Provider.of<SingAndLoginClass>(context, listen: false);
 
-                    provider.googleLogin();
-
-                    Navigator.push(
-                        context,
+                    if (await provider.signInWithFacebook()) {
+                      Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
-                            builder: (context) => const HomeScreen()));
+                          builder: (context) => HomeScreen(),
+                        ),
+                      );
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50.0),
+                    ),
+                  ),
+                  child: const Text('Facebook'),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: ElevatedButton(
+                  onPressed: () async {
+                    final provider =
+                        Provider.of<SingAndLoginClass>(context, listen: false);
+
+                    if (await provider.googleLogin()) {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => HomeScreen(),
+                        ),
+                      );
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(

@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
     return BlocProvider<UserBloc>(
         create: (context) => UserBloc(),
         child: ChangeNotifierProvider(
-          create: (context) => GoogleSignInProvider(),
+          create: (context) => SingAndLoginClass(),
           child: MaterialApp(
               title: 'Sprint Project',
               debugShowCheckedModeBanner: false,
