@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,6 +12,7 @@ import 'package:sprint/bloc/bloc_user/user_event.dart';
 import 'package:sprint/bloc/bloc_user/user_state.dart';
 import 'package:sprint/model/odoo-user.dart';
 import 'package:sprint/model/language.dart';
+import 'dart:ui' as ui;
 
 Logger logger = Logger();
 
@@ -31,7 +33,8 @@ class UserScreenState extends State<UserScreen> {
   bool editable = false;
   bool _passwordVisible = false;
   late ImageProvider userDefaultAvatar;
-  String image = "";
+  ImageProvider? userCustomAvatar;
+  String userCustomAvatarEncoded = "";
   IconData fabIcon = Icons.edit;
 
 
@@ -39,7 +42,6 @@ class UserScreenState extends State<UserScreen> {
   void initState() {
     super.initState();
     userDefaultAvatar = MemoryImage(base64Decode(widget.userDefaultAvatarCoded));
-    image = widget.userDefaultAvatarCoded;
     editable = widget.isEditable;
     fabIcon = editable ? Icons.save : Icons.edit;
   }
@@ -105,7 +107,7 @@ class UserScreenState extends State<UserScreen> {
                       Language
                           .enUS,
                       user.id,
-                      image,
+                      userCustomAvatarEncoded,
                       _phoneTextFormField.text))); // TODO cuando implementemos el spinner, recoger el valor seleccionado
                 }
                 //OdooConnect.modifyUser(context.read<UserBloc>().user);
@@ -134,8 +136,7 @@ class UserScreenState extends State<UserScreen> {
                           Container(
                             alignment: Alignment.center,
                             child: CircleAvatar(
-                              // TODO Cargar el avatar del usuario al pulsar si esta en modo edicion
-                              //foregroundImage: MemoryImage(base64Decode(image)),
+                              foregroundImage: userCustomAvatar,
                               backgroundImage: userDefaultAvatar,
                               radius: 100,
                             ),
@@ -154,8 +155,8 @@ class UserScreenState extends State<UserScreen> {
                                     if(file != null){
                                       File temp = File(file.path);
                                       setState(() {
-                                        final imageEncoded = base64Encode(temp.readAsBytesSync());
-                                        image = imageEncoded;
+                                        userCustomAvatarEncoded = base64Encode(temp.readAsBytesSync());
+                                        userCustomAvatar = MemoryImage(base64Decode(userCustomAvatarEncoded));
                                       });
                                     }
                                   }else{
