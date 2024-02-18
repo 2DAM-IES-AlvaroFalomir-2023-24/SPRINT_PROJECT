@@ -1,17 +1,13 @@
 import 'package:bcrypt/bcrypt.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:sprint/app_localizations.dart';
 import 'package:sprint/bloc/social_sign_and_login.dart';
-import 'package:sprint/data/odoo_connect.dart';
-import 'package:sprint/screens/login_screen.dart';
 import 'package:sprint/screens/veify_email_screen.dart';
 import 'package:sprint/widget/custom_elevated_button_with_text.dart';
 import 'package:sprint/widget/show_dialog_exeception.dart';
-import 'package:sprint/Controller/user_controller.dart';
 import 'package:sprint/bloc/register_bloc.dart';
 import 'package:sprint/screens/home_screen.dart';
 

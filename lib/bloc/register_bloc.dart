@@ -1,10 +1,9 @@
-import 'package:bcrypt/bcrypt.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:sprint/data/odoo_connect.dart';
 import 'package:sprint/model/language.dart';
-import 'package:sprint/model/odoo-user.dart' as User;
+import 'package:sprint/model/odoo-user.dart' as user_odoo;
 import 'package:sprint/utils/sprint_exceptions.dart';
 
 Logger logger = Logger();
@@ -46,11 +45,11 @@ Future<bool> _tryRegisterOnOdoo(
     String name, String email, String password, BuildContext context) async {
   if (email.isEmpty) throw ValidationException(context);
 
-  User.OdooUser? user = await OdooConnect.getUserByEmail(email);
+  user_odoo.OdooUser? user = await OdooConnect.getUserByEmail(email);
 
   if (user != null) throw EmailAlreadyInUseException(context);
 
-  User.OdooUser newUser = User.OdooUser(
+  user_odoo.OdooUser newUser = user_odoo.OdooUser(
       email, password, true, name, Language.setLanguageByString('es_ES'));
 
   if (await OdooConnect.createUser(newUser)) return true;
