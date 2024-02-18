@@ -30,10 +30,12 @@
   "userProfile": "Perfil de usuario",
   "switchLanguage": "Cambiar idioma",
   "phoneInput": "Introducir teléfono",
-  "location": "Ubicación",
+  "location": "Habilitar ubicación",
   "welcomeText": "Hola",
   "welcomeText2": "Esta es tu página de inicio.",
   "useMenu": "Usa el menú (",
-  "useMenu2": ") en la esquina superior derecha para mostrar las opciones de usuario."
+  "useMenu2": ") en la esquina superior derecha para mostrar las opciones de usuario.",
+  "missingDataTitle": "Faltan datos",
+  "missingData": "Faltan algunos datos en tu cuenta, pulsa aquí para rellenarlos y completar tu cuenta."
 
 }

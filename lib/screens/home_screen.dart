@@ -9,6 +9,7 @@ import 'package:sprint/model/odoo-user.dart';
 import 'package:sprint/screens/user_screen.dart';
 
 import '../app_localizations.dart';
+import '../bloc_location/location.dart';
 import '../model/language.dart';
 import 'login_screen.dart';
 import 'package:provider/provider.dart';
@@ -27,8 +28,8 @@ class HomeScreenState extends State<HomeScreen>{
   late OdooUser user;
 
   late Flushbar message = Flushbar(
-      title: "Missing data",
-      message: "There's missing data in your account, tap here and fill it up to complete your account.",
+      title: AppLocalizations.of(context)!.translate('missingDataTitle'),
+      message: AppLocalizations.of(context)!.translate('missingData'),
       isDismissible: false,
       flushbarPosition: FlushbarPosition.BOTTOM,
       onTap: (flush){
@@ -75,10 +76,8 @@ class HomeScreenState extends State<HomeScreen>{
                   );
                 } else if (result == 'Cerrar sesión') {
                   //TODO Llamar a la función de Cerrar sesión (Alexandra)
-                } else if (result == 'Idioma') {
-                  //TODO Llamar a la función de Idioma (Pinto)
                 } else if (result == 'Geolocalización') {
-                  //TODO Llamar a la función de Geolocalización (Carol)
+                  Location().getCurrentLocation();
                 }
               },
               itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
