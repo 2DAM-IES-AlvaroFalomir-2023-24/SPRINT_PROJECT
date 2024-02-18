@@ -54,8 +54,10 @@ class UserScreenState extends State<UserScreen> {
         TextEditingController(text: user.lang.toString());
     TextEditingController _phoneTextFormField =
       TextEditingController(text: user.phone.toString());
-    //Si cargo la imagen el funcionamiento de edición es raro
-    //image = user.avatar.toString();
+    if(user.avatar.isNotEmpty){
+      userCustomAvatarEncoded = user.avatar;
+      userCustomAvatar = MemoryImage(base64Decode(userCustomAvatarEncoded));
+    }
 
     return Scaffold(
         // TODO ajustar el comportamiento por defecto al pulsar en un elemento editable
