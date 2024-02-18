@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sprint/bloc/bloc_user/user_bloc.dart';
 import 'package:sprint/bloc/bloc_user/user_state.dart';
-import 'package:sprint/model/user.dart';
+import 'package:sprint/model/odoo-user.dart';
 import 'package:sprint/screens/user_screen.dart';
 
 import '../model/language.dart';
@@ -18,11 +18,11 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<UserBloc, UserStates>(builder: (context, state) {
-      User user;
+      OdooUser user;
       if (state is UpdateState) {
         user = state.user;
       } else {
-        user = User("email", "password", false, "name", Language.esES);
+        user = OdooUser("email", "password", false, "name", Language.esES);
       }
 
       return Scaffold(
@@ -48,8 +48,6 @@ class HomeScreen extends StatelessWidget {
                   );
                 } else if (result == 'Cerrar sesión') {
                   //TODO Llamar a la función de Cerrar sesión (Alexandra)
-                } else if (result == 'Idioma') {
-                  //TODO Llamar a la función de Idioma (Pinto)
                 } else if (result == 'Geolocalización') {
                   //TODO Llamar a la función de Geolocalización (Carol)
                 }

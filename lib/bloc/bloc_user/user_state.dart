@@ -18,6 +18,6 @@ class UpdateState extends UserStates {
   UpdateState(this.user);
 }
 class UserLoggedInState extends UserStates {
-  final User user;
+  final OdooUser user;
   UserLoggedInState({required this.user});
 }
