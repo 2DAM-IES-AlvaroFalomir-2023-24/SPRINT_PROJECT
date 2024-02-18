@@ -8,6 +8,7 @@ import 'package:sprint/screens/user_screen.dart';
 import 'package:sprint/widget/custom_elevated_button_iconified.dart';
 import 'package:sprint/app_localizations.dart';
 import 'package:sprint/model/language.dart';
+import '../bloc_location/location.dart';
 import 'login_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -43,6 +44,7 @@ class HomeScreenState extends State<HomeScreen>{
     });
     return BlocBuilder<UserBloc, UserStates>(builder: (context, state) {
       if (state is UpdateState) {
+        // TODO: Cambiar el usuario por el que se encuentra en el estado LoggedInState
         user = state.user;
       } else {
         user = OdooUser("Default", "password", false, "Default", Language.enUS);
@@ -97,17 +99,11 @@ class HomeScreenState extends State<HomeScreen>{
                     },
                     hintText: AppLocalizations.of(context)!.translate('logout')
                   ),
-                  CustomElevatedButtonIconified(
-                    icon: const Icon(Icons.language),
-                    onPressedFunction: (){
-                      //TODO Llamar a la función de Idioma (Pinto)
-                    },
-                    hintText: AppLocalizations.of(context)!.translate('language')
-                  ),
+
                   CustomElevatedButtonIconified(
                     icon: const Icon(Icons.location_pin),
                     onPressedFunction: (){
-                      //TODO Llamar a la función de Geolocalización (Carol)
+                      Location().getCurrentLocation();
                     },
                     hintText: AppLocalizations.of(context)!.translate('location')
                   ),
