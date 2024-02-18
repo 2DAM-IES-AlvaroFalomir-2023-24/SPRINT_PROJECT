@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,6 +10,7 @@ import 'package:sprint/bloc/bloc_user/user_event.dart';
 import 'package:sprint/bloc/bloc_user/user_state.dart';
 import 'package:sprint/model/odoo-user.dart';
 import 'package:sprint/model/language.dart';
+import 'package:sprint/widget/custom_elevated_button_iconified.dart';
 
 Logger logger = Logger();
 
@@ -187,7 +187,7 @@ class UserScreenState extends State<UserScreen> {
                                 },
                               )
                           ),
-                          obscureText: _passwordVisible,
+                          obscureText: !_passwordVisible,
                           enabled: editable,
                         ),
                         // EMAIL DE USUARIO
@@ -213,27 +213,33 @@ class UserScreenState extends State<UserScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 20,),
+                    const  SizedBox(height: 20),
                     // Agrupamos los botones de cerrar sesión, cambiar y borrar usuario para poder añadir el spacebetween de forma correcta
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                    Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.center,
                       children: [
-                        ElevatedButton(
-                            child: Text(AppLocalizations.of(context)!.translate("logout")),
-                            onPressed: () {
+                        CustomElevatedButtonIconified(
+                            icon: const Icon(Icons.logout),
+                            onPressedFunction: (){
                               // TODO Llamar a la función de Cerrar sesión (Alexandra)
-                            }),
-                        ElevatedButton(
-                            child: Text(AppLocalizations.of(context)!.translate("switchUser")),
-                            onPressed: () {
+                            },
+                            hintText: AppLocalizations.of(context)!.translate("logout")
+                        ),
+                        CustomElevatedButtonIconified(
+                            icon: const Icon(Icons.change_circle),
+                            onPressedFunction: (){
                               // TODO Llamar a la función de Cambiar Usuario (Laura)
-                            }),
-                        ElevatedButton(
-                            // TODO Falta cambiar el fondo del botón a rojo. Mirar como hacerlo global con el tema
-                            child: Text(AppLocalizations.of(context)!.translate("deleteUser")),
-                            onPressed: () {
+                            },
+                            hintText: AppLocalizations.of(context)!.translate("switchUser")
+                        ),
+                        CustomElevatedButtonIconified(
+                          icon: const Icon(Icons.delete),
+                          onPressedFunction: (){
                               // TODO Llamar a la función de Borrar Usuario (Rubén)
-                            }),
+                          },
+                          hintText: AppLocalizations.of(context)!.translate("deleteUser"),
+                          color: Colors.red,
+                        )
                       ],
                     ),
                   ],

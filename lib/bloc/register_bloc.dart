@@ -1,17 +1,19 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:sprint/utils/sprint_exceptions.dart';
 
 Future signUpWithEmailAndPassword(
     {required String email,
     required String password,
-    required String passwordConfirm}) async {
+    required String passwordConfirm,
+    required BuildContext context}) async {
   Logger logger = Logger();
   if (!_validatePasswordsMatch(password, passwordConfirm)) {
-    throw const PasswordsDoNotMatchException();
+    throw PasswordsDoNotMatchException(context);
   }
   if (!_validatePasswordLengthAndWeak(password)) {
-    throw const PassWordLengthOrWeakException();
+    throw PassWordLengthOrWeakException(context);
   }
 
   try {
@@ -21,9 +23,9 @@ Future signUpWithEmailAndPassword(
   } on FirebaseAuthException catch (e) {
     logger.e('FirebaseAuthException: ${e.code}\n${e.message}');
     if (e.message!.contains('auth/email-already-in-use')) {
-      throw const EmailAlreadyInUseException();
+      throw EmailAlreadyInUseException(context);
     } else {
-      throw const SprintException();
+      throw SprintException(context);
     }
   } catch (e) {
     logger.e('Error: $e');
