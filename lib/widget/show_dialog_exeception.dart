@@ -11,8 +11,8 @@ class MyDialogExeception {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text('Error'),
-            content: Text(message),
+          title: const Text('Error', style: TextStyle(color: Colors.red, fontSize: 20, fontWeight: FontWeight.bold)),
+            content: Text(message, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.pop(context),

@@ -76,7 +76,7 @@ class SingAndLoginClass extends ChangeNotifier {
     } else {
       //llamamos al metodo que nos va a permitir crear un usuario en la base de datos
       //pasandole el usuario que nos devuelve el metodo que parsea la informacion del usuario de google
-      await OdooConnect.createUser(await crearUsuario(crearUsuario(_user)));
+      await OdooConnect.createUser(crearUsuario(_user));
 
       //logger.i(_user!.displayName);
       logger.i(await OdooConnect.getUsers());
@@ -84,11 +84,9 @@ class SingAndLoginClass extends ChangeNotifier {
     }
   }
 
-  /**
-   * Este metodo nos va a permitir parsear la información del usuario de google
-   * a un objeto usuario para poder manejarlo
-   * @param usuario es el usuario de google
-   */
+  /// Este metodo nos va a permitir parsear la información del usuario de google
+  /// a un objeto usuario para poder manejarlo
+  /// @param usuario es el usuario de google
   User.OdooUser crearUsuario(usuario) {
     //Encriptamos el id del usuario
     var bytes = utf8.encode(usuario.id.toString());
@@ -107,11 +105,9 @@ class SingAndLoginClass extends ChangeNotifier {
     return user;
   }
 
-  /**
-   * Este metodo nos va a permitir comprobar si el usuario ya existe en la base de datos
-   * para saber si lo tenemos que registrar o iniciar sesión
-   * @param emailUser es el email del usuario
-   */
+  /// Este metodo nos va a permitir comprobar si el usuario ya existe en la base de datos
+  /// para saber si lo tenemos que registrar o iniciar sesión
+  /// @param emailUser es el email del usuario
   Future<bool> comprobarInicioSesion(String emailUser) async {
     bool inicioSesion = true;
 
@@ -128,9 +124,7 @@ class SingAndLoginClass extends ChangeNotifier {
     return inicioSesion;
   }
 
-  /**
-   * Este metodo nos va a permitir cerrar sesión
-   */
+  /// Este metodo nos va a permitir cerrar sesión
   Future logout() async {
     await googleSignIn.disconnect();
     auth.FirebaseAuth.instance.signOut();

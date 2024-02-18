@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:sprint/bloc/google_sign_in.dart';
+import 'package:sprint/bloc/social_sign_and_login.dart';
 import 'package:sprint/model/language.dart';
 import 'package:sprint/model/odoo-user.dart';
 import 'package:sprint/routes/screens_routes.dart';

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sprint/bloc/bloc_user/user_bloc.dart';
 import 'package:sprint/bloc/bloc_user/user_state.dart';
-import 'package:sprint/bloc/google_sign_in.dart';
+import 'package:sprint/bloc/social_sign_and_login.dart';
 import 'package:sprint/model/odoo-user.dart';
 import 'package:sprint/screens/user_screen.dart';
 import 'package:sprint/widget/custom_elevated_button_iconified.dart';
