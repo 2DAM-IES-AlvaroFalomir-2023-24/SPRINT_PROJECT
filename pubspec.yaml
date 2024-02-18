@@ -53,6 +53,7 @@ dependencies:
   another_flushbar: ^1.12.30
   image_picker: ^1.0.7
   path_provider: ^2.1.2
+  flutter_facebook_auth: '^3.5.0'
 
 dev_dependencies:
   flutter_test:
