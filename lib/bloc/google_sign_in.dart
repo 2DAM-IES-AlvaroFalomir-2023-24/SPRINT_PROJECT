@@ -5,7 +5,7 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:logger/logger.dart';
 import 'package:sprint/data/odoo_connect.dart';
-import 'package:sprint/model/user.dart' as User;
+import 'package:sprint/model/odoo-user.dart' as User;
 import 'package:crypto/crypto.dart';
 import 'dart:convert';
 
@@ -89,7 +89,7 @@ class SingAndLoginClass extends ChangeNotifier {
    * a un objeto usuario para poder manejarlo
    * @param usuario es el usuario de google
    */
-  User.User crearUsuario(usuario) {
+  User.OdooUser crearUsuario(usuario) {
     //Encriptamos el id del usuario
     var bytes = utf8.encode(usuario.id.toString());
     var idEncriptado = sha256.convert(bytes);
@@ -99,8 +99,8 @@ class SingAndLoginClass extends ChangeNotifier {
     logger.i(usuario.displayName);
 
     //Creamos el usuario con la información que nos devuelve el usuario de google
-    User.User user = User.User(usuario.email, idEncriptado.toString(), false,
-        usuario.displayName, Language.esES);
+    User.OdooUser user = User.OdooUser(usuario.email, idEncriptado.toString(),
+        false, usuario.displayName, Language.esES);
 
     print(user.toJson());
 
@@ -115,7 +115,7 @@ class SingAndLoginClass extends ChangeNotifier {
   Future<bool> comprobarInicioSesion(String emailUser) async {
     bool inicioSesion = true;
 
-    User.User? user = await OdooConnect.getUserByEmail(emailUser);
+    User.OdooUser? user = await OdooConnect.getUserByEmail(emailUser);
 
     logger.i(user);
 
