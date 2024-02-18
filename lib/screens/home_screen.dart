@@ -8,6 +8,7 @@ import 'package:sprint/bloc/bloc_user/user_state.dart';
 import 'package:sprint/model/odoo-user.dart';
 import 'package:sprint/screens/user_screen.dart';
 
+import '../app_localizations.dart';
 import '../model/language.dart';
 import 'login_screen.dart';
 import 'package:provider/provider.dart';
@@ -53,16 +54,19 @@ class HomeScreenState extends State<HomeScreen>{
 
       return Scaffold(
         appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: const Text('Home'),
+          title: Text(AppLocalizations.of(context)!.translate('home')),
           centerTitle: true,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => Navigator.pop(context),
+          ),
           actions: <Widget>[
             PopupMenuButton<String>(
               onSelected: (String result) {
                 if (result == 'Editar usuario') {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const UserScreen()),
+                    MaterialPageRoute(builder: (context) => UserScreen()),
                   );
                 } else if (result == 'Cambiar de usuario') {
                   Navigator.push(
@@ -78,25 +82,30 @@ class HomeScreenState extends State<HomeScreen>{
                 }
               },
               itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                const PopupMenuItem<String>(
+                PopupMenuItem<String>(
                   value: 'Editar usuario',
-                  child: Text('Editar usuario'),
+                  child:
+                  Text(AppLocalizations.of(context)!.translate('editUser')),
                 ),
-                const PopupMenuItem<String>(
+                PopupMenuItem<String>(
                   value: 'Cambiar de usuario',
-                  child: Text('Cambiar de usuario'),
+                  child: Text(
+                      AppLocalizations.of(context)!.translate('switchUser')),
                 ),
-                const PopupMenuItem<String>(
+                PopupMenuItem<String>(
                   value: 'Cerrar sesión',
-                  child: Text('Cerrar sesión'),
+                  child:
+                  Text(AppLocalizations.of(context)!.translate('logout')),
                 ),
-                const PopupMenuItem<String>(
+                PopupMenuItem<String>(
                   value: 'Idioma',
-                  child: Text('Idioma'),
+                  child:
+                  Text(AppLocalizations.of(context)!.translate('language')),
                 ),
-                const PopupMenuItem<String>(
+                PopupMenuItem<String>(
                   value: 'Geolocalización',
-                  child: Text('Geolocalización'),
+                  child:
+                  Text(AppLocalizations.of(context)!.translate('location')),
                 ),
               ],
             ),
@@ -106,26 +115,34 @@ class HomeScreenState extends State<HomeScreen>{
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    AppLocalizations.of(context)!.translate('welcomeText'),
+                    style: TextStyle(fontSize: 24),
+                    textAlign: TextAlign.center,
+                  ),
+                  Text(
+                    ' ${user.getEmail()}',
+                    style: TextStyle(fontSize: 24),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
               Text(
-                '¡Bienvenid@ ${user.name}!',
-                style: const TextStyle(fontSize: 24),
-                // Ajusta el tamaño de la fuente según tus necesidades
+                AppLocalizations.of(context)!.translate('welcomeText2'),
                 textAlign: TextAlign.center,
               ),
-              const Text(
-                'Estás en tu página de inicio.',
-                textAlign: TextAlign.center,
-              ),
-              const Center(
+              Center(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('Usa el menú', textAlign: TextAlign.center),
-                    Icon(Icons.more_vert), // Icono del botón de desbordamiento
-                    Text(
-                      'en la parte superior derecha para mostrar las opciones de usuario.',
-                      textAlign: TextAlign.center,
-                    ),
+                    Text(AppLocalizations.of(context)!.translate('useMenu'),
+                        textAlign: TextAlign.center),
+                    Icon(Icons.more_vert),
+                    Text(AppLocalizations.of(context)!.translate('useMenu2'),
+                        textAlign: TextAlign.center),
                   ],
                 ),
               ),
@@ -135,5 +152,4 @@ class HomeScreenState extends State<HomeScreen>{
       );
     });
   }
-
 }
