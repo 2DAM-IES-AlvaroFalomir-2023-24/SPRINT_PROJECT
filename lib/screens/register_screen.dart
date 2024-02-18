@@ -37,7 +37,10 @@ class RegisterScreen extends StatelessWidget {
                         final user = UserController().signInWithGoogle();
                         if (user != null) {
                             //Trabajar con user
-                            user.then((value) => print(value));
+                            User us;
+                            user.then(
+                                    (value) => print(value)
+                            );
                         }
                       } on FirebaseAuthException catch (e) {
                         print("Error: ${e}");
