@@ -28,5 +28,6 @@
   "language": "Idioma",
   "username": "Nombre de usuario",
   "userProfile": "Perfil de usuario",
-  "switchLanguage": "Cambiar idioma"
+  "switchLanguage": "Cambiar idioma",
+  "phoneInput": "Introducir teléfono"
 }
