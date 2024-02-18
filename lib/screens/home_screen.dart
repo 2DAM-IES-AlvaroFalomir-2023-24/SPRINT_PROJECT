@@ -33,13 +33,6 @@ class HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(const Duration(milliseconds: 500), () {
-      if (user.isMissingData()) {
-        message.show(context);
-      } else {
-        message.dismiss();
-      }
-    });
     return BlocBuilder<UserBloc, UserStates>(builder: (context, state) {
       if (state is UpdateState) {
         user = state.user;
@@ -47,9 +40,20 @@ class HomeScreenState extends State<HomeScreen> {
         user = OdooUser("Default", "password", false, "Default", Language.enUS);
       }
 
+      Future.delayed(const Duration(milliseconds: 500), () {
+        if (user.isMissingData() && !message.isShowing()) {
+          message.show(context);
+        }
+      });
+      Future.delayed(const Duration(milliseconds: 2000), () {
+        if (!user.isMissingData()) {
+          message.dismiss();
+        }
+      });
+
       return Scaffold(
           appBar: AppBar(
-              title: Text(AppLocalizations.of(context)!.translate('home')),
+              title: Image.asset("assets/odoo_logo.png", scale: 8),
               centerTitle: true,
               automaticallyImplyLeading: false),
           body: Center(
@@ -63,13 +67,6 @@ class HomeScreenState extends State<HomeScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          ElevatedButton(
-                              onPressed: () async {
-                                var provider = SingAndLoginClass();
-
-                                provider.logout();
-                              },
-                              child: Text('Cerrar Sesión')),
                           Text(
                             AppLocalizations.of(context)!
                                 .translate('welcomeText'),
