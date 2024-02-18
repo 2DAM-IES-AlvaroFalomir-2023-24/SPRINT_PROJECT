@@ -29,5 +29,11 @@
   "username": "Nombre de usuario",
   "userProfile": "Perfil de usuario",
   "switchLanguage": "Cambiar idioma",
-  "phoneInput": "Introducir teléfono"
+  "phoneInput": "Introducir teléfono",
+  "location": "Ubicación",
+  "welcomeText": "Hola",
+  "welcomeText2": "Esta es tu página de inicio.",
+  "useMenu": "Usa el menú (",
+  "useMenu2": ") en la esquina superior derecha para mostrar las opciones de usuario."
+
 }
