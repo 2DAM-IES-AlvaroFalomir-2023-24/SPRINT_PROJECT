@@ -28,5 +28,10 @@
   "language": "Idioma",
   "username": "Nombre de usuario",
   "userProfile": "Perfil de usuario",
-  "switchLanguage": "Cambiar idioma"
+  "switchLanguage": "Cambiar idioma",
+  "location": "Ubicación",
+  "welcomeText": "Hola",
+  "welcomeText2": "Esta es tu página de inicio.",
+  "useMenu": "Usa el menú (",
+  "useMenu2": ") en la parte superior derecha para mostrar las opciones de usuario."
 }

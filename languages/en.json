@@ -28,5 +28,10 @@
   "language": "Language",
   "email": "Email",
   "userProfile": "User Profile",
-  "switchLanguage": "Switch Language"
+  "switchLanguage": "Switch Language",
+  "location": "Location",
+  "welcomeText": "Welcome",
+  "welcomeText2": "This is your home page.",
+  "useMenu": "Use the menu (",
+  "useMenu2": ") at the top right corner to display user options."
 }

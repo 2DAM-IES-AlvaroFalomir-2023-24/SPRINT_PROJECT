@@ -17,3 +17,7 @@ class UpdateState extends UserStates {
   final User user;
   UpdateState(this.user);
 }
+class UserLoggedInState extends UserStates {
+  final User user;
+  UserLoggedInState({required this.user});
+}
