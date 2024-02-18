@@ -34,14 +34,13 @@ class UserController {
     // Once signed in
     final userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
     tryLoginOnOdoo(userCredential.user);
-
     return userCredential.user;
   }
 
   void tryLoginOnOdoo(User? userCredential) {
     String email = userCredential?.email ?? "";
     if(OdooConnect.getUserByEmail(email) != null){
-
+      return true;
     }
   }
   Future<void> signOut() async {

@@ -13,7 +13,6 @@ import 'package:sprint/screens/home_screen.dart';
 /// It also includes buttons for signing in with Google and registering a new account.
 class RegisterScreen extends StatelessWidget {
   RegisterScreen({super.key});
-
   final emeailController = TextEditingController();
   final passwordController = TextEditingController();
   final passwordConfirmController = TextEditingController();
@@ -32,33 +31,6 @@ class RegisterScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
-                child: ElevatedButton(
-                  onPressed: () {
-                    // Aquí va la lógica de inicio de sesión
-                  },
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50.0),
-                    ),
-                  ),
-                  child: TextButton(
-                    onPressed: () async {
-                      try {
-                        final user = UserController().signInWithFacebook();
-                        if (user != null) {
-                          //Trabajar con user
-                          user.then((value) => logger.i("User: $value"));
-                        }
-                      } on FirebaseAuthException catch (e) {
-                        logger.e('FirebaseAuthException: ${e.message}');
-                      }
-                    },
-                    child: const Text("SIGN IN WITH FACEBOOK"),
-                  ),
-                ),
-              ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
                 child: ElevatedButton(
@@ -145,17 +117,23 @@ class RegisterScreen extends StatelessWidget {
     showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (context) => const Center(child: CircularProgressIndicator()));
+        builder: (context) =>
+            const Center(child: CircularProgressIndicator()));
     signUpWithEmailAndPassword(
             email: emeailController.text.trim(),
             password: passwordController.text.trim(),
-            passwordConfirm: passwordConfirmController.text.trim())
+            passwordConfirm:
+                passwordConfirmController.text.trim())
         .catchError((e) {
-      MyDialogExeception(mensage: e.toString()).showDialogWithDelay(context);
+      MyDialogExeception(mensage: e.toString())
+          .showDialogWithDelay(context);
     }).then((value) => {
               if (value)
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => const HomeScreen()))
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            const HomeScreen()))
             });
   }
 }
