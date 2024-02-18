@@ -74,20 +74,33 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text('An email has been sent to your email address.', //TODO: translate
+                const Text(
+                    'An email has been sent to your email address.', //TODO: translate
                     style: TextStyle(fontSize: 20),
                     textAlign: TextAlign.center),
                 const SizedBox(height: 24),
                 CustomElevatedButtonWithText(
                   text: 'Resend Email', //TODO: translate
                   onPressedFunction: () {
+                    showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (context) =>
+                            const Center(child: CircularProgressIndicator()));
                     canResendEmail ? sendVerificationEmail() : null;
+                    Future.delayed(const Duration(seconds: 1), () {
+                      Navigator.pop(context);
+                    });
                   },
                 ),
                 const SizedBox(height: 8),
                 CustomElevatedButtonWithText(
                   text: 'Cancel', // TODO: translate
-                  onPressedFunction: () => FirebaseAuth.instance.signOut(),
+                  onPressedFunction: () => FirebaseAuth.instance.signOut().then(
+                      (value) => Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const LoginScreen()))),
                 ),
               ],
             ),
