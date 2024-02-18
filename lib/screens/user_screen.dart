@@ -1,17 +1,23 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:logger/logger.dart';
 import 'package:sprint/app_localizations.dart';
 import 'package:sprint/bloc/bloc_user/user_bloc.dart';
 import 'package:sprint/bloc/bloc_user/user_event.dart';
 import 'package:sprint/bloc/bloc_user/user_state.dart';
-import 'package:sprint/model/user.dart';
+import 'package:sprint/model/odoo-user.dart';
 import 'package:sprint/model/language.dart';
 
+Logger logger = Logger();
 
 class UserScreen extends StatefulWidget {
-  const UserScreen({super.key});
+  const UserScreen({super.key, this.isEditable = false});
+
+  final bool isEditable;
 
   // Guardamos un avatar predefinido en base64
   final String userDefaultAvatar =
@@ -24,12 +30,23 @@ class UserScreen extends StatefulWidget {
 
 class UserScreenState extends State<UserScreen> {
   bool editable = false;
+  bool _passwordVisible = false;
+  String image = "";
   IconData fabIcon = Icons.edit;
 
-  Widget _UserScreen(BuildContext context, User user) {
+
+  @override
+  void initState() {
+    super.initState();
+    image = widget.userDefaultAvatar;
+    editable = widget.isEditable;
+    fabIcon = editable ? Icons.save : Icons.edit;
+  }
+
+  Widget _UserScreen(BuildContext context, OdooUser user) {
     // Al arrancar la escena guardamos una copia del usuario para poder
     // volver atrás en el modo edición
-    User previousUser = user;
+    OdooUser previousUser = user;
 
     // Controladores para los TextFormField.
     TextEditingController _nameTextFormField =
@@ -40,6 +57,10 @@ class UserScreenState extends State<UserScreen> {
         TextEditingController(text: user.email);
     TextEditingController _languageTextFormField =
         TextEditingController(text: user.lang.toString());
+    TextEditingController _phoneTextFormField =
+      TextEditingController(text: user.phone.toString());
+    //Si cargo la imagen el funcionamiento de edición es raro
+    //image = user.avatar.toString();
 
     return Scaffold(
         // TODO ajustar el comportamiento por defecto al pulsar en un elemento editable
@@ -53,7 +74,7 @@ class UserScreenState extends State<UserScreen> {
             if (editable)
               // Botón de cancelar edición que sólo aparece en modo edición
               FloatingActionButton(
-                child: Icon(Icons.close),
+                child: const Icon(Icons.close),
                 onPressed: () {
                   setState(() {
                     // Salimos del modo edición, cambiamos el icono y regresamos al usuario que habíamos guardado
@@ -71,15 +92,18 @@ class UserScreenState extends State<UserScreen> {
               child: Icon(fabIcon),
               onPressed: () {
                 if (editable) {
-                  context.read<UserBloc>().add(UserInformationChangedEvent(User(
+                  context.read<UserBloc>().add(UserInformationChangedEvent(OdooUser(
                       _emailTextFormField.text,
                       _passwordTextFormField.text,
                       true,
                       _nameTextFormField.text,
                       Language
-                          .enUS))); // TODO cuando implementemos el spinner, recoger el valor seleccionado
+                          .enUS,
+                      user.id,
+                      image,
+                      _phoneTextFormField.text))); // TODO cuando implementemos el spinner, recoger el valor seleccionado
                 }
-                // TODO subir el usuario a la BDD
+                //OdooConnect.modifyUser(context.read<UserBloc>().user);
                 setState(() {
                   editable = !editable;
                   fabIcon = editable ? Icons.save : Icons.edit;
@@ -89,77 +113,133 @@ class UserScreenState extends State<UserScreen> {
           ],
         ),
         body: Center(
-          child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: 40,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  CircleAvatar(
-                    // TODO Cargar el avatar del usuario al pulsar si esta en modo edicion
-                    backgroundImage:
-                        MemoryImage(base64Decode(widget.userDefaultAvatar)),
-                    radius: 100,
-                  ),
-                  Column(
-                    children: [
-                      // NOMBRE DE USUARIO
-                      TextFormField(
-                        controller: _nameTextFormField,
-                        decoration:
-                            InputDecoration(labelText: AppLocalizations.of(context)!.translate("username")),
-                        enabled: editable,
-                      ),
-                      // PASSWORD DE USUARIO
-                      TextFormField(
-                        controller: _passwordTextFormField,
-                        decoration: InputDecoration(
-                            labelText: AppLocalizations.of(context)!.translate("password")),
-                        obscureText: true,
-                        enabled: editable,
-                      ),
-                      // EMAIL DE USUARIO
-                      TextFormField(
-                        controller: _emailTextFormField,
-                        decoration:
-                            InputDecoration(labelText: AppLocalizations.of(context)!.translate("email")),
-                        enabled: editable,
-                      ),
-                      // IDIOMA DE USUARIO
-                      // TODO Custom Spinner
-                      TextFormField(
-                        controller: _languageTextFormField,
-                        decoration: InputDecoration(
-                            labelText: AppLocalizations.of(context)!.translate("switchLanguage")),
-                        enabled: editable,
-                      ),
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      ElevatedButton(
-                          child: Text(AppLocalizations.of(context)!.translate("logout")),
-                          onPressed: () {
-                            // TODO Llamar a la función de Cerrar sesión (Alexandra)
-                          }),
-                      ElevatedButton(
-                          child: Text(AppLocalizations.of(context)!.translate("switchUser")),
-                          onPressed: () {
-                            // TODO Llamar a la función de Cambiar Usuario (Laura)
-
-                          }),
-                      ElevatedButton(
-                          // TODO Falta cambiar el fondo del botón a rojo. Mirar como hacerlo global con el tema
-                          child: Text(AppLocalizations.of(context)!.translate("deleteUser")),
-                          onPressed: () {
-                            // TODO Llamar a la función de Borrar Usuario (Rubén)
-                          }),
-                    ],
-                  ),
-                ],
-              )),
+          child: SingleChildScrollView(
+            child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 40,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    SizedBox(
+                      width: 200,
+                      height: 200,
+                      child: Stack(
+                        children: [
+                          Container(
+                            alignment: Alignment.center,
+                            child: CircleAvatar(
+                              // TODO Cargar el avatar del usuario al pulsar si esta en modo edicion
+                              backgroundImage: MemoryImage(base64Decode(image)),
+                              radius: 100,
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.bottomRight,
+                            child: FloatingActionButton(
+                                onPressed: () async {
+                                  if(editable){
+                                    XFile? file = await ImagePicker().pickImage(
+                                        source: ImageSource.gallery,
+                                        maxWidth: 1920,
+                                        maxHeight: 1200,
+                                        imageQuality: 80);
+                                    if(file != null){
+                                      File temp = File(file.path);
+                                      setState(() {
+                                        final imageEncoded = base64Encode(temp.readAsBytesSync());
+                                        image = imageEncoded;
+                                      });
+                                    }
+                                  }else{
+                                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Edit mode is disabled")));
+                                  }
+                                },
+                                child: const Icon(Icons.photo)
+                            ),
+                          )
+                        ],
+                      )
+                    ),
+                    Column(
+                      children: [
+                        // NOMBRE DE USUARIO
+                        TextFormField(
+                          controller: _nameTextFormField,
+                          decoration:
+                              InputDecoration(labelText: AppLocalizations.of(context)!.translate("username")),
+                          enabled: editable,
+                        ),
+                        // PASSWORD DE USUARIO
+                        TextFormField(
+                          controller: _passwordTextFormField,
+                          decoration: InputDecoration(
+                              labelText: AppLocalizations.of(context)!.translate("password"),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  _passwordVisible ?
+                                      Icons.visibility :
+                                      Icons.visibility_off,
+                                  color: Theme.of(context).primaryColorLight,
+                                ),
+                                onPressed: (){
+                                  setState(() {
+                                    _passwordVisible = !_passwordVisible;
+                                  });
+                                },
+                              )
+                          ),
+                          obscureText: _passwordVisible,
+                          enabled: editable,
+                        ),
+                        // EMAIL DE USUARIO
+                        TextFormField(
+                          controller: _emailTextFormField,
+                          decoration:
+                              InputDecoration(labelText: AppLocalizations.of(context)!.translate("email")),
+                          enabled: editable,
+                        ),
+                        // IDIOMA DE USUARIO
+                        // TODO Custom Spinner
+                        TextFormField(
+                          controller: _languageTextFormField,
+                          decoration: InputDecoration(
+                              labelText: AppLocalizations.of(context)!.translate("switchLanguage")),
+                          enabled: editable,
+                        ),
+                        TextFormField(
+                          controller: _phoneTextFormField,
+                          decoration: InputDecoration(
+                              labelText: AppLocalizations.of(context)!.translate("phoneInput")),
+                          enabled: editable,
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20,),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        ElevatedButton(
+                            child: Text(AppLocalizations.of(context)!.translate("logout")),
+                            onPressed: () {
+                              // TODO Llamar a la función de Cerrar sesión (Alexandra)
+                            }),
+                        ElevatedButton(
+                            child: Text(AppLocalizations.of(context)!.translate("switchUser")),
+                            onPressed: () {
+                              // TODO Llamar a la función de Cambiar Usuario (Laura)
+                            }),
+                        ElevatedButton(
+                            // TODO Falta cambiar el fondo del botón a rojo. Mirar como hacerlo global con el tema
+                            child: Text(AppLocalizations.of(context)!.translate("deleteUser")),
+                            onPressed: () {
+                              // TODO Llamar a la función de Borrar Usuario (Rubén)
+                            }),
+                      ],
+                    ),
+                  ],
+                )),
+          ),
         ));
   }
 
@@ -167,7 +247,7 @@ class UserScreenState extends State<UserScreen> {
   Widget build(BuildContext context) {
     return BlocBuilder<UserBloc, UserStates>(builder: (context, state) {
       if (state is InitialState) {
-        User user = User("USER_EMAIL", "USER_PASS", false, "USER_NAME",
+        OdooUser user = OdooUser("USER_EMAIL", "USER_PASS", false, "USER_NAME",
             Language.esES, null, widget.userDefaultAvatar);
         return _UserScreen(context, user);
       }

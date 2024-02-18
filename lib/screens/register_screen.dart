@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sprint/app_localizations.dart';
+import '../Controller/user_controller.dart';
 
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});
@@ -29,7 +31,19 @@ class RegisterScreen extends StatelessWidget {
                       
                     ),
                   ),
-                  child: const Text('Google'),
+                  child: TextButton(
+                    onPressed: () async {
+                      try {
+                        final user = UserController().signInWithGoogle();
+                        if (user != null) {
+                            //Trabajar con user
+                            user.then((value) => print(value));
+                        }
+                      } on FirebaseAuthException catch (e) {
+                        print("Error: ${e}");
+                      }
+                    }, child: Text("SIGN IN WITH GOOGLE"),
+                  ),
                 ),
               ),
               TextFormField(

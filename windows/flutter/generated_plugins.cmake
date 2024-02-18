@@ -3,9 +3,10 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  file_selector_windows
   firebase_auth
   firebase_core
-  flutter_localization
+  geolocator_windows
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST
