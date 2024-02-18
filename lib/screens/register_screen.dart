@@ -46,7 +46,7 @@ class RegisterScreen extends StatelessWidget {
                   child: TextButton(
                     onPressed: () async {
                       try {
-                        final user = UserController().signInWithGoogle();
+                        final user = UserController().signInWithFacebook();
                         if (user != null) {
                           //Trabajar con user
                           user.then((value) => logger.i("User: $value"));
