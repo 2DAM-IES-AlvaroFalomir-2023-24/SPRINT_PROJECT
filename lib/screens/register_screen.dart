@@ -2,16 +2,11 @@ import 'package:bcrypt/bcrypt.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:provider/provider.dart';
 import 'package:sprint/app_localizations.dart';
-import 'package:sprint/bloc/social_sign_and_login.dart';
 import 'package:sprint/widget/veify_email_dialog.dart';
 import 'package:sprint/widget/custom_elevated_button_with_text.dart';
 import 'package:sprint/widget/show_dialog_exeception.dart';
 import 'package:sprint/bloc/register_bloc.dart';
-import 'package:sprint/screens/home_screen.dart';
-
-import '../widget/custom_elevated_button_iconified_with_text.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -47,52 +42,16 @@ class RegisterScreenState extends State<RegisterScreen> {
                         child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 16.0),
-                                child: CustomElevatedButtonIconifiedWithText(
-                                  onPressedFunction: () async {
-                                    final provider =
-                                    Provider.of<SingAndLoginClass>(context,
-                                        listen: false);
-
-                                    if (await provider.signInWithFacebook()) {
-                                      Navigator.of(context).pushReplacement(
-                                        MaterialPageRoute(
-                                          builder: (context) => const HomeScreen(),
-                                        ),
-                                      );
-                                    }
-                                  },
-                                  text: 'Facebook',
-                                  icon: Image.asset("assets/facebook_logo.png", scale: 20),
-                                )
-                              ),
-                              Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                                  child: CustomElevatedButtonIconifiedWithText(
-                                    onPressedFunction: () async {
-                                      final provider = Provider.of<SingAndLoginClass>(context,listen: false);
-                                      if (await provider.googleLogin()) {
-                                        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const HomeScreen()),);
-                                      }
-                                    },
-                                    text: AppLocalizations.of(context)!
-                                        .translate('signInGoogle'),
-                                    icon: Image.asset("assets/google_logo.png", scale: 20)
-                                  )
-                              ),
-                                      TextFormField(
-                                      controller: nameController,
-                                      cursorColor: Theme.of(context).primaryColor,
-                                      textInputAction: TextInputAction.next,
-                                      decoration: InputDecoration(
-                                      icon: const Icon(Icons.person),
-                                      hintText: AppLocalizations.of(context)!
-                                          .translate('usernameHintText'),
-                                      labelText:
-                                       AppLocalizations.of(context)!
-                                        .translate('username'),
+                              TextFormField(
+                                  controller: nameController,
+                                  cursorColor: Theme.of(context).primaryColor,
+                                  textInputAction: TextInputAction.next,
+                                  decoration: InputDecoration(
+                                    icon: const Icon(Icons.person),
+                                    hintText: AppLocalizations.of(context)!
+                                        .translate('usernameHintText'),
+                                    labelText:
+                                    AppLocalizations.of(context)!.translate('username'),
                                   ),
                                   autovalidateMode:
                                       AutovalidateMode.onUserInteraction,

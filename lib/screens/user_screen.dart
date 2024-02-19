@@ -12,7 +12,6 @@ import 'package:sprint/model/odoo-user.dart';
 import 'package:sprint/model/language.dart';
 import 'package:sprint/widget/custom_elevated_button_iconified.dart';
 
-import 'package:sprint/data/odoo_connect.dart';
 import 'login_screen.dart';
 
 Logger logger = Logger();
@@ -57,7 +56,7 @@ class UserScreenState extends State<UserScreen> {
         TextEditingController(text: user.lang.toString());
     TextEditingController _phoneTextFormField =
       TextEditingController(text: user.phone.toString());
-    if(user.avatar.isNotEmpty){
+    if(user.avatar.isNotEmpty && userCustomAvatarEncoded.isEmpty){
       userCustomAvatarEncoded = user.avatar;
       userCustomAvatar = MemoryImage(base64Decode(userCustomAvatarEncoded));
     }
@@ -104,7 +103,6 @@ class UserScreenState extends State<UserScreen> {
                       userCustomAvatarEncoded,
                       _phoneTextFormField.text))); // TODO cuando implementemos el spinner, recoger el valor seleccionado
                 }
-                logger.i(context.read<UserBloc>().user.toJson());
                 //OdooConnect.modifyUser(context.read<UserBloc>().user);
                 setState(() {
                   editable = !editable;
@@ -132,7 +130,7 @@ class UserScreenState extends State<UserScreen> {
                             alignment: Alignment.center,
                             child: CircleAvatar(
                               foregroundImage: userCustomAvatar,
-                              backgroundImage: AssetImage('assets/user_default_avatar.png'),
+                              backgroundImage: const AssetImage('assets/user_default_avatar.png'),
                               radius: 100,
                             ),
                           ),
@@ -143,10 +141,7 @@ class UserScreenState extends State<UserScreen> {
                                   // Cargamos el avatar y lo codificamos en base64
                                   if(editable){
                                     XFile? file = await ImagePicker().pickImage(
-                                        source: ImageSource.gallery,
-                                        maxWidth: 1920,
-                                        maxHeight: 1200,
-                                        imageQuality: 80);
+                                        source: ImageSource.gallery);
                                     if(file != null){
                                       File temp = File(file.path);
                                       setState(() {
@@ -155,7 +150,7 @@ class UserScreenState extends State<UserScreen> {
                                       });
                                     }
                                   }else{
-                                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Edit mode is disabled")));
+                                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Edit mode is disabled")));//TODO - translate
                                   }
                                 },
                                 child: const Icon(Icons.photo)
@@ -216,6 +211,7 @@ class UserScreenState extends State<UserScreen> {
                           decoration: InputDecoration(
                               labelText: AppLocalizations.of(context)!.translate("phoneInput")),
                           enabled: editable,
+                          keyboardType: TextInputType.phone,
                         ),
                       ],
                     ),

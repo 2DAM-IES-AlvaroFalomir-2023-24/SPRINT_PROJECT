@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sprint/screens/home_screen.dart';
 import 'package:sprint/screens/register_screen.dart';
 import 'package:sprint/app_localizations.dart';
 
-import '../widget/custom_elevated_button_with_text.dart';
+import 'package:sprint/bloc/social_sign_and_login.dart';
+import 'package:sprint/widget/custom_elevated_button_iconified_with_text.dart';
+import 'package:sprint/widget/custom_elevated_button_with_text.dart';
 
 class LoginScreen extends StatefulWidget{
   const LoginScreen({super.key});
@@ -36,6 +39,41 @@ class LoginScreenState extends State<LoginScreen>{
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 20.0),
                   child: Image.asset("assets/odoo_logo.png", fit: BoxFit.cover, scale: 3),
+                ),
+                Padding(
+                    padding:
+                    const EdgeInsets.symmetric(vertical: 16.0),
+                    child: CustomElevatedButtonIconifiedWithText(
+                      onPressedFunction: () async {
+                        final provider =
+                        Provider.of<SingAndLoginClass>(context,
+                            listen: false);
+
+                        if (await provider.signInWithFacebook()) {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => const HomeScreen(),
+                            ),
+                          );
+                        }
+                      },
+                      text: 'Facebook',
+                      icon: Image.asset("assets/facebook_logo.png", scale: 20),
+                    )
+                ),
+                Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    child: CustomElevatedButtonIconifiedWithText(
+                        onPressedFunction: () async {
+                          final provider = Provider.of<SingAndLoginClass>(context,listen: false);
+                          if (await provider.googleLogin()) {
+                            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const HomeScreen()),);
+                          }
+                        },
+                        text: AppLocalizations.of(context)!
+                            .translate('signInGoogle'),
+                        icon: Image.asset("assets/google_logo.png", scale: 20)
+                    )
                 ),
                 TextFormField(
                   decoration: InputDecoration(
