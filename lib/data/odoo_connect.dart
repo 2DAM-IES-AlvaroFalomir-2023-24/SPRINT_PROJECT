@@ -60,8 +60,6 @@ class OdooConnect{
         var temp = convert.jsonEncode(res[0]);
         found = OdooUser.fromJson(convert.jsonDecode(temp));
       }
-      print("--------------FOUND USER----------------");
-      print(found);
     }catch(a){logger.e(a);}
     return found;
   }
@@ -78,7 +76,6 @@ class OdooConnect{
           {
             'name': user.name,
             'login': user.email,
-            'password': user.password,
             'email': user.email,
             'lang': user.lang.name,
             'image_1920': user.avatar,
