@@ -8,8 +8,13 @@ import 'package:sprint/data/odoo_connect.dart';
 import 'package:sprint/model/odoo-user.dart' as User;
 import 'package:crypto/crypto.dart';
 import 'dart:convert';
+import 'package:provider/provider.dart';
+import 'package:sprint/bloc/bloc_user/user_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sprint/model/language.dart';
+import 'package:sprint/bloc/bloc_user/user_event.dart';
 
-import '../model/language.dart';
+
 
 class SingAndLoginClass extends ChangeNotifier {
   final googleSignIn = GoogleSignIn();
@@ -19,7 +24,7 @@ class SingAndLoginClass extends ChangeNotifier {
   GoogleSignInAccount? _user;
   GoogleSignInAccount get user => _user!;
 
-  Future<bool> signInWithFacebook() async {
+  Future<bool> signInWithFacebook(BuildContext context) async {
     try {
       final LoginResult loginResult = await FacebookAuth.instance.login();
 
@@ -31,7 +36,7 @@ class SingAndLoginClass extends ChangeNotifier {
       auth.User userCredential = (await FirebaseAuth.instance
               .signInWithCredential(facebookAuthCredential))
           .user!;
-      tryLoginOnOdoo(userCredential);
+      tryLoginOnOdoo(userCredential, context);
 
       return true;
     } catch (e) {
@@ -40,7 +45,7 @@ class SingAndLoginClass extends ChangeNotifier {
     }
   }
 
-  Future<bool> googleLogin() async {
+  Future<bool> googleLogin(BuildContext context) async {
     try {
       //Vamos a esperar a que el usuario seleccione su cuenta de google
       final googleUser = await googleSignIn.signIn();
@@ -62,7 +67,7 @@ class SingAndLoginClass extends ChangeNotifier {
       print(_user?.email);
 
       //Comprobamos si el usuario ya existe en la base de datos para saber si lo tenemos que registrar o iniciar sesión
-      await tryLoginOnOdoo(_user as auth.User);
+      await tryLoginOnOdoo(_user as auth.User,context);
       return true;
     } catch (ex) {
       logger.i(ex);
@@ -70,9 +75,9 @@ class SingAndLoginClass extends ChangeNotifier {
     }
   }
 
-  Future<void> tryLoginOnOdoo(auth.User user) async {
+  Future<void> tryLoginOnOdoo(auth.User user, BuildContext context) async {
     if (await comprobarInicioSesion(_user!.email)) {
-      print("El usuario ya existe");
+      context.read<UserBloc>().add((UserInformationChangedEvent(OdooConnect.getUserByEmail(_user!.email) as User.OdooUser)));
     } else {
       //llamamos al metodo que nos va a permitir crear un usuario en la base de datos
       //pasandole el usuario que nos devuelve el metodo que parsea la informacion del usuario de google

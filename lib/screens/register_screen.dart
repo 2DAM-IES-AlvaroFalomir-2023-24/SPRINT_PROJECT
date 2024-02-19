@@ -1,14 +1,17 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:sprint/app_localizations.dart';
 import 'package:sprint/bloc/google_sign_in.dart';
+import 'package:sprint/bloc/bloc_user/user_bloc.dart';
+import 'package:sprint/bloc/bloc_user/user_state.dart';
 import 'package:sprint/widget/custom_elevated_button_with_text.dart';
 import 'package:sprint/widget/show_dialog_exeception.dart';
-import 'package:sprint/Controller/user_controller.dart';
 import 'package:sprint/bloc/register_bloc.dart';
 import 'package:sprint/screens/home_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sprint/model/odoo-user.dart';
+import 'package:sprint/model/language.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -27,6 +30,19 @@ class RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<UserBloc, UserStates>(builder: (context, state) {
+      if (state is InitialState) {
+        return _UserScreen(context);
+      }
+      if (state is UpdateState) {
+        return _UserScreen(context);
+      }
+      return Container();
+    });
+  }
+
+  @override
+  Widget _UserScreen(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: Text(AppLocalizations.of(context)!.translate('register')),
@@ -46,8 +62,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                                 final provider = Provider.of<SingAndLoginClass>(
                                     context,
                                     listen: false);
-
-                                if (await provider.signInWithFacebook()) {
+                                if (await provider.signInWithFacebook(context)) {
                                   Navigator.of(context).pushReplacement(
                                     MaterialPageRoute(
                                       builder: (context) => HomeScreen(),
@@ -74,7 +89,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                                       Provider.of<SingAndLoginClass>(context,
                                           listen: false);
 
-                                  if (await provider.googleLogin()) {
+                                  if (await provider.googleLogin(context,)) {
                                     Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(
                                         builder: (context) => HomeScreen(),
@@ -82,7 +97,8 @@ class RegisterScreenState extends State<RegisterScreen> {
                                     );
                                   }
                                 },
-                              )),
+                              )
+                          ),
                           TextFormField(
                             controller: emeailController,
                             cursorColor: Theme.of(context).primaryColor,
@@ -133,21 +149,26 @@ class RegisterScreenState extends State<RegisterScreen> {
                             ),
                             onTap: () {
                               setState(() {
-                                _confirmPasswordVisible =
-                                    !_confirmPasswordVisible;
-                              });
+                                _confirmPasswordVisible = !_confirmPasswordVisible;
+                              }
+                              );
                             },
                           ),
                           Padding(
                               padding:
                                   const EdgeInsets.symmetric(vertical: 16.0),
                               child: CustomElevatedButtonWithText(
-                                text: AppLocalizations.of(context)!
-                                    .translate('register'),
+                                text: AppLocalizations.of(context)!.translate('register'),
                                 onPressedFunction: () => signUp(context),
                               ))
-                        ])))));
+                        ]
+                    )
+                )
+            )
+        )
+    );
   }
+
 
   void signUp(BuildContext context) {
     showDialog(
@@ -165,6 +186,8 @@ class RegisterScreenState extends State<RegisterScreen> {
               if (value)
                 Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (context) => const HomeScreen()))
-            });
+            }
+            );
   }
+
 }
