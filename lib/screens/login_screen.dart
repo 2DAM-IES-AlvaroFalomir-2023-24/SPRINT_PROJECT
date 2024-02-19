@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:sprint/bloc/nopassword_login.dart';
 import 'package:sprint/screens/home_screen.dart';
 import 'package:sprint/screens/register_screen.dart';
 import 'package:sprint/app_localizations.dart';
@@ -15,6 +17,7 @@ class LoginScreen extends StatefulWidget{
 class LoginScreenState extends State<LoginScreen>{
 
   late bool _passwordVisible;
+  late TextEditingController emailController;
 
   @override
   void initState() {
@@ -80,8 +83,18 @@ class LoginScreenState extends State<LoginScreen>{
                   height: 50,
                   width: 200,
                   child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => const HomeScreen()));
+                    onPressed: () async {
+                      final provider =
+                      Provider.of<NoPasswordLogin>(context,
+                          listen: false);
+
+                      if (await provider.singWithoutPass(emailController.text)) {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => const HomeScreen(),
+                          ),
+                        );
+                      }
                     },
                     child: Text(AppLocalizations.of(context)!.translate('loginWithoutPassword')),
                   ),
