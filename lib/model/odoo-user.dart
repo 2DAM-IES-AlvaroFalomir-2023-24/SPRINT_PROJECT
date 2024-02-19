@@ -42,7 +42,7 @@ class OdooUser{
   }
 
   bool isMissingData(){
-    return avatar.isEmpty || phone.isEmpty;
+    return avatar == "false" || phone == "null";
   }
 
 }

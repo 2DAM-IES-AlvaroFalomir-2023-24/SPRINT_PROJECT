@@ -1,6 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sprint/app_localizations.dart';
+import 'package:sprint/bloc/bloc_user/user_bloc.dart';
+import 'package:sprint/bloc/bloc_user/user_event.dart';
+import 'package:sprint/data/odoo_connect.dart';
 import 'package:sprint/screens/home_screen.dart';
 import 'package:sprint/screens/login_screen.dart';
 
@@ -15,9 +19,16 @@ class VerifyAuthWidget extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return  Center(child: Text(AppLocalizations.of(context)!.translate('authError')));
+            return Center(
+                child:
+                    Text(AppLocalizations.of(context)!.translate('authError')));
           } else if (snapshot.hasData) {
-            return HomeScreen();
+            OdooConnect.getUserByEmail(snapshot.data!.email!).then((value) =>
+                context
+                    .read<UserBloc>()
+                    .add(UserInformationChangedEvent(value!)));
+
+            return const HomeScreen();
           } else {
             return const LoginScreen();
           }
