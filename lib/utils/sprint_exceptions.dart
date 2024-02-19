@@ -56,3 +56,23 @@ class PasswordsDoNotMatchException implements Exception {
   @override
   String toString() => message;
 }
+
+class EmailNotVerifiedException implements Exception {
+  EmailNotVerifiedException(BuildContext context)
+      : message = 'Your email has not been verified. Please verify your email.'; // TODO: Translate
+
+  final String message;
+
+  @override
+  String toString() => message;
+}
+
+class EmailNotSentException implements Exception {
+  EmailNotSentException(BuildContext context)
+      : message = 'The email could not be sent. Please try again later.'; //TODO: Translate
+
+  final String message;
+
+  @override
+  String toString() => message;
+}
