@@ -28,6 +28,7 @@
   "usernameHintText": "Introduce your username",
   "language": "Language",
   "email": "Email",
+  "emailHintText": "Introduce your email",
   "userProfile": "User Profile",
   "switchLanguage": "Switch Language",
   "phoneInput": "Set phone",
@@ -45,5 +46,6 @@
   "authError": "Authentication error.",
   "netError": "Internet connection error.",
   "validationError": "Validation error.",
-  "genericSprintError": "Generic Sprint error."
+  "genericSprintError": "Generic Sprint error.",
+  "userNotExist": "User does not exist"
 }

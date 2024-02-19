@@ -42,7 +42,9 @@ class HomeScreenState extends State<HomeScreen> {
     return BlocBuilder<UserBloc, UserStates>(builder: (context, state) {
       if (state is UpdateState) {
         user = state.user;
-        userImage = MemoryImage(base64Decode(user.avatar));
+        if(user.avatar != 'false'){
+          userImage = MemoryImage(base64Decode(user.avatar));
+        }
       } else {
         user = OdooUser("Default", "password", false, "Default", Language.enUS);
       }
@@ -64,26 +66,29 @@ class HomeScreenState extends State<HomeScreen> {
             appBar: AppBar(
                 actions: [
                   PopupMenuButton(
-                    icon: CircleAvatar(
-                      foregroundImage: userImage,
-                      backgroundImage:
-                          const AssetImage("assets/user_default_avatar.png"),
-                    ),
-                    itemBuilder: (context) =>
-                        List.generate(userList.length, (index) {
-                      OdooUser userIndex = userList[index];
-                      return PopupMenuItem(
-                          value: userIndex,
-                          child: Row(children: [
-                            CircleAvatar(
-                              foregroundImage:
-                                  MemoryImage(base64Decode(userIndex.avatar)),
-                              backgroundImage: const AssetImage(
-                                  "assets/user_default_avatar.png"),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 10.0),
-                              child: Text(userIndex.name),
+                      icon: CircleAvatar(
+                        foregroundImage: userImage,
+                        backgroundImage: const AssetImage("assets/user_default_avatar.png"),
+                      ),
+                      itemBuilder: (context) => List.generate(userList.length, (index) {
+                        OdooUser userIndex = userList[index];
+                        ImageProvider? avatar = userIndex.avatar != "false" ? MemoryImage(
+                            base64Decode(userIndex.avatar)) : null;
+                        return PopupMenuItem(
+                            value: userIndex,
+                            child: Row(
+                                children: [
+                                  CircleAvatar(
+                                    foregroundImage: avatar,
+                                    backgroundImage: const AssetImage(
+                                        "assets/user_default_avatar.png"),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 10.0),
+                                    child: Text(userIndex.name),
+                                  )
+                                ]
                             )
                           ]));
                     }),

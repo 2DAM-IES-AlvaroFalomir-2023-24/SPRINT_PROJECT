@@ -1,4 +1,3 @@
-import 'package:bcrypt/bcrypt.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
@@ -150,9 +149,6 @@ class RegisterScreenState extends State<RegisterScreen> {
     final isValid = formKey.currentState!.validate();
     if (!isValid) return;
 
-    String passHashed =
-        BCrypt.hashpw(passwordController.text, BCrypt.gensalt());
-
     showDialog(
         context: context,
         barrierDismissible: false,
@@ -160,7 +156,7 @@ class RegisterScreenState extends State<RegisterScreen> {
     signUpWithEmailAndPassword(
             name: nameController.text.trim(),
             email: emeailController.text.trim(),
-            password: passHashed,
+            password: passwordController.text.trim(),
             context: context)
         .catchError((e) {
       MyDialogExeception(message: e.toString()).showDialogWithDelay(context);

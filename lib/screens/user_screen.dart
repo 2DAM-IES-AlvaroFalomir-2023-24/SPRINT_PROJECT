@@ -12,6 +12,7 @@ import 'package:sprint/model/odoo-user.dart';
 import 'package:sprint/model/language.dart';
 import 'package:sprint/widget/custom_elevated_button_iconified.dart';
 
+import 'package:sprint/data/odoo_connect.dart';
 import 'login_screen.dart';
 
 Logger logger = Logger();
@@ -27,7 +28,6 @@ class UserScreen extends StatefulWidget {
 
 class UserScreenState extends State<UserScreen> {
   bool editable = false;
-  bool _passwordVisible = false;
   ImageProvider? userCustomAvatar;
   String userCustomAvatarEncoded = "";
   IconData fabIcon = Icons.edit;
@@ -48,21 +48,16 @@ class UserScreenState extends State<UserScreen> {
     // Controladores para los TextFormField.
     TextEditingController _nameTextFormField =
         TextEditingController(text: user.name);
-    TextEditingController _passwordTextFormField =
-        TextEditingController(text: user.password);
     TextEditingController _emailTextFormField =
         TextEditingController(text: user.email);
-    TextEditingController _languageTextFormField =
-        TextEditingController(text: user.lang.toString());
     TextEditingController _phoneTextFormField =
-      TextEditingController(text: user.phone.toString());
-    if(user.avatar.isNotEmpty && userCustomAvatarEncoded.isEmpty){
+      TextEditingController(text: user.phone != "null" ? user.phone.toString() : "");
+    if(user.avatar != "false" && userCustomAvatarEncoded.isEmpty){
       userCustomAvatarEncoded = user.avatar;
       userCustomAvatar = MemoryImage(base64Decode(userCustomAvatarEncoded));
     }
 
     return Scaffold(
-        // TODO ajustar el comportamiento por defecto al pulsar en un elemento editable
         appBar: AppBar(
           backgroundColor: Theme.of(context).focusColor,
           title: Text(AppLocalizations.of(context)!.translate("userProfile")),
@@ -92,18 +87,18 @@ class UserScreenState extends State<UserScreen> {
               child: Icon(fabIcon),
               onPressed: () {
                 if (editable) {
-                  context.read<UserBloc>().add(UserInformationChangedEvent(OdooUser(
+                  OdooUser temp = OdooUser(
                       _emailTextFormField.text,
-                      _passwordTextFormField.text,
+                      "",
                       true,
                       _nameTextFormField.text,
-                      Language
-                          .enUS,
+                      user.lang,
                       user.id,
                       userCustomAvatarEncoded,
-                      _phoneTextFormField.text))); // TODO cuando implementemos el spinner, recoger el valor seleccionado
+                      _phoneTextFormField.text);
+                  context.read<UserBloc>().add(UserInformationChangedEvent(temp));
+                  OdooConnect.modifyUser(temp);
                 }
-                //OdooConnect.modifyUser(context.read<UserBloc>().user);
                 setState(() {
                   editable = !editable;
                   fabIcon = editable ? Icons.save : Icons.edit;
@@ -169,28 +164,6 @@ class UserScreenState extends State<UserScreen> {
                               InputDecoration(labelText: AppLocalizations.of(context)!.translate("username")),
                           enabled: editable,
                         ),
-                        // PASSWORD DE USUARIO
-                        TextFormField(
-                          controller: _passwordTextFormField,
-                          decoration: InputDecoration(
-                              labelText: AppLocalizations.of(context)!.translate("password"),
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  _passwordVisible ?
-                                      Icons.visibility :
-                                      Icons.visibility_off,
-                                  color: Theme.of(context).primaryColorLight,
-                                ),
-                                onPressed: (){
-                                  setState(() {
-                                    _passwordVisible = !_passwordVisible;
-                                  });
-                                },
-                              )
-                          ),
-                          obscureText: !_passwordVisible,
-                          enabled: editable,
-                        ),
                         // EMAIL DE USUARIO
                         TextFormField(
                           controller: _emailTextFormField,
@@ -199,12 +172,10 @@ class UserScreenState extends State<UserScreen> {
                           enabled: editable,
                         ),
                         // IDIOMA DE USUARIO
-                        // TODO Custom Spinner
                         TextFormField(
-                          controller: _languageTextFormField,
                           decoration: InputDecoration(
                               labelText: AppLocalizations.of(context)!.translate("switchLanguage")),
-                          enabled: editable,
+                          enabled: false,
                         ),
                         TextFormField(
                           controller: _phoneTextFormField,

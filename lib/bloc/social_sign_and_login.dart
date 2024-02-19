@@ -62,7 +62,7 @@ class SingAndLoginClass extends ChangeNotifier {
       print(_user?.email);
 
       //Comprobamos si el usuario ya existe en la base de datos para saber si lo tenemos que registrar o iniciar sesión
-      await tryLoginOnOdoo(_user as auth.User);
+      await tryLoginOnOdoo(_user);
       return true;
     } catch (ex) {
       logger.i(ex);
@@ -70,7 +70,7 @@ class SingAndLoginClass extends ChangeNotifier {
     }
   }
 
-  Future<void> tryLoginOnOdoo(auth.User user) async {
+  Future<void> tryLoginOnOdoo(user) async {
     if (await comprobarInicioSesion(_user!.email)) {
       print("El usuario ya existe");
     } else {
