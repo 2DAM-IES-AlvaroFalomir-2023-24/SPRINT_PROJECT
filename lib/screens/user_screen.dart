@@ -231,6 +231,12 @@ class UserScreenState extends State<UserScreen> {
                             icon: const Icon(Icons.change_circle),
                             onPressedFunction: (){
                               // TODO Llamar a la función de Cambiar Usuario (Laura)
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return UserListDialog();
+                                },
+                              );
                             },
                             hintText: AppLocalizations.of(context)!.translate("switchUser")
                         ),
@@ -264,5 +270,48 @@ class UserScreenState extends State<UserScreen> {
       }
       return Container();
     });
+  }
+}
+class UserListDialog extends StatefulWidget {
+  @override
+  _UserListDialogState createState() => _UserListDialogState();
+}
+
+class _UserListDialogState extends State<UserListDialog> {
+  String? selectedUser; // Estado para almacenar el usuario seleccionado
+
+  final List<String> users = ['user1', 'user2', 'user3', 'user4', 'user5', 'user6'];
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text('Lista de Usuarios'),
+      content: Container(
+        width: double.maxFinite,
+        child: ListView.builder(
+          shrinkWrap: true,
+          itemCount: users.length,
+          itemBuilder: (BuildContext context, int index) {
+            return ListTile(
+              title: Text(users[index]),
+              onTap: () {
+                setState(() {
+                  // Actualizar el usuario seleccionado cuando se hace clic en un usuario de la lista
+                  selectedUser = users[index];
+                });
+              },
+            );
+          },
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: Text('Cerrar'),
+        ),
+      ],
+    );
   }
 }
