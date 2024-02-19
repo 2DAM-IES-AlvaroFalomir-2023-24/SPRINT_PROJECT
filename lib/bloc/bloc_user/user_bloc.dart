@@ -2,7 +2,7 @@ import 'package:sprint/bloc/bloc_user/user_event.dart';
 import 'package:sprint/bloc/bloc_user/user_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sprint/model/language.dart';
-import 'package:sprint/model/user.dart';
+import 'package:sprint/model/odoo-user.dart';
 
     // Contiene la lógica de negocio del Bloc.
     //
@@ -16,7 +16,7 @@ import 'package:sprint/model/user.dart';
 
 class UserBloc extends Bloc<UserEvents, UserStates> {
   int counter = 0;
-  User user = User("email", "password", false, "name", Language.esES);  // Estado inicial del usuario. Este es el usuario que almacena toda la información dentro de la app
+  OdooUser user = OdooUser("email", "password", false, "name", Language.esES);  // Estado inicial del usuario. Este es el usuario que almacena toda la información dentro de la app
 
   UserBloc() : super(InitialState()) {
     on<UserInformationChangedEvent>(onUserInformationChanged);

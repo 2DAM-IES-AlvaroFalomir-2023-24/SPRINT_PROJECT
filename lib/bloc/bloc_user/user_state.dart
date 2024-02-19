@@ -7,13 +7,17 @@
 // El UpdateState representa el estado actualizado, donde el contador se ha incrementado
 
 import '../../model/language.dart';
-import '../../model/user.dart';
+import '../../model/odoo-user.dart';
 
 class UserStates {}
 
 class InitialState extends UserStates {}
 
 class UpdateState extends UserStates {
-  final User user;
+  final OdooUser user;
   UpdateState(this.user);
+}
+class UserLoggedInState extends UserStates {
+  final OdooUser user;
+  UserLoggedInState({required this.user});
 }

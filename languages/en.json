@@ -28,5 +28,22 @@
   "language": "Language",
   "email": "Email",
   "userProfile": "User Profile",
-  "switchLanguage": "Switch Language"
+  "switchLanguage": "Switch Language",
+  "phoneInput": "Set phone",
+  "location": "Location",
+  "welcomeText": "Welcome",
+  "welcomeText2": "This is your home page.",
+  "useMenu": "Use the menu (",
+  "useMenu2": ") at the top right corner to display user options.",
+  "missingDataTitle": "Missing Data",
+  "missingDataContent": "There's missing data in your account, tap here and fill it up to complete your account.",
+  "dontHaveAccount": "Don't have an account?",
+  "signInWithGoogle": "SIGN IN WITH GOOGLE",
+  "passLengthOrWeak": "Password must have at least 6 characters, an uppercase letter and a number.",
+  "passesNotMatch": "Passwords do not match.",
+  "emailAlreadyInUse": "Email is already in use by another account.",
+  "authError": "Authentication error.",
+  "netError": "Internet connection error.",
+  "validationError": "Validation error.",
+  "genericSprintError": "Generic Sprint error."
 }

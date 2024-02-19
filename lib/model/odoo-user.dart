@@ -1,17 +1,18 @@
 import 'package:sprint/model/language.dart';
 
-class User{
-  const User(this.email, this.password, this.active, this.name, this.lang, [this.id, this.avatar = ""]);
+class OdooUser{
+  OdooUser(this.email, this.password, this.active, this.name, this.lang, [this.id, this.avatar = "", this.phone = ""]);
   final int? id;
   final String email;
   final String password;
   final bool active;
   final String name;
-  final String avatar;
+  String avatar;
+  String phone;
   final Language lang;
 
-  static User fromJson(dynamic json){
-    return User(
+  static OdooUser fromJson(dynamic json){
+    return OdooUser(
       json['email'].toString(),
       json['password'].toString(),
       json['active'] as bool,
@@ -19,6 +20,7 @@ class User{
       Language.setLanguageByString(json['lang'].toString()),
       json['id'] as int,
       json['image_1920'].toString(),
+      json['phone'].toString()
     );
   }
 
@@ -34,8 +36,13 @@ class User{
       'name': name,
       'email': email,
       'lang': lang.name,
-      'image_1920': avatar
+      'image_1920': avatar,
+      'phone': phone
     };
+  }
+
+  bool isMissingData(){
+    return avatar.isEmpty || phone.isEmpty;
   }
 
 }
