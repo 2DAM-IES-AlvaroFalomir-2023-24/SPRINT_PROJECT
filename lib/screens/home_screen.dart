@@ -45,13 +45,8 @@ class HomeScreenState extends State<HomeScreen> {
       } else {
         user = OdooUser("Default", "password", false, "Default", Language.enUS);
       }
-
-      String base64 = "";
-      rootBundle.load("assets/user_default_avatar.png").then((value) => base64 = base64Encode(Uint8List.view(value.buffer)));
-
       userList = [
-        user,
-        OdooUser("user", "user", true, "user", Language.enUS, null, base64)
+        user
       ];
 
       Future.delayed(Duration.zero, () {
