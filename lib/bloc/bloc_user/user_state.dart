@@ -6,10 +6,13 @@
 // En este caso tenemos un contador con un estado incial de 0.
 // El UpdateState representa el estado actualizado, donde el contador se ha incrementado
 
-import '../../model/language.dart';
 import '../../model/odoo-user.dart';
 
 class UserStates {}
+
+// Define estados para el éxito o fracaso de la eliminación de usuario
+class UserDeleteSuccess extends UserStates {}
+class UserDeleteFailure extends UserStates {}
 
 class InitialState extends UserStates {}
 
