@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:sprint/app_localizations.dart';
 import 'package:sprint/screens/home_screen.dart';
 import 'package:sprint/screens/login_screen.dart';
 
@@ -14,7 +15,7 @@ class VerifyAuthWidget extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return const Center(child: Text('Error de autenticación'));
+            return  Center(child: Text(AppLocalizations.of(context)!.translate('authError')));
           } else if (snapshot.hasData) {
             return HomeScreen();
           } else {

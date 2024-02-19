@@ -45,5 +45,13 @@
   "authError": "Authentication error.",
   "netError": "Internet connection error.",
   "validationError": "Validation error.",
-  "genericSprintError": "Generic Sprint error."
+  "genericSprintError": "Generic Sprint error.",
+  "nameCantBeEmpty": "Name can't be empty.",
+  "editModeOff": "Edit mode off.",
+  "verifyEmail": "Verify your email",
+  "emailSent": "An email has been sent to your email address.",
+  "resendEmail": "Resend email",
+  "accept": "Accept",
+  "verifyEmailError": "Your email has not been verified.",
+  "emailCantSent": "The email could not be sent."
 }

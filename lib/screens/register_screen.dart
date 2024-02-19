@@ -107,7 +107,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                                       AutovalidateMode.onUserInteraction,
                                   validator: (name) => name != null &&
                                           name.isEmpty
-                                      ? 'The name can\'t be empty' //TODO: Translate
+                                      ? AppLocalizations.of(context)?.translate("nameCantBeEmpty")
                                       : null),
                               TextFormField(
                                   controller: emeailController,
@@ -115,14 +115,14 @@ class RegisterScreenState extends State<RegisterScreen> {
                                   textInputAction: TextInputAction.next,
                                   decoration: InputDecoration(
                                     icon: const Icon(Icons.mail),
-                                    hintText: 'Email', //TODO: Translate
-                                    labelText: 'Email', //TODO: Translate
+                                    hintText: AppLocalizations.of(context)?.translate("email"),
+                                    labelText: AppLocalizations.of(context)?.translate("email"),
                                   ),
                                   autovalidateMode:
                                       AutovalidateMode.onUserInteraction,
                                   validator: (email) => email != null &&
                                           !EmailValidator.validate(email)
-                                      ? 'The name can\'t be empty' //TODO: Translate
+                                      ? AppLocalizations.of(context)?.translate("nameCantBeEmpty")
                                       : null),
                               TextFormField(
                                 controller: passwordController,
@@ -143,7 +143,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                                     AutovalidateMode.onUserInteraction,
                                 validator: (password) => password != null &&
                                         !validatePasswordLengthAndWeak(password)
-                                    ? 'Password must be at least 6 characters long and contain at least one uppercase letter and one number' //TODO: Translate
+                                    ? AppLocalizations.of(context)?.translate("passLengthOrWeak")
                                     : null,
                                 onTap: () {
                                   setState(() {
@@ -173,7 +173,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                                         !validatePasswordsMatch(
                                             passwordController.text,
                                             passwordConfirm)
-                                    ? 'Passwords do not match' //TODO: Translate
+                                    ? AppLocalizations.of(context)?.translate("passesNotMatch")
                                     : null,
                                 onTap: () {
                                   setState(() {

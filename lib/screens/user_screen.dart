@@ -151,7 +151,7 @@ class UserScreenState extends State<UserScreen> {
                                       });
                                     }
                                   }else{
-                                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Edit mode is disabled")));
+                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.translate("editModeOff"))));
                                   }
                                 },
                                 child: const Icon(Icons.photo)
