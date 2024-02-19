@@ -104,7 +104,7 @@ class HomeScreenState extends State<HomeScreen> {
                       CustomElevatedButtonIconified(
                           icon: const Icon(Icons.language),
                           onPressedFunction: () {
-                            //TODO Llamar a la función de Idioma (Pinto)
+                            
                           },
                           hintText: AppLocalizations.of(context)!
                               .translate('language')),
