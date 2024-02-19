@@ -25,7 +25,7 @@ class OdooConnect{
         'model': 'res.users', 'method': 'search_read', 'args': [],
         'kwargs': {
           //Selección de campos en la query
-          "fields":["id", "login", "password", "active", "name", "email", "lang"]
+          "fields":["id", "login", "password", "active", "name", "email", "lang", "image_1920", "phone"]
         }
       });
       //Obtención de resultados en formato JSON
@@ -52,7 +52,7 @@ class OdooConnect{
           //Filtrado por login
           "domain": [["login", "=", email]],
           //Selección de campos en la query
-          "fields":["id", "login", "password", "active", "name", "email", "lang", "image_1920"]
+          "fields":["id", "login", "password", "active", "name", "email", "lang", "image_1920", "phone"]
         }
       });
       //Obtención de resultados en formato JSON
@@ -60,8 +60,6 @@ class OdooConnect{
         var temp = convert.jsonEncode(res[0]);
         found = OdooUser.fromJson(convert.jsonDecode(temp));
       }
-      print("--------------FOUND USER----------------");
-      print(found);
     }catch(a){logger.e(a);}
     return found;
   }
@@ -78,7 +76,6 @@ class OdooConnect{
           {
             'name': user.name,
             'login': user.email,
-            'password': user.password,
             'email': user.email,
             'lang': user.lang.name,
             'image_1920': user.avatar,
@@ -105,6 +102,32 @@ class OdooConnect{
           user.toJson()
         ],
         'kwargs': {}
+      });
+      return true;
+    }catch(a){
+      logger.e(a);
+      return false;
+    }
+  }
+
+  static Future<bool> deactivateUser(OdooUser user) async{
+    try {
+      if(user.email.isEmpty){
+        throw Exception("Email cannot be empty");
+      }
+      await client.callKw({
+        'model': 'res.users', 'method': 'write', 'args': [
+          user.id,
+          {
+            "active": false
+          }
+        ],
+        'kwargs': {
+          //Filtrado por login
+          "domain": [["login", "=", user.email]],
+          //Selección de campos en la query
+          "fields":["id"]
+        }
       });
       return true;
     }catch(a){

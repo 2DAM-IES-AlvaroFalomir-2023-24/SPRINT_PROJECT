@@ -59,7 +59,7 @@ class PasswordsDoNotMatchException implements Exception {
 
 class EmailNotVerifiedException implements Exception {
   EmailNotVerifiedException(BuildContext context)
-      : message = 'Your email has not been verified. Please verify your email.'; // TODO: Translate
+      : message = AppLocalizations.of(context)!.translate('verifyEmailError'); // TODO: Translate
 
   final String message;
 
@@ -69,7 +69,7 @@ class EmailNotVerifiedException implements Exception {
 
 class EmailNotSentException implements Exception {
   EmailNotSentException(BuildContext context)
-      : message = 'The email could not be sent. Please try again later.'; //TODO: Translate
+      : message = AppLocalizations.of(context)!.translate('emailCantSent'); //TODO: Translate
 
   final String message;
 

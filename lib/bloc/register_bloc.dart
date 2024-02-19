@@ -1,9 +1,11 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:sprint/app_localizations.dart';
 import 'package:sprint/data/odoo_connect.dart';
 import 'package:sprint/model/language.dart';
-import 'package:sprint/model/odoo-user.dart' as user_odoo;
+import 'package:sprint/model/odoo-user.dart';
 import 'package:sprint/utils/sprint_exceptions.dart';
 
 Logger logger = Logger();
@@ -45,16 +47,21 @@ Future<bool> _tryRegisterOnOdoo(
     String name, String email, String password, BuildContext context) async {
   if (email.isEmpty) throw ValidationException(context);
 
-  user_odoo.OdooUser? user = await OdooConnect.getUserByEmail(email);
+  OdooUser? user = await getUserByEmail(email);
 
   if (user != null) throw EmailAlreadyInUseException(context);
 
-  user_odoo.OdooUser newUser = user_odoo.OdooUser(
+  OdooUser newUser = OdooUser(
       email, password, true, name, Language.setLanguageByString('es_ES'));
 
   if (await OdooConnect.createUser(newUser)) return true;
 
   return false;
+}
+
+Future<OdooUser?> getUserByEmaik(String email) async {
+  OdooUser? user = await OdooConnect.getUserByEmail(email);
+  return user;
 }
 
 bool validatePasswordsMatch(String password, String passwordConfirm) {
@@ -68,4 +75,20 @@ bool validatePasswordLengthAndWeak(String password) {
     return true;
   }
   return false;
+}
+
+Future<bool> loginWithEmailAndPass({required String email, required String password, required BuildContext context}) async {
+  OdooUser? user = await getUserByEmail(email);
+  if(user == null) throw EmailValidator();
+  try {
+    await FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: email, password: password);
+    return true;
+  } catch (e) {
+    throw FirebaseAuthException(code: AppLocalizations.of(context)!.translate('userNotExist'));
+  }
+}
+
+Future<OdooUser?> getUserByEmail(String email) {
+  return OdooConnect.getUserByEmail(email);
 }
