@@ -58,6 +58,7 @@ dependencies:
   path_provider: ^2.1.2
   cloud_functions: ^4.6.5
   google_maps_flutter: ^2.0.10
+  equatable: ^2.0.5
 
 
 dev_dependencies:

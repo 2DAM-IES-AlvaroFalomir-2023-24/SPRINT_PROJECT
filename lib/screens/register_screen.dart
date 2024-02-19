@@ -1,7 +1,12 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 import 'package:sprint/app_localizations.dart';
+import 'package:sprint/data/odoo_connect.dart';
+import 'package:sprint/model/language.dart';
+import 'package:sprint/model/odoo-user.dart';
+import 'package:sprint/screens/home_screen.dart';
 import 'package:sprint/widget/veify_email_dialog.dart';
 import 'package:sprint/widget/custom_elevated_button_with_text.dart';
 import 'package:sprint/widget/show_dialog_exeception.dart';
@@ -16,7 +21,7 @@ class RegisterScreen extends StatefulWidget {
 
 class RegisterScreenState extends State<RegisterScreen> {
   final formKey = GlobalKey<FormState>();
-  final emeailController = TextEditingController();
+  final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final passwordConfirmController = TextEditingController();
 
@@ -60,7 +65,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                                               ?.translate("nameCantBeEmpty")
                                           : null),
                               TextFormField(
-                                  controller: emeailController,
+                                  controller: emailController,
                                   cursorColor: Theme.of(context).primaryColor,
                                   textInputAction: TextInputAction.next,
                                   decoration: InputDecoration(
@@ -147,9 +152,107 @@ class RegisterScreenState extends State<RegisterScreen> {
                                     text: AppLocalizations.of(context)!
                                         .translate('register'),
                                     onPressedFunction: () => signUp(context),
-                                  ))
+                                  )),
+                              TextButton(
+                                child: const Text('Enviar'),
+                                onPressed: () {
+                                  // Llama al BLoC para enviar el correo electrónico
+                                  context.read<RegisterBloc>().add(SendPasswordlessEmail(emailController.text));
+
+                                  _showPasswordlessRegisterDialog();
+
+
+                                },
+                              )
                             ]))))));
   }
+
+  void _showPasswordlessRegisterDialog() {
+    final TextEditingController _usernameController = TextEditingController();
+    // final String randomPassword = generateRandomPassword(12);
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Registro sin contraseña'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                TextField(
+                  controller: emailController,
+                  decoration: const InputDecoration(
+                    hintText: 'Introduce tu correo electrónico',
+                  ),
+                  keyboardType: TextInputType.emailAddress,
+                ),
+                TextField(
+                  controller: _usernameController,
+                  decoration: const InputDecoration(
+                    hintText: 'Introduce tu nombre de usuario',
+                  ),
+                ),
+                /*Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Text('Tu contraseña generada: $randomPassword'),
+                ),*/
+                // Agrega aquí más campos si son necesarios
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancelar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Enviar'),
+              onPressed: () async {
+                // Recolectar datos del formulario
+                final String email = emailController.text;
+                final String username = _usernameController.text;
+                final bool active = true;
+                final Language lang = Language.enUS;
+
+
+                // Crear instancia de User
+                final user = OdooUser(email, "", active, username, lang);
+
+                // Llamar a createUser y manejar la respuesta
+                final bool success = await OdooConnect.createUser(user);
+                Navigator.of(context).pop(); // Cierra el diálogo
+
+                if (success) {
+                  // Mostrar un mensaje de éxito
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Usuario creado exitosamente')),
+                  );
+
+                  // Navegar a HomeScreen después de un corto retraso
+                  Future.delayed(Duration(seconds: 2), () {
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => const HomeScreen()),
+                    );
+                  });
+                } else {
+                  // Mostrar un mensaje de error
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Error al crear el usuario')),
+                  );
+                }
+
+              },
+            ),
+
+
+          ],
+        );
+      },
+    );
+  }
+
 
   void signUp(BuildContext context) {
     final isValid = formKey.currentState!.validate();
@@ -161,7 +264,7 @@ class RegisterScreenState extends State<RegisterScreen> {
         builder: (context) => const Center(child: CircularProgressIndicator()));
     signUpWithEmailAndPassword(
             name: nameController.text.trim(),
-            email: emeailController.text.trim(),
+            email: emailController.text.trim(),
             password: passwordController.text.trim(),
             context: context)
         .catchError((e) {
