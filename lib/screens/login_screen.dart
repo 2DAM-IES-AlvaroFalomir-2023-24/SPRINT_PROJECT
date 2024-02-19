@@ -76,6 +76,16 @@ class LoginScreenState extends State<LoginScreen>{
                     )
                   )
                 ),
+                SizedBox(
+                  height: 50,
+                  width: 200,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const HomeScreen()));
+                    },
+                    child: Text(AppLocalizations.of(context)!.translate('loginWithoutPassword')),
+                  ),
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [

@@ -10,3 +10,5 @@ class UserInformationChangedEvent extends UserEvents {
   OdooUser user;
   UserInformationChangedEvent(this.user);
 }
+
+
