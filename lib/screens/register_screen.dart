@@ -50,8 +50,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 16.0),
-                                child: CustomElevatedButtonWithText(
-                                  text: 'Facebook',
+                                child: CustomElevatedButtonIconifiedWithText(
                                   onPressedFunction: () async {
                                     final provider =
                                     Provider.of<SingAndLoginClass>(context,
@@ -65,6 +64,8 @@ class RegisterScreenState extends State<RegisterScreen> {
                                       );
                                     }
                                   },
+                                  text: 'Facebook',
+                                  icon: Image.asset("assets/facebook_logo.png", scale: 20),
                                 )
                               ),
                               Padding(
@@ -120,9 +121,15 @@ class RegisterScreenState extends State<RegisterScreen> {
                                 textInputAction: TextInputAction.next,
                                 obscureText: !_passwordVisible,
                                 decoration: InputDecoration(
-                                  suffixIcon: Icon(_passwordVisible
-                                      ? Icons.visibility
-                                      : Icons.visibility_off),
+                                  suffixIcon: IconButton(
+                                    onPressed:(){
+                                      setState(() {
+                                        _passwordVisible = !_passwordVisible;
+                                      });
+                                    },
+                                    icon: Icon(_passwordVisible
+                                        ? Icons.visibility
+                                        : Icons.visibility_off),),
                                   icon: const Icon(Icons.lock),
                                   hintText: AppLocalizations.of(context)!
                                       .translate('passwordHintText'),
@@ -135,11 +142,6 @@ class RegisterScreenState extends State<RegisterScreen> {
                                         !validatePasswordLengthAndWeak(password)
                                     ? AppLocalizations.of(context)!.translate('passLengthOrWeak')
                                     : null,
-                                onTap: () {
-                                  setState(() {
-                                    _passwordVisible = !_passwordVisible;
-                                  });
-                                },
                               ),
                               TextFormField(
                                 controller: passwordConfirmController,
@@ -147,9 +149,17 @@ class RegisterScreenState extends State<RegisterScreen> {
                                 textInputAction: TextInputAction.next,
                                 obscureText: !_confirmPasswordVisible,
                                 decoration: InputDecoration(
-                                  suffixIcon: Icon(_confirmPasswordVisible
-                                      ? Icons.visibility
-                                      : Icons.visibility_off),
+                                  suffixIcon: IconButton(
+                                    icon: Icon(_confirmPasswordVisible
+                                        ? Icons.visibility
+                                        : Icons.visibility_off),
+                                    onPressed: () {
+                                      setState(() {
+                                        _confirmPasswordVisible =
+                                        !_confirmPasswordVisible;
+                                      });
+                                    },
+                                  ),
                                   icon: const Icon(Icons.lock),
                                   hintText: AppLocalizations.of(context)!
                                       .translate('passwordHintText'),
@@ -165,12 +175,6 @@ class RegisterScreenState extends State<RegisterScreen> {
                                             passwordConfirm)
                                     ? AppLocalizations.of(context)!.translate('passesNotMatch')
                                     : null,
-                                onTap: () {
-                                  setState(() {
-                                    _confirmPasswordVisible =
-                                        !_confirmPasswordVisible;
-                                  });
-                                },
                               ),
                               Padding(
                                   padding: const EdgeInsets.symmetric(

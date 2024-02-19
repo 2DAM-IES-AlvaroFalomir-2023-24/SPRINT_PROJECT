@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sprint/bloc/bloc_user/user_bloc.dart';
+import 'package:sprint/bloc/bloc_user/user_event.dart';
 import 'package:sprint/bloc/bloc_user/user_state.dart';
-import 'package:sprint/bloc/social_sign_and_login.dart';
 import 'package:sprint/model/odoo-user.dart';
 import 'package:sprint/screens/user_screen.dart';
 import 'package:sprint/widget/custom_elevated_button_iconified.dart';
@@ -20,6 +23,8 @@ class HomeScreen extends StatefulWidget {
 
 class HomeScreenState extends State<HomeScreen> {
   late OdooUser user;
+  ImageProvider? userImage;
+  late List<OdooUser> userList;
 
   late Flushbar message = Flushbar(
       title: AppLocalizations.of(context)!.translate('missingDataTitle'),
@@ -32,13 +37,22 @@ class HomeScreenState extends State<HomeScreen> {
       });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
     return BlocBuilder<UserBloc, UserStates>(builder: (context, state) {
       if (state is UpdateState) {
         user = state.user;
+        userImage = MemoryImage(base64Decode(user.avatar));
       } else {
         user = OdooUser("Default", "password", false, "Default", Language.enUS);
       }
+
+      String base64 = "";
+      rootBundle.load("assets/user_default_avatar.png").then((value) => base64 = base64Encode(Uint8List.view(value.buffer)));
+
+      userList = [
+        user,
+        OdooUser("user", "user", true, "user", Language.enUS, null, base64)
+      ];
 
       Future.delayed(Duration.zero, () {
         if (user.isMissingData() && !message.isShowing()) {
@@ -54,6 +68,40 @@ class HomeScreenState extends State<HomeScreen> {
       return PopScope(
         child: Scaffold(
             appBar: AppBar(
+                actions: [
+                  PopupMenuButton(
+                      icon: CircleAvatar(
+                        foregroundImage: userImage,
+                        backgroundImage: const AssetImage("assets/user_default_avatar.png"),
+                      ),
+                      itemBuilder: (context) => List.generate(userList.length, (index) {
+                        OdooUser userIndex = userList[index];
+                        return PopupMenuItem(
+                            value: userIndex,
+                            child: Row(
+                                children: [
+                                  CircleAvatar(
+                                    foregroundImage: MemoryImage(
+                                        base64Decode(userIndex.avatar)),
+                                    backgroundImage: const AssetImage(
+                                        "assets/user_default_avatar.png"),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 10.0),
+                                    child: Text(userIndex.name),
+                                  )
+                                ]
+                            )
+                        );
+                      }),
+                    onSelected: (selected){
+                        logger.i(selected.name);
+                        context.read<UserBloc>()
+                            .add(UserInformationChangedEvent(selected));
+                    },
+                  )
+                ],
                 title: Image.asset("assets/odoo_logo.png", scale: 8),
                 centerTitle: true,
                 automaticallyImplyLeading: false),
