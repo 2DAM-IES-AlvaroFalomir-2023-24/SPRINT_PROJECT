@@ -72,7 +72,9 @@ class LoginScreenState extends State<LoginScreen>{
                     width: 150,
                     child: CustomElevatedButtonWithText(
                         text: AppLocalizations.of(context)!.translate('login'),
-                        onPressedFunction: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const HomeScreen()))
+                        onPressedFunction: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const HomeScreen()));
+                        }
                     )
                   )
                 ),
