@@ -36,7 +36,7 @@
   "useMenu": "Usa el menú (",
   "useMenu2": ") en la esquina superior derecha para mostrar las opciones de usuario.",
   "missingDataTitle": "Faltan Datos",
-  "missingDataContent": "Faltan datos en tu cuenta, pulsa aqui y rellenaalos para completar tu cuenta.",
+  "missingDataContent": "Faltan datos en tu cuenta, pulsa aqui y rellenalos para completar tu cuenta.",
   "dontHaveAccount": "No tienes una cuenta?",
   "signInWithGoogle": "INICIA SESIÓN CON GOOGLE",
   "passLengthOrWeak": "La contraseña debe tener al menos 6 caracteres, una letra mayúscula y un número.",
