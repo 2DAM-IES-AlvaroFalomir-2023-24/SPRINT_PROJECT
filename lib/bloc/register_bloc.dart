@@ -29,7 +29,7 @@ Future signUpWithEmailAndPassword(
       return true;
     } on FirebaseAuthException catch (e) {
       logger.e('FirebaseAuthException: ${e.code}\n${e.message}');
-      if (e.message!.contains('auth/email-already-in-use')) {
+      if (e.code.contains('email-already-in-use')) {
         throw EmailAlreadyInUseException(context);
       } else {
         throw SprintException(context);
