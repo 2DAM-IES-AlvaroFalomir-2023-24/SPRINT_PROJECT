@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:sprint/app_localizations.dart';
 import 'package:sprint/screens/login_screen.dart';
 import 'package:sprint/utils/sprint_exceptions.dart';
 import 'package:sprint/widget/custom_elevated_button_with_text.dart';
@@ -66,18 +67,18 @@ class _VerifyEmailDialogState extends State<VerifyEmailDialog> {
   Widget build(BuildContext context) => isEmailVerified
       ? const LoginScreen()
       : AlertDialog(
-        title: const Text('Verify Email'),
+        title: Text(AppLocalizations.of(context)!.translate('verifyEmail')),
         content: SingleChildScrollView(
           child: Column(
             children: [
-              const Text(
-                'An email has been sent to your email address.', //TODO: translate
+              Text(
+                AppLocalizations.of(context)!.translate('emailSent'),
                 style: TextStyle(fontSize: 20),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 24),
               CustomElevatedButtonWithText(
-                text: 'Resend Email', //TODO: translate
+                text: AppLocalizations.of(context)!.translate('resendEmail'),
                 onPressedFunction: () {
                   showDialog(
                     context: context,
@@ -94,7 +95,7 @@ class _VerifyEmailDialogState extends State<VerifyEmailDialog> {
               ),
               const SizedBox(height: 8),
               CustomElevatedButtonWithText(
-                text: 'Cancel', // TODO: translate
+                text: AppLocalizations.of(context)!.translate('cancel'),
                 onPressedFunction: () => FirebaseAuth.instance.signOut().then(
                       (value) => Navigator.pushReplacement(
                         context,

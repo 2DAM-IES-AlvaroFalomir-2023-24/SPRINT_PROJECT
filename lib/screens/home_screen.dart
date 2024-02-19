@@ -13,6 +13,7 @@ import 'package:sprint/screens/user_screen.dart';
 import 'package:sprint/widget/custom_elevated_button_iconified.dart';
 import 'package:sprint/app_localizations.dart';
 import 'package:sprint/model/language.dart';
+import 'package:sprint/bloc_location/location.dart';
 import 'login_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -38,19 +39,17 @@ class HomeScreenState extends State<HomeScreen> {
       });
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return BlocBuilder<UserBloc, UserStates>(builder: (context, state) {
       if (state is UpdateState) {
         user = state.user;
-        if(user.avatar != 'false'){
+        if (user.avatar != 'false') {
           userImage = MemoryImage(base64Decode(user.avatar));
         }
       } else {
         user = OdooUser("Default", "password", false, "Default", Language.enUS);
       }
-      userList = [
-        user
-      ];
+      userList = [user];
 
       Future.delayed(Duration.zero, () {
         if (user.isMissingData() && !message.isShowing()) {
@@ -62,48 +61,47 @@ class HomeScreenState extends State<HomeScreen> {
           message.dismiss();
         }
       });
-
       return PopScope(
         child: Scaffold(
             appBar: AppBar(
-                actions: [
-                  PopupMenuButton(
-                      icon: CircleAvatar(
-                        foregroundImage: userImage,
-                        backgroundImage: const AssetImage("assets/user_default_avatar.png"),
-                      ),
-                      itemBuilder: (context) => List.generate(userList.length, (index) {
-                        OdooUser userIndex = userList[index];
-                        ImageProvider? avatar = userIndex.avatar != "false" ? MemoryImage(
-                            base64Decode(userIndex.avatar)) : null;
-                        return PopupMenuItem(
-                            value: userIndex,
-                            child: Row(
-                                children: [
-                                  CircleAvatar(
-                                    foregroundImage: avatar,
-                                    backgroundImage: const AssetImage(
-                                        "assets/user_default_avatar.png"),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 10.0),
-                                    child: Text(userIndex.name),
-                                  )
-                                ]
-                            )
-                        );
-                      }),
-                    onSelected: (selected){
-                        logger.i(selected.name);
-                        context.read<UserBloc>()
-                            .add(UserInformationChangedEvent(selected));
-                    },
-                  )
-                ],
-                title: Image.asset("assets/odoo_logo.png", scale: 8),
-                centerTitle: true,
-                automaticallyImplyLeading: false),
+              actions: [
+                PopupMenuButton(
+                    icon: CircleAvatar(
+                      foregroundImage: userImage,
+                      backgroundImage:
+                          const AssetImage("assets/user_default_avatar.png"),
+                    ),
+                    itemBuilder: (context) =>
+                        List.generate(userList.length, (index) {
+                          OdooUser userIndex = userList[index];
+                          ImageProvider? avatar = userIndex.avatar != "false"
+                              ? MemoryImage(base64Decode(userIndex.avatar))
+                              : null;
+                          return PopupMenuItem(
+                              value: userIndex,
+                              child: Row(children: [
+                                CircleAvatar(
+                                  foregroundImage: avatar,
+                                  backgroundImage: const AssetImage(
+                                      "assets/user_default_avatar.png"),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10.0),
+                                  child: Text(userIndex.name),
+                                )
+                              ]));
+                        }),
+                    onSelected: (selected) {
+                      logger.i(selected.name);
+                      context
+                          .read<UserBloc>()
+                          .add(UserInformationChangedEvent(selected));
+                    }),
+              ],
+              title: Image.asset("assets/odoo_logo.png", scale: 8),
+              centerTitle: true,
+              automaticallyImplyLeading: false,
+            ),
             body: Center(
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -159,7 +157,8 @@ class HomeScreenState extends State<HomeScreen> {
                         CustomElevatedButtonIconified(
                             icon: const Icon(Icons.location_pin),
                             onPressedFunction: () {
-                              //TODO Llamar a la función de Geolocalización (Carol)
+                              Location location = Location();
+                              location.getCurrentLocation();
                             },
                             hintText: AppLocalizations.of(context)!
                                 .translate('location')),
