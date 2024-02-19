@@ -1,14 +1,69 @@
 import 'package:email_validator/email_validator.dart';
+import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 import 'package:sprint/app_localizations.dart';
 import 'package:sprint/data/odoo_connect.dart';
 import 'package:sprint/model/language.dart';
 import 'package:sprint/model/odoo-user.dart';
+import 'package:sprint/repository/register_repo.dart';
 import 'package:sprint/utils/sprint_exceptions.dart';
 
 Logger logger = Logger();
+
+class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
+  final AuthRepository _authRepository;
+
+  RegisterBloc(this._authRepository) : super(RegisterInitial()) {
+    on<SendPasswordlessEmail>(_onSendPasswordlessEmail);
+  }
+
+  Future<void> _onSendPasswordlessEmail(SendPasswordlessEmail event, Emitter<RegisterState> emit) async {
+    emit(RegisterLoading());
+    try {
+      //await quitado
+      _authRepository.sendPasswordlessSignInLink(event.email);
+      emit(RegisterSuccess());
+    } catch (e) {
+      emit(RegisterFailure(e.toString()));
+    }
+  }
+}
+
+
+// Eventos
+abstract class RegisterEvent extends Equatable {
+  @override
+  List<Object> get props => [];
+}
+
+class SendPasswordlessEmail extends RegisterEvent {
+  final String email;
+  SendPasswordlessEmail(this.email);
+
+  @override
+  List<Object> get props => [email];
+}
+
+// Estados
+abstract class RegisterState extends Equatable {
+  @override
+  List<Object> get props => [];
+}
+
+class RegisterInitial extends RegisterState {}
+class RegisterLoading extends RegisterState {}
+class RegisterSuccess extends RegisterState {}
+class RegisterFailure extends RegisterState {
+  final String error;
+  RegisterFailure(this.error);
+
+  @override
+  List<Object> get props => [error];
+}
+
 
 Future signUpWithEmailAndPassword(
     {required String name,
