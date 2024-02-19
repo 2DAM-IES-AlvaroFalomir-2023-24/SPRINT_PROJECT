@@ -88,8 +88,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                                   final provider =
                                       Provider.of<SingAndLoginClass>(context,
                                           listen: false);
-
-                                  if (await provider.googleLogin(context,)) {
+                                  if (await provider.googleLogin(context)) {
                                     Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(
                                         builder: (context) => HomeScreen(),
