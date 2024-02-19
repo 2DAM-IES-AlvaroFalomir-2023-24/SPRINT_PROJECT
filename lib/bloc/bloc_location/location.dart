@@ -1,9 +1,6 @@
 import 'package:geolocator/geolocator.dart';
-// Importa la pantalla a la que quieres navegar
-
 
 class Location {
-
   static Future<Position> determinePosition() async {
     LocationPermission permission;
     permission = await Geolocator.checkPermission();
@@ -16,10 +13,10 @@ class Location {
     return await Geolocator.getCurrentPosition();
   }
 
-  void getCurrentLocation() async {
+  Future<Position> getCurrentLocation() async {
     Position position = await determinePosition();
     print(position.latitude);
     print(position.longitude);
+    return position;
   }
-
 }

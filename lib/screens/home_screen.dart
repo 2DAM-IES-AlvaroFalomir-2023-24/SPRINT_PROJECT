@@ -4,6 +4,7 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sprint/bloc/bloc_location/location.dart';
 import 'package:sprint/bloc/bloc_user/user_bloc.dart';
 import 'package:sprint/bloc/bloc_user/user_event.dart';
 import 'package:sprint/bloc/bloc_user/user_state.dart';
@@ -13,7 +14,6 @@ import 'package:sprint/screens/user_screen.dart';
 import 'package:sprint/widget/custom_elevated_button_iconified.dart';
 import 'package:sprint/app_localizations.dart';
 import 'package:sprint/model/language.dart';
-import 'package:sprint/bloc_location/location.dart';
 import 'login_screen.dart';
 
 class HomeScreen extends StatefulWidget {
