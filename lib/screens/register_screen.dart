@@ -5,7 +5,7 @@ import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:sprint/app_localizations.dart';
 import 'package:sprint/bloc/social_sign_and_login.dart';
-import 'package:sprint/screens/veify_email_screen.dart';
+import 'package:sprint/widget/veify_email_dialog.dart';
 import 'package:sprint/widget/custom_elevated_button_with_text.dart';
 import 'package:sprint/widget/show_dialog_exeception.dart';
 import 'package:sprint/bloc/register_bloc.dart';
@@ -105,7 +105,8 @@ class RegisterScreenState extends State<RegisterScreen> {
                                   ),
                                   autovalidateMode:
                                       AutovalidateMode.onUserInteraction,
-                                  validator: (name) => name != null && name.isEmpty
+                                  validator: (name) => name != null &&
+                                          name.isEmpty
                                       ? 'The name can\'t be empty' //TODO: Translate
                                       : null),
                               TextFormField(
@@ -167,7 +168,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                                 ),
                                 autovalidateMode:
                                     AutovalidateMode.onUserInteraction,
-                                validator: (passwordConfirm) =>passwordConfirm !=
+                                validator: (passwordConfirm) => passwordConfirm !=
                                             null &&
                                         !validatePasswordsMatch(
                                             passwordController.text,
@@ -196,7 +197,8 @@ class RegisterScreenState extends State<RegisterScreen> {
     final isValid = formKey.currentState!.validate();
     if (!isValid) return;
 
-    String passHashed = BCrypt.hashpw(passwordController.text, BCrypt.gensalt());
+    String passHashed =
+        BCrypt.hashpw(passwordController.text, BCrypt.gensalt());
 
     showDialog(
         context: context,
@@ -211,10 +213,12 @@ class RegisterScreenState extends State<RegisterScreen> {
       MyDialogExeception(message: e.toString()).showDialogWithDelay(context);
     }).then((value) => {
               if (value)
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const VerifyEmailScreen()))
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return const VerifyEmailDialog();
+                  },
+                )
             });
   }
 }
