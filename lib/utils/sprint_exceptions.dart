@@ -1,5 +1,8 @@
+import 'package:flutter/cupertino.dart';
+import 'package:sprint/app_localizations.dart';
+
 class SprintException implements Exception {
-  const SprintException() : message = 'Generic Error de Sprint';
+  SprintException(BuildContext context) : message = AppLocalizations.of(context)!.translate('genericSprintError');
 
   final String message;
 
@@ -8,46 +11,65 @@ class SprintException implements Exception {
 }
 
 class ValidationException implements Exception {
-  const ValidationException() : message = 'Error de validación';
+  ValidationException(BuildContext context) : message = AppLocalizations.of(context)!.translate('validationError');
   final String message;
   @override
   String toString() => message;
 }
 
 class PassWordLengthOrWeakException implements Exception {
-  const PassWordLengthOrWeakException()
-      : message =
-            'La contraseña debe tener al menos 6 caracteres, una letra mayúscula y un número.';
+  PassWordLengthOrWeakException(BuildContext context)
+      : message = AppLocalizations.of(context)!.translate('passLengthOrWeak');
   final String message;
   @override
   String toString() => message;
 }
 
 class NetworkException implements Exception {
-  const NetworkException() : message = 'Error de conexión a internet';
+  NetworkException(BuildContext context) : message = AppLocalizations.of(context)!.translate('netError');
   final String message;
   @override
   String toString() => message;
 }
 
 class AuthenticationException implements Exception {
-  const AuthenticationException() : message = 'Error de autenticación';
+  AuthenticationException(BuildContext context) : message = AppLocalizations.of(context)!.translate('authError');
   final String message;
   @override
   String toString() => message;
 }
 
 class EmailAlreadyInUseException implements Exception {
-  const EmailAlreadyInUseException()
-      : message = 'El correo electrónico ya está en uso por otra cuenta.';
+  EmailAlreadyInUseException(BuildContext context)
+      : message = AppLocalizations.of(context)!.translate('emailAlreadyInUse');
   final String message;
   @override
   String toString() => message;
 }
 
 class PasswordsDoNotMatchException implements Exception {
-  const PasswordsDoNotMatchException()
-      : message = 'Las contraseñas no coinciden.';
+  PasswordsDoNotMatchException(BuildContext context)
+      : message = AppLocalizations.of(context)!.translate('passesNotMatch');
+
+  final String message;
+
+  @override
+  String toString() => message;
+}
+
+class EmailNotVerifiedException implements Exception {
+  EmailNotVerifiedException(BuildContext context)
+      : message = 'Your email has not been verified. Please verify your email.'; // TODO: Translate
+
+  final String message;
+
+  @override
+  String toString() => message;
+}
+
+class EmailNotSentException implements Exception {
+  EmailNotSentException(BuildContext context)
+      : message = 'The email could not be sent. Please try again later.'; //TODO: Translate
 
   final String message;
 

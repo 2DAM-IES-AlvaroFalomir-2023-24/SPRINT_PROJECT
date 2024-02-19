@@ -5,6 +5,7 @@
   "forgotPassword": "¿Olvidaste tu contraseña?",
   "logout": "Cerrar sesión",
   "signInGoogle": "Iniciar sesión con Google",
+  "signInFacebook": "Iniciar sesión con Facebook",
   "signInLinkedIn": "Iniciar sesión con Linkedin",
   "registerGoogle": "Registrarse con Google",
   "registerLinkedIn": "Registrarse con Linkedin",
@@ -30,12 +31,20 @@
   "userProfile": "Perfil de usuario",
   "switchLanguage": "Cambiar idioma",
   "phoneInput": "Introducir teléfono",
-  "location": "Habilitar ubicación",
+  "location": "Ubicación",
   "welcomeText": "Hola",
   "welcomeText2": "Esta es tu página de inicio.",
   "useMenu": "Usa el menú (",
   "useMenu2": ") en la esquina superior derecha para mostrar las opciones de usuario.",
-  "missingDataTitle": "Faltan datos",
-  "missingData": "Faltan algunos datos en tu cuenta, pulsa aquí para rellenarlos y completar tu cuenta."
+  "missingDataTitle": "Faltan Datos",
+  "missingDataContent": "Faltan datos en tu cuenta, pulsa aqui y rellenaalos para completar tu cuenta.",
+  "dontHaveAccount": "No tienes una cuenta?",
+  "passLengthOrWeak": "La contraseña debe tener al menos 6 caracteres, una letra mayúscula y un número.",
+  "passesNotMatch": "Las contraseñas no coinciden.",
+  "emailAlreadyInUse": "El correo electrónico ya está en uso por otra cuenta.",
+  "authError": "Error de autenticación.",
+  "netError": "Error de conexión a internet.",
+  "validationError": "Error de validación.",
+  "genericSprintError": "Generic Error de Sprint."
 
 }
