@@ -47,5 +47,7 @@
   "netError": "Internet connection error.",
   "validationError": "Validation error.",
   "genericSprintError": "Generic Sprint error.",
-  "userNotExist": "User does not exist"
+  "userNotExist": "User does not exist",
+  "spanish": "Spanish",
+  "english": "English"
 }

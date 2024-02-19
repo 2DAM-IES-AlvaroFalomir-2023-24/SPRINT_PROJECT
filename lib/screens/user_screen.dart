@@ -8,6 +8,7 @@ import 'package:sprint/app_localizations.dart';
 import 'package:sprint/bloc/bloc_user/user_bloc.dart';
 import 'package:sprint/bloc/bloc_user/user_event.dart';
 import 'package:sprint/bloc/bloc_user/user_state.dart';
+import 'package:sprint/bloc/social_sign_and_login.dart';
 import 'package:sprint/model/odoo-user.dart';
 import 'package:sprint/model/language.dart';
 import 'package:sprint/widget/custom_elevated_button_iconified.dart';
@@ -50,8 +51,11 @@ class UserScreenState extends State<UserScreen> {
         TextEditingController(text: user.name);
     TextEditingController _emailTextFormField =
         TextEditingController(text: user.email);
+    String language = AppLocalizations.of(context)!.translate(user.lang == Language.enUS ? "english" : "spanish");
+    TextEditingController _languageTextFormField =
+        TextEditingController(text: language);
     TextEditingController _phoneTextFormField =
-      TextEditingController(text: user.phone != "null" ? user.phone.toString() : "");
+        TextEditingController(text: user.phone != "null" ? user.phone.toString() : "");
     if(user.avatar != "false" && userCustomAvatarEncoded.isEmpty){
       userCustomAvatarEncoded = user.avatar;
       userCustomAvatar = MemoryImage(base64Decode(userCustomAvatarEncoded));
@@ -173,6 +177,7 @@ class UserScreenState extends State<UserScreen> {
                         ),
                         // IDIOMA DE USUARIO
                         TextFormField(
+                          controller: _languageTextFormField,
                           decoration: InputDecoration(
                               labelText: AppLocalizations.of(context)!.translate("switchLanguage")),
                           enabled: false,
@@ -194,7 +199,7 @@ class UserScreenState extends State<UserScreen> {
                         CustomElevatedButtonIconified(
                             icon: const Icon(Icons.logout),
                             onPressedFunction: (){
-                              //TODO Llamar a la función de Cerrar sesión (Alexandra)
+                              SingAndLoginClass().logout();
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => const LoginScreen()));
                             },
@@ -216,7 +221,7 @@ class UserScreenState extends State<UserScreen> {
                         CustomElevatedButtonIconified(
                           icon: const Icon(Icons.delete),
                           onPressedFunction: (){
-                              // TODO Llamar a la función de Borrar Usuario (Rubén)
+                            _confirmDelete(context, user.email);
                           },
                           hintText: AppLocalizations.of(context)!.translate("deleteUser"),
                           color: Colors.red,
@@ -288,3 +293,41 @@ class _UserListDialogState extends State<UserListDialog> {
     );
   }
 }
+
+void _confirmDelete(BuildContext context, String userEmail) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text("ELIMINAR USUARIO"),
+        content: Text("Estas seguro de que quieres eliminar tu cuenta?"),
+        actions: <Widget>[
+          TextButton(
+            child: Text("Cancelar"),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          TextButton(
+            child: Text("Borrar cuenta"),
+            onPressed: () {
+              // Disparar el evento para borrar el usuario
+              context.read<UserBloc>().add(UserDeleteRequested());
+              Navigator.of(context).pop();
+            },
+          ),
+          // Nuevo botón para cancelar la baja
+          TextButton(
+            child: Text("Cancelar Baja"),
+            onPressed: () {
+              // Disparar el evento para cancelar la baja
+              context.read<UserBloc>().add(UserCancellationRequested(userEmail));
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
