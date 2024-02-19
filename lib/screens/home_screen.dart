@@ -12,6 +12,7 @@ import 'package:sprint/screens/user_screen.dart';
 import 'package:sprint/widget/custom_elevated_button_iconified.dart';
 import 'package:sprint/app_localizations.dart';
 import 'package:sprint/model/language.dart';
+import 'package:sprint/bloc_location/location.dart';
 import 'login_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -37,7 +38,7 @@ class HomeScreenState extends State<HomeScreen> {
       });
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return BlocBuilder<UserBloc, UserStates>(builder: (context, state) {
       if (state is UpdateState) {
         user = state.user;
@@ -47,9 +48,7 @@ class HomeScreenState extends State<HomeScreen> {
       } else {
         user = OdooUser("Default", "password", false, "Default", Language.enUS);
       }
-      userList = [
-        user
-      ];
+      userList = [user];
 
       Future.delayed(Duration.zero, () {
         if (user.isMissingData() && !message.isShowing()) {
@@ -91,12 +90,13 @@ class HomeScreenState extends State<HomeScreen> {
                                   )
                                 ]
                             )
-                        );
-                      }),
-                    onSelected: (selected){
-                        logger.i(selected.name);
-                        context.read<UserBloc>()
-                            .add(UserInformationChangedEvent(selected));
+                          ]));
+                    }),
+                    onSelected: (selected) {
+                      logger.i(selected.name);
+                      context
+                          .read<UserBloc>()
+                          .add(UserInformationChangedEvent(selected));
                     },
                   )
                 ],
@@ -158,7 +158,8 @@ class HomeScreenState extends State<HomeScreen> {
                         CustomElevatedButtonIconified(
                             icon: const Icon(Icons.location_pin),
                             onPressedFunction: () {
-                              //TODO Llamar a la función de Geolocalización (Carol)
+                              Location location = Location();
+                              location.getCurrentLocation();
                             },
                             hintText: AppLocalizations.of(context)!
                                 .translate('location')),
