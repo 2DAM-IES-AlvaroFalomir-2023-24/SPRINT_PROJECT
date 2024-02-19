@@ -47,6 +47,14 @@
   "netError": "Error de conexión a internet.",
   "validationError": "Error de validación.",
   "genericSprintError": "Generic Error de Sprint.",
-  "userNotExist": "El usuario no existe"
+  "userNotExist": "El usuario no existe",
+  "nameCantBeEmpty": "El nombre no puede estar vacío.",
+  "editModeOff": "Modo edición desactivado.",
+  "verifyEmail": "Verifica tu correo electrónico",
+  "emailSent": "Se ha enviado un correo electrónico a tu dirección de correo electrónico.",
+  "resendEmail": "Reenviar correo electrónico",
+  "accept": "Aceptar",
+  "verifyEmailError": "Tu correo electrónico no ha sido verificado.",
+  "emailCantSent": "No se ha podido enviar el correo electrónico."
 
 }

@@ -49,29 +49,32 @@ class RegisterScreenState extends State<RegisterScreen> {
                                     icon: const Icon(Icons.person),
                                     hintText: AppLocalizations.of(context)!
                                         .translate('usernameHintText'),
-                                    labelText:
-                                    AppLocalizations.of(context)!.translate('username'),
+                                    labelText: AppLocalizations.of(context)!
+                                        .translate('username'),
                                   ),
                                   autovalidateMode:
                                       AutovalidateMode.onUserInteraction,
-                                  validator: (name) => name != null &&
-                                          name.isEmpty
-                                      ? 'The name can\'t be empty' //TODO: Translate
-                                      : null),
+                                  validator: (name) =>
+                                      name != null && name.isEmpty
+                                          ? AppLocalizations.of(context)
+                                              ?.translate("nameCantBeEmpty")
+                                          : null),
                               TextFormField(
                                   controller: emeailController,
                                   cursorColor: Theme.of(context).primaryColor,
                                   textInputAction: TextInputAction.next,
                                   decoration: InputDecoration(
-                                    icon: const Icon(Icons.mail),
-                                    hintText: AppLocalizations.of(context)!.translate('email'),
-                                    labelText: AppLocalizations.of(context)!.translate('email')
-                                  ),
+                                      icon: const Icon(Icons.mail),
+                                      hintText: AppLocalizations.of(context)!
+                                          .translate('email'),
+                                      labelText: AppLocalizations.of(context)!
+                                          .translate('email')),
                                   autovalidateMode:
                                       AutovalidateMode.onUserInteraction,
                                   validator: (email) => email != null &&
                                           !EmailValidator.validate(email)
-                                      ? 'The name can\'t be empty' //TODO: Translate
+                                      ? AppLocalizations.of(context)
+                                          ?.translate("nameCantBeEmpty")
                                       : null),
                               TextFormField(
                                 controller: passwordController,
@@ -80,14 +83,15 @@ class RegisterScreenState extends State<RegisterScreen> {
                                 obscureText: !_passwordVisible,
                                 decoration: InputDecoration(
                                   suffixIcon: IconButton(
-                                    onPressed:(){
+                                    onPressed: () {
                                       setState(() {
                                         _passwordVisible = !_passwordVisible;
                                       });
                                     },
                                     icon: Icon(_passwordVisible
                                         ? Icons.visibility
-                                        : Icons.visibility_off),),
+                                        : Icons.visibility_off),
+                                  ),
                                   icon: const Icon(Icons.lock),
                                   hintText: AppLocalizations.of(context)!
                                       .translate('passwordHintText'),
@@ -98,7 +102,8 @@ class RegisterScreenState extends State<RegisterScreen> {
                                     AutovalidateMode.onUserInteraction,
                                 validator: (password) => password != null &&
                                         !validatePasswordLengthAndWeak(password)
-                                    ? AppLocalizations.of(context)!.translate('passLengthOrWeak')
+                                    ? AppLocalizations.of(context)!
+                                        .translate('passLengthOrWeak')
                                     : null,
                               ),
                               TextFormField(
@@ -114,7 +119,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                                     onPressed: () {
                                       setState(() {
                                         _confirmPasswordVisible =
-                                        !_confirmPasswordVisible;
+                                            !_confirmPasswordVisible;
                                       });
                                     },
                                   ),
@@ -126,13 +131,14 @@ class RegisterScreenState extends State<RegisterScreen> {
                                 ),
                                 autovalidateMode:
                                     AutovalidateMode.onUserInteraction,
-                                validator: (passwordConfirm) => passwordConfirm !=
-                                            null &&
-                                        !validatePasswordsMatch(
-                                            passwordController.text,
-                                            passwordConfirm)
-                                    ? AppLocalizations.of(context)!.translate('passesNotMatch')
-                                    : null,
+                                validator: (passwordConfirm) =>
+                                    passwordConfirm != null &&
+                                            !validatePasswordsMatch(
+                                                passwordController.text,
+                                                passwordConfirm)
+                                        ? AppLocalizations.of(context)!
+                                            .translate('passesNotMatch')
+                                        : null,
                               ),
                               Padding(
                                   padding: const EdgeInsets.symmetric(
@@ -171,5 +177,3 @@ class RegisterScreenState extends State<RegisterScreen> {
             });
   }
 }
-
-

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sprint/app_localizations.dart';
 
 class MyDialogExeception {
   final String message;
@@ -16,7 +17,7 @@ class MyDialogExeception {
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('Aceptar'),
+              child: Text(AppLocalizations.of(context)!.translate('accept')),
             ),
           ],
         ),
