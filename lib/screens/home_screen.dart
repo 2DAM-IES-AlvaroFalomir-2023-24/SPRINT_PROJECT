@@ -42,7 +42,7 @@ class HomeScreenState extends State<HomeScreen> {
     return BlocBuilder<UserBloc, UserStates>(builder: (context, state) {
       if (state is UpdateState) {
         user = state.user;
-        if(user.avatar != 'false'){
+        if (user.avatar != 'false') {
           userImage = MemoryImage(base64Decode(user.avatar));
         }
       } else {
@@ -60,49 +60,47 @@ class HomeScreenState extends State<HomeScreen> {
           message.dismiss();
         }
       });
-
       return PopScope(
         child: Scaffold(
             appBar: AppBar(
-                actions: [
-                  PopupMenuButton(
-                      icon: CircleAvatar(
-                        foregroundImage: userImage,
-                        backgroundImage: const AssetImage("assets/user_default_avatar.png"),
-                      ),
-                      itemBuilder: (context) => List.generate(userList.length, (index) {
-                        OdooUser userIndex = userList[index];
-                        ImageProvider? avatar = userIndex.avatar != "false" ? MemoryImage(
-                            base64Decode(userIndex.avatar)) : null;
-                        return PopupMenuItem(
-                            value: userIndex,
-                            child: Row(
-                                children: [
-                                  CircleAvatar(
-                                    foregroundImage: avatar,
-                                    backgroundImage: const AssetImage(
-                                        "assets/user_default_avatar.png"),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 10.0),
-                                    child: Text(userIndex.name),
-                                  )
-                                ]
-                            )
-                          ]));
-                    }),
+              actions: [
+                PopupMenuButton(
+                    icon: CircleAvatar(
+                      foregroundImage: userImage,
+                      backgroundImage:
+                          const AssetImage("assets/user_default_avatar.png"),
+                    ),
+                    itemBuilder: (context) =>
+                        List.generate(userList.length, (index) {
+                          OdooUser userIndex = userList[index];
+                          ImageProvider? avatar = userIndex.avatar != "false"
+                              ? MemoryImage(base64Decode(userIndex.avatar))
+                              : null;
+                          return PopupMenuItem(
+                              value: userIndex,
+                              child: Row(children: [
+                                CircleAvatar(
+                                  foregroundImage: avatar,
+                                  backgroundImage: const AssetImage(
+                                      "assets/user_default_avatar.png"),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10.0),
+                                  child: Text(userIndex.name),
+                                )
+                              ]));
+                        }),
                     onSelected: (selected) {
                       logger.i(selected.name);
                       context
                           .read<UserBloc>()
                           .add(UserInformationChangedEvent(selected));
-                    },
-                  )
-                ],
-                title: Image.asset("assets/odoo_logo.png", scale: 8),
-                centerTitle: true,
-                automaticallyImplyLeading: false),
+                    }),
+              ],
+              title: Image.asset("assets/odoo_logo.png", scale: 8),
+              centerTitle: true,
+              automaticallyImplyLeading: false,
+            ),
             body: Center(
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
