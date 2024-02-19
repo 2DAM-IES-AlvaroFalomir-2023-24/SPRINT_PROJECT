@@ -1,117 +1,313 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:logger/logger.dart';
+import 'package:sprint/app_localizations.dart';
+import 'package:sprint/bloc/bloc_user/user_bloc.dart';
+import 'package:sprint/bloc/bloc_user/user_event.dart';
+import 'package:sprint/bloc/bloc_user/user_state.dart';
+import 'package:sprint/model/odoo-user.dart';
+import 'package:sprint/model/language.dart';
+import 'package:sprint/widget/custom_elevated_button_iconified.dart';
 
-class UserScreen extends StatelessWidget {
-  const UserScreen({super.key});
+import 'package:sprint/data/odoo_connect.dart';
+import 'login_screen.dart';
 
-  final String userNameLabel = "Nombre";
-  final String userNameValue = "NOMBRE_USUARIO";
+Logger logger = Logger();
 
-  final String userPasswordLabel = "Contraseña";
-  final String userPasswordValue = "CONTRASEÑA_USUARIO";
+class UserScreen extends StatefulWidget {
+  const UserScreen({super.key, this.isEditable = false});
 
-  final String userEmailLabel = "Email (Login)";
-  final String userEmailValue = "EMAIL_USUARIO";
-
-  final String userLanguageLabel = "Idioma";
-
-  final String userLogoutLabel = "Cerrar sesión";
-  final String userChangeUserLabel = "Cambiar Usuario";
-  final String userDeleteUserLabel = "Borrar Usuario";
+  final bool isEditable;
 
   @override
-  Widget build(BuildContext context) {
+  State<StatefulWidget> createState() => UserScreenState();
+}
+
+class UserScreenState extends State<UserScreen> {
+  bool editable = false;
+  ImageProvider? userCustomAvatar;
+  String userCustomAvatarEncoded = "";
+  IconData fabIcon = Icons.edit;
+
+  @override
+  void initState() {
+    super.initState();
+    editable = widget.isEditable;
+    fabIcon = editable ? Icons.save : Icons.edit;
+  }
+
+  Widget _UserScreen(BuildContext context, OdooUser user) {
+    // Al arrancar la escena guardamos una copia del usuario para poder
+    // volver atrás en el modo edición
+    OdooUser previousUser = user;
+
+    // Controladores para los TextFormField.
+    TextEditingController _nameTextFormField =
+        TextEditingController(text: user.name);
+    TextEditingController _emailTextFormField =
+        TextEditingController(text: user.email);
+    TextEditingController _phoneTextFormField = TextEditingController(
+        text: user.phone != "null" ? user.phone.toString() : "");
+    if (user.avatar != "false" && userCustomAvatarEncoded.isEmpty) {
+      userCustomAvatarEncoded = user.avatar;
+      userCustomAvatar = MemoryImage(base64Decode(userCustomAvatarEncoded));
+    }
+
     return Scaffold(
-        // TODO ajustar el comportamiento por defecto al pulsar en un elemento editable
-        appBar: AppBar(),
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.edit),
-          onPressed: () {
-            // TODO Editar el usuario.
-            // TODO Utilizar el propio botón como botón para guardar los cambios
-            // TODO ¿Añadir un segundo botón para cancelar?
-          },
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).focusColor,
+          title: Text(AppLocalizations.of(context)!.translate("userProfile")),
         ),
-        body:Container(
-          // TODO centrar verticalmente de forma correcta. La barra inferior del sistema descentra visualmente los elementos
-        //height: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.bottom,
-            child: Center(
-          child: Padding(
-              padding: EdgeInsets.all(40),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CircleAvatar(
-                    // TODO Cargar el avatar del usuario al pulsar. Si no tiene uno, mostrar el icono
-                    child: Icon(Icons.photo_camera_outlined, size: 80),
-                    radius: 100,
-                  ),
-                  Column(
-                    children: [
-                      // NOMBRE DE USUARIO
-                      textFieldWithLabel(
-                          label: userNameLabel, value: userNameValue),
-                      // PASSWORD DE USUARIO
-                      textFieldWithLabel(
-                          label: userPasswordLabel, value: userPasswordValue),
-                      // EMAIL DE USUARIO
-                      textFieldWithLabel(
-                          label: userEmailLabel, value: userEmailValue),
-                      // IDIOMA DE USUARIO
-                      // TODO Custom Spinner
-                      textFieldWithLabel(
-                          label: "Idioma", value: "IDIOMA_USUARIO"),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      ElevatedButton(
-                          child: Text(userLogoutLabel),
-                          onPressed: () {
-                            // TODO Llamar a la función de Cerrar sesión (Alexandra)
-                          }),
-                      ElevatedButton(
-                          child: Text(userChangeUserLabel),
-                          onPressed: () {
-                            // TODO Llamar a la función de Cambiar Usuario (Laura)
-                          }),
-                      ElevatedButton(
-                          // TODO Falta cambiar el fondo del botón a rojo. Mirar como hacerlo global con el tema
-                          child: Text(userDeleteUserLabel),
-                          onPressed: () {
+        floatingActionButtonLocation: FloatingActionButtonLocation.miniEndTop,
+        // Botones para la edición de usuario
+        floatingActionButton: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            if (editable)
+              // Botón de cancelar que sólo aparece en modo edición
+              FloatingActionButton(
+                child: const Icon(Icons.close),
+                onPressed: () {
+                  setState(() {
+                    // Salimos del modo edición, cambiamos el icono y devolvemos al bloc el usuario antes de los cambios
+                    editable = !editable;
+                    fabIcon = Icons.edit;
+                    context
+                        .read<UserBloc>()
+                        .add(UserInformationChangedEvent(previousUser));
+                  });
+                },
+              ),
+            const SizedBox(width: 10),
+            // Aceptamos los cambios guardando el usuario en el bloc y subimos los cambios a Odoo
+            FloatingActionButton(
+              child: Icon(fabIcon),
+              onPressed: () {
+                if (editable) {
+                  OdooUser temp = OdooUser(
+                      _emailTextFormField.text,
+                      "",
+                      true,
+                      _nameTextFormField.text,
+                      user.lang,
+                      user.id,
+                      userCustomAvatarEncoded,
+                      _phoneTextFormField.text);
+                  context
+                      .read<UserBloc>()
+                      .add(UserInformationChangedEvent(temp));
+                  OdooConnect.modifyUser(temp);
+                }
+                setState(() {
+                  editable = !editable;
+                  fabIcon = editable ? Icons.save : Icons.edit;
+                });
+              },
+            ),
+          ],
+        ),
+        body: Center(
+          child: SingleChildScrollView(
+            child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 40,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    SizedBox(
+                        width: 200,
+                        height: 200,
+                        child: Stack(
+                          children: [
+                            Container(
+                              alignment: Alignment.center,
+                              child: CircleAvatar(
+                                foregroundImage: userCustomAvatar,
+                                backgroundImage: const AssetImage(
+                                    'assets/user_default_avatar.png'),
+                                radius: 100,
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.bottomRight,
+                              child: FloatingActionButton(
+                                  onPressed: () async {
+                                    // Cargamos el avatar y lo codificamos en base64
+                                    if (editable) {
+                                      XFile? file = await ImagePicker()
+                                          .pickImage(
+                                              source: ImageSource.gallery);
+                                      if (file != null) {
+                                        File temp = File(file.path);
+                                        setState(() {
+                                          userCustomAvatarEncoded =
+                                              base64Encode(
+                                                  temp.readAsBytesSync());
+                                          userCustomAvatar = MemoryImage(
+                                              base64Decode(
+                                                  userCustomAvatarEncoded));
+                                        });
+                                      }
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(const SnackBar(
+                                              content: Text(
+                                                  "Edit mode is disabled"))); //TODO - translate
+                                    }
+                                  },
+                                  child: const Icon(Icons.photo)),
+                            )
+                          ],
+                        )),
+                    // Organizamos los atributos del usuario en otro Column para poder añadir un spaceBetween entre ellso y el resto de elementos agrupados de la interfaz
+                    Column(
+                      children: [
+                        // NOMBRE DE USUARIO
+                        TextFormField(
+                          controller: _nameTextFormField,
+                          decoration: InputDecoration(
+                              labelText: AppLocalizations.of(context)!
+                                  .translate("username")),
+                          enabled: editable,
+                        ),
+                        // EMAIL DE USUARIO
+                        TextFormField(
+                          controller: _emailTextFormField,
+                          decoration: InputDecoration(
+                              labelText: AppLocalizations.of(context)!
+                                  .translate("email")),
+                          enabled: editable,
+                        ),
+                        // IDIOMA DE USUARIO
+                        TextFormField(
+                          decoration: InputDecoration(
+                              labelText: AppLocalizations.of(context)!
+                                  .translate("switchLanguage")),
+                          enabled: false,
+                        ),
+                        TextFormField(
+                          controller: _phoneTextFormField,
+                          decoration: InputDecoration(
+                              labelText: AppLocalizations.of(context)!
+                                  .translate("phoneInput")),
+                          enabled: editable,
+                          keyboardType: TextInputType.phone,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    // Agrupamos los botones de cerrar sesión, cambiar y borrar usuario para poder añadir el spacebetween de forma correcta
+                    Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: [
+                        CustomElevatedButtonIconified(
+                            icon: const Icon(Icons.logout),
+                            onPressedFunction: () {
+                              //TODO Llamar a la función de Cerrar sesión (Alexandra)
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => const LoginScreen()));
+                            },
+                            hintText: AppLocalizations.of(context)!
+                                .translate("logout")),
+                        CustomElevatedButtonIconified(
+                            icon: const Icon(Icons.change_circle),
+                            onPressedFunction: () {
+                              // TODO Llamar a la función de Cambiar Usuario (Laura)
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return UserListDialog();
+                                },
+                              );
+                            },
+                            hintText: AppLocalizations.of(context)!
+                                .translate("switchUser")),
+                        CustomElevatedButtonIconified(
+                          icon: const Icon(Icons.delete),
+                          onPressedFunction: () {
                             // TODO Llamar a la función de Borrar Usuario (Rubén)
-                          }),
-                    ],
-                  ),
-                ],
-              )),
-        )));
+                          },
+                          hintText: AppLocalizations.of(context)!
+                              .translate("deleteUser"),
+                          color: Colors.red,
+                        )
+                      ],
+                    ),
+                  ],
+                )),
+          ),
+        ));
+  }
+
+  // Para implementar correctamente el patrón bloc rodeamos toda la clase _UserScreen con un BlocBuilder
+  // Con esto conseguimos que los datos del usuario estén disponibles en el contexto completo de la clase.
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<UserBloc, UserStates>(builder: (context, state) {
+      if (state is InitialState) {
+        OdooUser user = OdooUser("USER_EMAIL", "USER_PASS", false, "USER_NAME",
+            Language.esES, null, "");
+        return _UserScreen(context, user);
+      }
+      if (state is UpdateState) {
+        return _UserScreen(context, state.user);
+      }
+      return Container();
+    });
   }
 }
 
-class textFieldWithLabel extends StatelessWidget {
-  textFieldWithLabel({super.key, required this.label, required this.value});
+class UserListDialog extends StatefulWidget {
+  @override
+  _UserListDialogState createState() => _UserListDialogState();
+}
 
-  String label, value;
+class _UserListDialogState extends State<UserListDialog> {
+  String? selectedUser; // Estado para almacenar el usuario seleccionado
+
+  final List<String> users = [
+    'user1',
+    'user2',
+    'user3',
+    'user4',
+    'user5',
+    'user6'
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 5),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(label),
-        Container(
-            width: 220,
-            height: 45,
-            child: TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: value,
-                filled: true,
-              ),
-            ))
+    return AlertDialog(
+      title: Text('Lista de Usuarios'),
+      content: Container(
+        width: double.maxFinite,
+        child: ListView.builder(
+          shrinkWrap: true,
+          itemCount: users.length,
+          itemBuilder: (BuildContext context, int index) {
+            return ListTile(
+              title: Text(users[index]),
+              onTap: () {
+                setState(() {
+                  // Actualizar el usuario seleccionado cuando se hace clic en un usuario de la lista
+                  selectedUser = users[index];
+                });
+              },
+            );
+          },
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: Text('Cerrar'),
+        ),
       ],
-    ));
+    );
   }
 }

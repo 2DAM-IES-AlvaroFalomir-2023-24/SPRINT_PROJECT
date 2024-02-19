@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlin_version = '1.7.10'
+    ext.kotlin_version = '1.9.22'
     repositories {
         google()
         mavenCentral()
@@ -7,9 +7,18 @@ buildscript {
 
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        //implementation("com.google.firebase:firebase-analytics-ktx")
     }
 }
-
+plugins {
+//
+    id 'com.google.gms.google-services' version '4.4.1' apply false
+//
+}
+//dependencies{
+//    implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
+//    implementation 'com.google.firebase:firebase-analytics'
+//}
 allprojects {
     repositories {
         google()
