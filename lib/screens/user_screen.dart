@@ -12,6 +12,9 @@ import 'package:sprint/model/odoo-user.dart';
 import 'package:sprint/model/language.dart';
 import 'package:sprint/widget/custom_elevated_button_iconified.dart';
 
+import 'package:sprint/data/odoo_connect.dart';
+import 'login_screen.dart';
+
 Logger logger = Logger();
 
 class UserScreen extends StatefulWidget {
@@ -101,6 +104,7 @@ class UserScreenState extends State<UserScreen> {
                       userCustomAvatarEncoded,
                       _phoneTextFormField.text))); // TODO cuando implementemos el spinner, recoger el valor seleccionado
                 }
+                logger.i(context.read<UserBloc>().user.toJson());
                 //OdooConnect.modifyUser(context.read<UserBloc>().user);
                 setState(() {
                   editable = !editable;
@@ -223,7 +227,9 @@ class UserScreenState extends State<UserScreen> {
                         CustomElevatedButtonIconified(
                             icon: const Icon(Icons.logout),
                             onPressedFunction: (){
-                              // TODO Llamar a la función de Cerrar sesión (Alexandra)
+                              //TODO Llamar a la función de Cerrar sesión (Alexandra)
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => const LoginScreen()));
                             },
                             hintText: AppLocalizations.of(context)!.translate("logout")
                         ),

@@ -40,99 +40,101 @@ class HomeScreenState extends State<HomeScreen> {
         user = OdooUser("Default", "password", false, "Default", Language.enUS);
       }
 
-      Future.delayed(const Duration(milliseconds: 500), () {
+      Future.delayed(Duration.zero, () {
         if (user.isMissingData() && !message.isShowing()) {
           message.show(context);
         }
       });
-      Future.delayed(const Duration(milliseconds: 2000), () {
+      Future.delayed(Duration.zero, () {
         if (!user.isMissingData()) {
           message.dismiss();
         }
       });
 
-      return Scaffold(
-          appBar: AppBar(
-              title: Image.asset("assets/odoo_logo.png", scale: 8),
-              centerTitle: true,
-              automaticallyImplyLeading: false),
-          body: Center(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 80.0),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
+      return PopScope(
+        child: Scaffold(
+            appBar: AppBar(
+                title: Image.asset("assets/odoo_logo.png", scale: 8),
+                centerTitle: true,
+                automaticallyImplyLeading: false),
+            body: Center(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 80.0),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              AppLocalizations.of(context)!
+                                  .translate('welcomeText'),
+                              style: TextStyle(fontSize: 24),
+                              textAlign: TextAlign.center,
+                            ),
+                            Text(
+                              ' ${user.name}',
+                              style: TextStyle(fontSize: 24),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                        Text(
                             AppLocalizations.of(context)!
-                                .translate('welcomeText'),
-                            style: TextStyle(fontSize: 24),
-                            textAlign: TextAlign.center,
-                          ),
-                          Text(
-                            ' ${user.name}',
-                            style: TextStyle(fontSize: 24),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      ),
-                      Text(
-                          AppLocalizations.of(context)!
-                              .translate('welcomeText2'),
-                          textAlign: TextAlign.center)
-                    ],
+                                .translate('welcomeText2'),
+                            textAlign: TextAlign.center)
+                      ],
+                    ),
                   ),
-                ),
-                Wrap(
-                    spacing: 25.0,
-                    runSpacing: 25.0,
-                    alignment: WrapAlignment.spaceEvenly,
-                    children: [
-                      CustomElevatedButtonIconified(
-                          icon: const Icon(Icons.logout),
-                          onPressedFunction: () {
-                            //TODO Llamar a la función de Cerrar sesión (Alexandra)
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => const LoginScreen()));
-                          },
-                          hintText: AppLocalizations.of(context)!
-                              .translate('logout')),
-                      CustomElevatedButtonIconified(
-                          icon: const Icon(Icons.language),
-                          onPressedFunction: () {
-                            //TODO Llamar a la función de Idioma (Pinto)
-                          },
-                          hintText: AppLocalizations.of(context)!
-                              .translate('language')),
-                      CustomElevatedButtonIconified(
-                          icon: const Icon(Icons.location_pin),
-                          onPressedFunction: () {
-                            //TODO Llamar a la función de Geolocalización (Carol)
-                          },
-                          hintText: AppLocalizations.of(context)!
-                              .translate('location')),
-                      CustomElevatedButtonIconified(
-                          icon: const Icon(Icons.change_circle),
-                          onPressedFunction: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => const LoginScreen()));
-                          },
-                          hintText: AppLocalizations.of(context)!
-                              .translate('switchUser')),
-                      CustomElevatedButtonIconified(
-                          icon: const Icon(Icons.edit),
-                          onPressedFunction: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => const UserScreen()));
-                          },
-                          hintText: AppLocalizations.of(context)!
-                              .translate('editUser'))
-                    ])
-              ])));
+                  Wrap(
+                      spacing: 25.0,
+                      runSpacing: 25.0,
+                      alignment: WrapAlignment.spaceEvenly,
+                      children: [
+                        CustomElevatedButtonIconified(
+                            icon: const Icon(Icons.logout),
+                            onPressedFunction: () {
+                              //TODO Llamar a la función de Cerrar sesión (Alexandra)
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => const LoginScreen()));
+                            },
+                            hintText: AppLocalizations.of(context)!
+                                .translate('logout')),
+                        CustomElevatedButtonIconified(
+                            icon: const Icon(Icons.language),
+                            onPressedFunction: () {
+                              //TODO Llamar a la función de Idioma (Pinto)
+                            },
+                            hintText: AppLocalizations.of(context)!
+                                .translate('language')),
+                        CustomElevatedButtonIconified(
+                            icon: const Icon(Icons.location_pin),
+                            onPressedFunction: () {
+                              //TODO Llamar a la función de Geolocalización (Carol)
+                            },
+                            hintText: AppLocalizations.of(context)!
+                                .translate('location')),
+                        CustomElevatedButtonIconified(
+                            icon: const Icon(Icons.change_circle),
+                            onPressedFunction: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => const LoginScreen()));
+                            },
+                            hintText: AppLocalizations.of(context)!
+                                .translate('switchUser')),
+                        CustomElevatedButtonIconified(
+                            icon: const Icon(Icons.edit),
+                            onPressedFunction: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => const UserScreen()));
+                            },
+                            hintText: AppLocalizations.of(context)!
+                                .translate('editUser'))
+                      ])
+                ]))),
+      );
     });
   }
 }

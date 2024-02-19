@@ -11,6 +11,8 @@ import 'package:sprint/widget/show_dialog_exeception.dart';
 import 'package:sprint/bloc/register_bloc.dart';
 import 'package:sprint/screens/home_screen.dart';
 
+import '../widget/custom_elevated_button_iconified_with_text.dart';
+
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
@@ -48,59 +50,47 @@ class RegisterScreenState extends State<RegisterScreen> {
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 16.0),
-                                child: ElevatedButton(
-                                  onPressed: () async {
+                                child: CustomElevatedButtonWithText(
+                                  text: 'Facebook',
+                                  onPressedFunction: () async {
                                     final provider =
-                                        Provider.of<SingAndLoginClass>(context,
-                                            listen: false);
+                                    Provider.of<SingAndLoginClass>(context,
+                                        listen: false);
 
                                     if (await provider.signInWithFacebook()) {
                                       Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
-                                          builder: (context) => HomeScreen(),
+                                          builder: (context) => const HomeScreen(),
                                         ),
                                       );
                                     }
                                   },
-                                  style: ElevatedButton.styleFrom(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(50.0),
-                                    ),
-                                  ),
-                                  child: const Text('Facebook'),
-                                ),
+                                )
                               ),
                               Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 16.0),
-                                  child: CustomElevatedButtonWithText(
-                                    text: AppLocalizations.of(context)!
-                                        .translate('signInWithGoogle'),
+                                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                                  child: CustomElevatedButtonIconifiedWithText(
                                     onPressedFunction: () async {
-                                      final provider =
-                                          Provider.of<SingAndLoginClass>(
-                                              context,
-                                              listen: false);
-
+                                      final provider = Provider.of<SingAndLoginClass>(context,listen: false);
                                       if (await provider.googleLogin()) {
-                                        Navigator.of(context).pushReplacement(
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const HomeScreen(),
-                                          ),
-                                        );
+                                        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const HomeScreen()),);
                                       }
                                     },
-                                  )),
-                              TextFormField(
-                                  controller: nameController,
-                                  cursorColor: Theme.of(context).primaryColor,
-                                  textInputAction: TextInputAction.next,
-                                  decoration: InputDecoration(
-                                    icon: const Icon(Icons.person),
-                                    hintText: AppLocalizations.of(context)!
-                                        .translate('usernameHintText'),
-                                    labelText: AppLocalizations.of(context)!
+                                    text: AppLocalizations.of(context)!
+                                        .translate('signInGoogle'),
+                                    icon: Image.asset("assets/google_logo.png", scale: 20)
+                                  )
+                              ),
+                                      TextFormField(
+                                      controller: nameController,
+                                      cursorColor: Theme.of(context).primaryColor,
+                                      textInputAction: TextInputAction.next,
+                                      decoration: InputDecoration(
+                                      icon: const Icon(Icons.person),
+                                      hintText: AppLocalizations.of(context)!
+                                          .translate('usernameHintText'),
+                                      labelText:
+                                       AppLocalizations.of(context)!
                                         .translate('username'),
                                   ),
                                   autovalidateMode:
@@ -115,8 +105,8 @@ class RegisterScreenState extends State<RegisterScreen> {
                                   textInputAction: TextInputAction.next,
                                   decoration: InputDecoration(
                                     icon: const Icon(Icons.mail),
-                                    hintText: 'Email', //TODO: Translate
-                                    labelText: 'Email', //TODO: Translate
+                                    hintText: AppLocalizations.of(context)!.translate('email'),
+                                    labelText: AppLocalizations.of(context)!.translate('email')
                                   ),
                                   autovalidateMode:
                                       AutovalidateMode.onUserInteraction,
@@ -143,7 +133,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                                     AutovalidateMode.onUserInteraction,
                                 validator: (password) => password != null &&
                                         !validatePasswordLengthAndWeak(password)
-                                    ? 'Password must be at least 6 characters long and contain at least one uppercase letter and one number' //TODO: Translate
+                                    ? AppLocalizations.of(context)!.translate('passLengthOrWeak')
                                     : null,
                                 onTap: () {
                                   setState(() {
@@ -173,7 +163,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                                         !validatePasswordsMatch(
                                             passwordController.text,
                                             passwordConfirm)
-                                    ? 'Passwords do not match' //TODO: Translate
+                                    ? AppLocalizations.of(context)!.translate('passesNotMatch')
                                     : null,
                                 onTap: () {
                                   setState(() {
@@ -222,3 +212,5 @@ class RegisterScreenState extends State<RegisterScreen> {
             });
   }
 }
+
+
