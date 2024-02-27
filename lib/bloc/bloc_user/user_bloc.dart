@@ -13,7 +13,7 @@ class UserBloc extends Bloc<UserEvents, UserStates> {
   UserBloc() : super(InitialState()) {
     on<UserInformationChangedEvent>(onUserInformationChanged);
     on<UserDeleteRequested>(onUserDeleteRequested);
-    on<UserCancellationRequested>(onUserCancellationRequested);
+    // on<UserCancellationRequested>(onUserCancellationRequested);
   }
 
   void onUserInformationChanged(
@@ -23,50 +23,50 @@ class UserBloc extends Bloc<UserEvents, UserStates> {
     emit(UpdateState(user));
   }
 
-  void onUserCancellationRequested(UserCancellationRequested event, Emitter<UserStates> emit) async {
-    try {
-      // Lógica para revertir la baja del usuario
-      bool cancellationSuccess = await _revertUserDeletion(event.userEmail);
-      if (cancellationSuccess) {
-        emit(UserCancellationSuccess());
-      } else {
-        emit(UserCancellationFailure());
-      }
-    } catch (e) {
-      emit(UserCancellationFailure());
-    }
-  }
+  // void onUserCancellationRequested(UserCancellationRequested event, Emitter<UserStates> emit) async {
+  //   try {
+  //     // Lógica para revertir la baja del usuario
+  //     // bool cancellationSuccess = await _revertUserDeletion(event.userEmail);
+  //     if (cancellationSuccess) {
+  //       emit(UserCancellationSuccess());
+  //     } else {
+  //       emit(UserCancellationFailure());
+  //     }
+  //   } catch (e) {
+  //     emit(UserCancellationFailure());
+  //   }
+  // }
   // Método para revertir la baja del usuario
-  Future<bool> _revertUserDeletion(String userEmail) async {
-    try {
-      // Obtener la información del usuario
-      var user = await OdooConnect.getUserByEmail(userEmail);
-
-      // Verificar si el usuario está dentro del período de gracia
-      if (user != null && user.deletionRequestDate != null) {
-        var hoursSinceDeletionRequest = DateTime.now().difference(user.deletionRequestDate!).inHours;
-        if (hoursSinceDeletionRequest > 24) {
-          // Fuera del período de gracia
-          return false;
-        }
-      }
-      // Reactivar el usuario en Odoo
-      user?.isDeletionRequested = false;
-      user?.deletionRequestDate = null; // o cualquier otro manejo que desees
-      bool updateSuccess = await OdooConnect.modifyUser(user!);
-
-      return updateSuccess;
-    } catch (e) {
-      print("Error al revertir la baja del usuario: $e");
-      return false;
-    }
-  }
+  // Future<bool> _revertUserDeletion(String userEmail) async {
+  //   try {
+  //     // Obtener la información del usuario
+  //     var user = await OdooConnect.getUserByEmail(userEmail);
+  //
+  //     // Verificar si el usuario está dentro del período de gracia
+  //     if (user != null && user.deletionRequestDate != null) {
+  //       var hoursSinceDeletionRequest = DateTime.now().difference(user.deletionRequestDate!).inHours;
+  //       if (hoursSinceDeletionRequest > 24) {
+  //         // Fuera del período de gracia
+  //         return false;
+  //       }
+  //     }
+  //     // Reactivar el usuario en Odoo
+  //     // user?.isDeletionRequested = false;
+  //     // user?.deletionRequestDate = null; // o cualquier otro manejo que desees
+  //     bool updateSuccess = await OdooConnect.modifyUser(user!);
+  //
+  //     return updateSuccess;
+  //   } catch (e) {
+  //     print("Error al revertir la baja del usuario: $e");
+  //     return false;
+  //   }
+  // }
 
   void onUserDeleteRequested(UserDeleteRequested event, Emitter<UserStates> emit) async {
     try {
       // Marcar el usuario como pendiente de eliminación y guardar la fecha de solicitud
-      user.isDeletionRequested = true;
-      user.deletionRequestDate = DateTime.now();
+      // user.isDeletionRequested = true;
+      // user.deletionRequestDate = DateTime.now();
       bool updateSuccess = await OdooConnect.modifyUser(user);
       if (updateSuccess) {
         // Enviar correo de confirmación
